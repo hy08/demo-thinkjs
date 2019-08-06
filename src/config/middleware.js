@@ -14,26 +14,31 @@ module.exports = [
     enable: isDev,
     options: {
       root: path.join(think.ROOT_PATH, 'www'),
-      publicPath: /^\/(static|favicon\.ico)/
+      publicPath: /^\/(static|uploads|favicon\.ico|index\.html|admin\.html)/
     }
   },
   {
     handle: 'trace',
     enable: !think.isCli,
     options: {
-      debug: isDev
+      debug: isDev,
+      templates: {
+        404: path.join(think.ROOT_PATH, 'view/error_404.html'),
+        500: path.join(think.ROOT_PATH, 'view/error_500.html')
+      }
     }
   },
   {
     handle: 'payload',
     options: {
-      keepExtensions: true,
-      limit: '5mb'
+      uploadDir: path.join(think.ROOT_PATH, 'runtime/data')
     }
   },
   {
     handle: 'router',
-    options: {}
+    options: {
+      suffix: ['.html']
+    }
   },
   'logic',
   'controller'

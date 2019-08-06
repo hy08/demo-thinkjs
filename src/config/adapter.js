@@ -1,8 +1,8 @@
 const fileCache = require('think-cache-file');
-const nunjucks = require('think-view-nunjucks');
-const fileSession = require('think-session-file');
 const mysql = require('think-model-mysql');
-const {Console, File, DateFile} = require('think-logger3');
+const JWTSession = require('think-session-jwt');
+const ejs = require('think-view-ejs');
+const { Console, File, DateFile } = require('think-logger3');
 const path = require('path');
 const isDev = think.env === 'development';
 
@@ -36,13 +36,13 @@ exports.model = {
   },
   mysql: {
     handle: mysql,
-    database: '',
-    prefix: 'think_',
+    database: 'blog',
+    prefix: '',
     encoding: 'utf8',
     host: '127.0.0.1',
     port: '',
     user: 'root',
-    password: 'root',
+    password: 'hy081027',
     dateStrings: true
   }
 };
@@ -52,17 +52,23 @@ exports.model = {
  * @type {Object}
  */
 exports.session = {
-  type: 'file',
+  type: 'jwt',
   common: {
     cookie: {
       name: 'thinkjs'
-      // keys: ['werwer', 'werwer'],
-      // signed: true
     }
   },
-  file: {
-    handle: fileSession,
-    sessionPath: path.join(think.ROOT_PATH, 'runtime/session')
+  jwt: {
+    handle: JWTSession,
+    secret: 'secret', // secret is reqired
+    tokenType: 'header', // ['query', 'body', 'header', 'cookie'], 'cookie' is default
+    tokenName: 'authorization', // if tokenType not 'cookie', this will be token name, 'jwt' is default
+    sign: {
+      expiresIn: 60 * 60 * 12
+    },
+    verify: {
+      // verify options is not required
+    },
   }
 };
 
@@ -71,14 +77,18 @@ exports.session = {
  * @type {Object}
  */
 exports.view = {
-  type: 'nunjucks',
+  type: 'ejs',
   common: {
     viewPath: path.join(think.ROOT_PATH, 'view'),
-    sep: '_',
-    extname: '.html'
+    extname: '.html',
+    sep: '_' //seperator between controller and action
   },
-  nunjucks: {
-    handle: nunjucks
+  ejs: {
+    //options
+    handle: ejs,
+    beforeRender: (ejs, handleOptions) => {
+      //do something before render the template.
+    }
   }
 };
 
