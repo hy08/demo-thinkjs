@@ -11,7 +11,6 @@ export default {
       dynamicImport: { webpackChunkName: true },
       title: 'create',
       dll: false,
-
       routes: {
         exclude: [
           /models\//,
@@ -22,5 +21,34 @@ export default {
         ],
       },
     }],
+  ],
+  routes: [
+    {
+      path: '/',
+      component: '../layouts/index',
+      routes: [
+        {
+          path: '/',
+          exact: true,
+          component: 'index',
+        },
+        {
+          path: '/about',
+          component: './about/index',
+        },
+        {
+          path: '/products',
+          component: './products/index',
+        },
+        {
+          path: '/devices',
+          component: './devices/index',
+        },
+        {
+          path: '/comment',
+          component: './comment/index',
+        },
+      ]
+    },
   ],
 }
