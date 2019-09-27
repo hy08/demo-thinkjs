@@ -1,10 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from "dva";
-import PropTypes from 'prop-types';
-import { isEmpty } from 'lodash';
 import { Button } from 'antd';
 import moment from 'moment';
-import classnames from 'classnames';
 import styles from './Footer.less';
 
 class Footer extends React.Component {
@@ -18,10 +15,17 @@ class Footer extends React.Component {
   };
   render() {
     return (
-      <Fragment>
-        <Button>Footer</Button>
-        <p>{moment().format('YYYY-MM-DD')}</p>
-      </Fragment>
+      <div className={styles.footer}>
+        <div className={styles.content}>
+          <div className={styles.footerNav}></div>
+          <div className={styles.products}></div>
+          <div className={styles.about}></div>
+          <div className={styles.linkus}></div>
+        </div>
+        <div className={styles.copyright}>
+          版权所有：杭州星阁网络科技有限公司 © 2018 星阁云　　苏ICP备xxxxxxxxx号-1
+        </div>
+      </div>
     );
   };
 };

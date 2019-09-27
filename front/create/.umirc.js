@@ -45,6 +45,10 @@ export default {
           component: './devices/index',
         },
         {
+          path: '/linkus',
+          component: './linkus/index',
+        },
+        {
           path: '/comment',
           component: './comment/index',
         },
