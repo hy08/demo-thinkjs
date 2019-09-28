@@ -11,5 +11,8 @@
   padding-top: 80px;
   margin: 0 auto;
   box-sizing: border-box;
-  background: red;
+}
+
+.footer {
+  background: #2e2e2e;
 }
