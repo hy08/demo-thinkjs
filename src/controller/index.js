@@ -1,7 +1,8 @@
 const Base = require('./base.js');
 
 module.exports = class extends Base {
-  indexAction() {
+  async indexAction() {
+    const contents = await this.model('company').find();
     return this.display();
   }
 };
