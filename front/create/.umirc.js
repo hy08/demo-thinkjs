@@ -55,4 +55,12 @@ export default {
       ]
     },
   ],
+  proxy: {
+    "/api": {
+      "target": "http://localhost:8360",
+      "cookieDomainRewrite": "localhost:8360",
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
 }

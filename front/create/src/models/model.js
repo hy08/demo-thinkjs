@@ -1,6 +1,6 @@
 import * as service from '../utils/service';
 import { message } from 'antd';
-const gatwayName = '/apms';
+const gatwayName = '/api';
 
 export default {
   namespace: 'model',
@@ -23,76 +23,12 @@ export default {
     },
   },
   effects: {
-    * deviceList({ payload }, { put, call, select }) {
-      let data = yield call(service.getCmd, `${gatwayName}/devices/pages`, payload.data);
+    * getCompany({ payload }, { put, call, select }) {
+      let data = yield call(service.getCmd, `${gatwayName}/company`);
       if (!!data.error) {
         return;
       }
-      yield put({ type: '_saveDevices', payload: { list: data.list, totalSize: data.totalSize } });
-      payload.success && payload.success(data.list)
-    },
-    * deviceSearch({ payload }, { put, call, select }) {
-      let data = yield call(service.getCmd, `${gatwayName}/devices/search`, payload.data);
-      if (!!data.error) {
-        return;
-      }
-      yield put({ type: '_saveDevices', payload: { list: data.list, totalSize: data.totalSize } });
-      payload.success && payload.success();
-    },
-    * addDevice({ payload }, { put, call, select }) {
-      const data = yield call(service.postCmd, `${gatwayName}/devices`, payload.data);
-      if (!!data.error) {
-        return;
-      }
-      yield put({ type: '_addDevice', payload: data });
-      payload.success && payload.success();
-    },
-    * intoNet({ payload }, { put, call, select }) {
-      const data = yield call(service.postCmd, `${gatwayName}/devices`, payload.data);
-      if (!!data.error) {
-        return;
-      }
-      yield put({ type: '_editDevice', payload: data });
-      payload.success && payload.success();
-    },
-    * updateDevice({ payload }, { put, call, select }) {
-      const data = yield call(service.putCmd, `${gatwayName}/devices/`, payload.data);
-      if (!!data.error) {
-        return;
-      }
-      yield put({ type: '_editDevice', payload: data });
-      payload.success && payload.success();
-    },
-    * deleteDevice({ payload }, { put, call, select }) {
-      const data = yield call(service.deleteCmd, `${gatwayName}/devices/${payload.data}`);
-      if (!!data.error) {
-        return;
-      }
-      yield put({ type: '_deleteDevice', payload: payload.data });
-    },
-    * deleteDevices({ payload }, { put, call, select }) {
-      const data = yield call(service._deleteCmd, `${gatwayName}/devices/`, payload.data.ids);
-      if (!!data.error) {
-        return;
-      }
-      yield put({ type: '_deleteDevices', payload: payload.data });
-      payload.success && payload.success();
-    },
-    * getDeviceLinkInfo({ payload }, { put, call, select }) {
-      const linkInfo = yield call(service.getCmd, `${gatwayName}/device/${payload.id}/linkInfo`);
-      if (!!linkInfo.error) {
-        return;
-      }
-      yield put({ type: '_saveLinkInfo', payload: { linkInfo: linkInfo } });
-    },
-    * updateDeviceLinkInfo({ payload }, { put, call, select }) {
-      const data = yield call(service.putCmd, `${gatwayName}/device/${payload.id}/linkInfo`, payload.data);
-      if (!!data.error) {
-        message.error(data.error.message);
-        return;
-      }
-      yield put({ type: '_saveLinkInfo', payload: { linkInfo: payload.data } });
-      payload.success && payload.success();
+      payload.success && payload.success(data.data)
     },
   },
   reducers: {

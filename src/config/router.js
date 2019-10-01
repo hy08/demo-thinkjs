@@ -1,3 +1,5 @@
 module.exports = [
-  ['/', 'index/index']
+  ['/', 'index/index'],
+  // RESTFUL
+  ['/api/company', 'api/company', 'rest'],
 ];

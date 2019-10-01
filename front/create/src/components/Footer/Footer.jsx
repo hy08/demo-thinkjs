@@ -11,8 +11,24 @@ class Footer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      phone: '',
+      address: ''
     };
   };
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'model/getCompany',
+      payload: {
+        success: data => {
+          this.setState({
+            phone: data.phone,
+            address: data.address
+          })
+        }
+      }
+    });
+  }
   getTabTitle = (iconType, title) => {
     return (
       <div className={styles.tabTitle}>
@@ -22,6 +38,7 @@ class Footer extends React.Component {
     )
   }
   render() {
+    const { phone, address } = this.state;
     return (
       <div className={styles.footer}>
         <div className={styles.content}>
@@ -60,9 +77,9 @@ class Footer extends React.Component {
           <div className={styles.linkus}>
             {this.getTabTitle('phone', '联系我们')}
             <ul className={styles.tabContent, styles.linkusContent}>
-              <li>咨询热线：<span className={styles.phone}>4008-260-272</span></li>
+              <li>咨询热线：<span className={styles.phone}>{phone}</span></li>
               <li>工作时间：周一至周五9:00-18:00</li>
-              <li>公司地址：昆山昆山昆山昆山昆山</li>
+              <li>公司地址：{address}</li>
             </ul>
           </div>
         </div>
