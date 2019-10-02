@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `syq_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `syq_db`;
 -- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: syq_db
@@ -68,6 +66,30 @@ INSERT INTO `company` VALUES (0,'昆山三艺强印刷有限公司','13915742342
 UNLOCK TABLES;
 
 --
+-- Table structure for table `device`
+--
+
+DROP TABLE IF EXISTS `device`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `device` (
+  `id` int(11) NOT NULL,
+  `name` char(50) DEFAULT NULL,
+  `picture` char(50) DEFAULT NULL,
+  `intro` varchar(300) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `device`
+--
+
+LOCK TABLES `device` WRITE;
+/*!40000 ALTER TABLE `device` DISABLE KEYS */;
+/*!40000 ALTER TABLE `device` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product`
 --
 
@@ -76,7 +98,7 @@ DROP TABLE IF EXISTS `product`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
   `id` int(11) NOT NULL,
-  `product` char(50) COLLATE utf8mb4_bin DEFAULT NULL,
+  `name` char(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `category` char(30) COLLATE utf8mb4_bin DEFAULT NULL,
   `picture1` char(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `picture2` char(50) COLLATE utf8mb4_bin DEFAULT NULL,
@@ -155,4 +177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-30 15:03:22
+-- Dump completed on 2019-10-02 18:35:18
