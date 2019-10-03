@@ -1,56 +1,155 @@
-/**
- * request 网络请求工具
- * 更详细的 api 文档: https://github.com/umijs/umi-request
- */
-import { extend } from 'umi-request';
-import { notification } from 'antd';
-const codeMessage = {
-  200: '服务器成功返回请求的数据。',
-  201: '新建或修改数据成功。',
-  202: '一个请求已经进入后台排队（异步任务）。',
-  204: '删除数据成功。',
-  400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
-  401: '用户没有权限（令牌、用户名、密码错误）。',
-  403: '用户得到授权，但是访问是被禁止的。',
-  404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
-  406: '请求的格式不可得。',
-  410: '请求的资源被永久删除，且不会再得到的。',
-  422: '当创建一个对象时，发生一个验证错误。',
-  500: '服务器发生错误，请检查服务器。',
-  502: '网关错误。',
-  503: '服务不可用，服务器暂时过载或维护。',
-  504: '网关超时。',
-};
-/**
- * 异常处理程序
- */
+import fetch from 'dva/fetch';
+import { message } from 'antd';
+import * as util from './utils';
 
-const errorHandler = error => {
-  const { response } = error;
+var requests = [];
 
-  if (response && response.status) {
-    const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText,
-    });
-  } else if (!response) {
-    notification.error({
-      description: '您的网络发生异常，无法连接服务器',
-      message: '网络异常',
-    });
+message.config({
+  maxCount: 3
+})
+
+function checkRequest(response, request) {
+  console.log("checkRequest begin", request, requests);
+  var findIndex = requests.findIndex(r => r.method === request.method && r.url === request.url && r.time === request.time);
+  if (findIndex < 0) {
+    throw "response invalid";
   }
 
-  return response;
-};
-/**
- * 配置request请求时的默认参数
- */
+  console.log("checkRequest findIndex", findIndex);
 
-const request = extend({
-  errorHandler,
-  // 默认错误处理
-  credentials: 'include', // 默认请求是否带上cookie
-});
-export default request;
+  for (var i = 0; i < requests.length;) {
+    if (requests[i].method == request.method && requests[i].url == request.url && requests[i].time <= request.time) {
+      requests.splice(i, 1);
+    } else {
+      i++;
+    }
+  }
+
+  console.log("checkRequest end", request, requests);
+  return response
+}
+
+function parseJSON(response) {
+  // 后台302跳转时的处理
+  if (response.headers.status === 302) {
+    window.location.href = response.headers.location;
+  }
+  if (!!response.redirected) {
+    window.location.href = response.url;
+  }
+  if (response.status === 204) {
+    return {};
+  }
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.indexOf("application/json") !== -1) {
+    return response.json();
+  } else {
+    return response.text();
+  };
+}
+
+function checkData(data) {
+  if (!!data.code && !!data.message) {
+    let error = `${data.message}`;
+    message.error(error);
+    return { error }
+  }
+
+  // rap2 返回错误
+  if (!!data.errMsg && !data.isOk) {
+    let error = data.errMsg;
+    message.error(error);
+    return { error }
+  }
+  // rap2 返回数据是数组时的bug
+  if (data.hasOwnProperty('_root_')) {
+    return data['_root_'];
+  }
+  return data;
+}
+
+function checkStatus(response) {
+  // console.log("checkStatus", response);
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  }
+
+  else if (response.status === 500) {
+    return response;
+  }
+
+  var error = "";
+  if (response.status === 404) {
+    error = "请求路由不存在！"
+  } else if (response.status === 403) {
+    error = "请求被禁止！"
+  } else if (response.status === 401) {
+    error = "请求没有权限！"
+  } else if (response.status === 400) {
+    error = "请求无效！"
+  } else if (response.status === 504) {
+    error = "请求超时！"
+  }
+  message.error(error);
+  throw error;
+}
+
+/**
+ * Requests a URL, returning a promise.
+ *
+ * @param  {string} url       The URL we want to request
+ * @param  {object} [options] The options we want to pass to "fetch"
+ * @return {object}           An object containing either "data" or "err"
+ */
+export function request(url, options) {
+  // 获取页面请求链接，查看是否有微服务限制参数，若有限制且当前请求不在规定微服务内，则不予处理
+  let requestServer = url.match(/[^?]*/i)[0].split('/')[1];
+  let microServices = util.getUrlParam('microservice');
+  let requestHeader = {
+    'Content-Type': 'application/json; charset=UTF-8',
+  };
+  if (microServices.length > 0 && !microServices.some(s => s == requestServer)) {
+    return {
+      code: 404,
+      error: 'Not found micro service',
+    };
+  }
+  if (localStorage.getItem('token')) {
+    requestHeader.Authorization = localStorage.getItem('token')
+  }
+  let request = {
+    method: options.method,
+    url: url.match(/[^?]*/i)[0],
+    time: new Date().getTime(),
+  }
+  requests.push(request);
+
+
+  return fetch((window.rapUrl || "") + url, {
+    headers: requestHeader,
+    credentials: 'include',
+    redirect: 'follow',
+    mode: 'cors',
+    ...options
+  })
+    .then(data => checkRequest(data, request))
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(data => checkData(data))
+    .catch(error => ({ error }));
+}
+
+export function requestStatic(url, options) {
+  return fetch(url, {
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8'
+    },
+    credentials: 'include',
+    cache: 'no-cache',
+    ...options
+  })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(data => data)
+    .catch();
+}

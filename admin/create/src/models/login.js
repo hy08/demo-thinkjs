@@ -1,8 +1,11 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
+import * as service from '../utils/service';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
+
+const gatwayName = '/api';
+
 const Model = {
   namespace: 'login',
   state: {
@@ -10,38 +13,40 @@ const Model = {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      }); // Login successfully
+      let response = yield call(service.postCmd, `${gatwayName}/token`, payload);
+      if (!!response.error || !response.data) {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: { status: 'error' },
+        });
+      } else {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: { status: 'ok', token: response.data.token },
+        });
+        if (response.data.status === 'ok') {
+          const urlParams = new URL(window.location.href);
+          const params = getPageQuery();
+          let { redirect } = params;
 
-      if (response.status === 'ok') {
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params;
+          if (redirect) {
+            const redirectUrlParams = new URL(redirect);
 
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
+            if (redirectUrlParams.origin === urlParams.origin) {
+              redirect = redirect.substr(urlParams.origin.length);
 
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
+              if (redirect.match(/^\/.*#/)) {
+                redirect = redirect.substr(redirect.indexOf('#') + 1);
+              }
+            } else {
+              window.location.href = redirect;
+              return;
             }
-          } else {
-            window.location.href = redirect;
-            return;
           }
+
+          routerRedux.replace(redirect || '/')
         }
-
-        yield put(routerRedux.replace(redirect || '/'));
       }
-    },
-
-    *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
     },
 
     *logout(_, { put }) {
@@ -61,8 +66,8 @@ const Model = {
   },
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
-      return { ...state, status: payload.status, type: payload.type };
+      setAuthority(payload.token);
+      return { ...state, status: payload.status };
     },
   },
 };

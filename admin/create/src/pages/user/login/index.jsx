@@ -1,8 +1,8 @@
 import { Alert, Checkbox } from 'antd';
 import React, { Component } from 'react';
-import Link from 'umi/link';
 import { connect } from 'dva';
 import LoginComponents from './components/Login';
+import md5 from 'js-md5';
 import styles from './style.less';
 const { Tab, UserName, Password, Submit } = LoginComponents;
 
@@ -22,13 +22,14 @@ class Login extends Component {
     });
   };
   handleSubmit = (err, values) => {
-    const { type } = this.state;
-
     if (!err) {
       const { dispatch } = this.props;
       dispatch({
         type: 'login/login',
-        payload: { ...values, type },
+        payload: {
+          userName: values.userName,
+          password: md5(values.password)
+        },
       });
     }
   };
@@ -37,30 +38,6 @@ class Login extends Component {
       type,
     });
   };
-  onGetCaptcha = () =>
-    new Promise((resolve, reject) => {
-      if (!this.loginForm) {
-        return;
-      }
-
-      this.loginForm.validateFields(['mobile'], {}, async (err, values) => {
-        if (err) {
-          reject(err);
-        } else {
-          const { dispatch } = this.props;
-
-          try {
-            const success = await dispatch({
-              type: 'login/getCaptcha',
-              payload: values.mobile,
-            });
-            resolve(!!success);
-          } catch (error) {
-            reject(error);
-          }
-        }
-      });
-    });
   renderMessage = content => (
     <Alert
       style={{
@@ -74,7 +51,7 @@ class Login extends Component {
 
   render() {
     const { userLogin, submitting } = this.props;
-    const { status, type: loginType } = userLogin;
+    const { status } = userLogin;
     const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
@@ -87,10 +64,7 @@ class Login extends Component {
           }}
         >
           <Tab key="account" tab="账户密码登录">
-            {status === 'error' &&
-              loginType === 'account' &&
-              !submitting &&
-              this.renderMessage('账户或密码错误')}
+            {status === 'error' && !submitting && this.renderMessage('账户或密码错误')}
             <UserName
               name="userName"
               placeholder="用户名"

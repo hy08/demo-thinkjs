@@ -12,7 +12,19 @@ module.exports = class extends think.Controller {
     assert(think.isFunction(this.model), 'this.model must be a function');
     this.modelInstance = this.model(this.resource);
   }
-  __before() {}
+  async __before() {
+    this.header('Access-Control-Allow-Origin', '*');
+
+    this.userInfo = await this.session('userInfo').catch(_ => ({}));
+
+    const isAllowedMethod = this.isMethod('GET');
+    const isAllowedResource = this.resource === 'token';
+    const isLogin = !think.isEmpty(this.userInfo);
+
+    if (!isAllowedMethod && !isAllowedResource && !isLogin) {
+      return this.ctx.throw(401, '请登录后操作');
+    }
+  }
   /**
    * get resource
    * @return {String} [resource name]
@@ -84,5 +96,5 @@ module.exports = class extends think.Controller {
     const rows = await this.modelInstance.where({ [pk]: this.id }).update(data);
     return this.success({ affectedRows: rows });
   }
-  __call() {}
+  __call() { }
 };
