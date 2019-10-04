@@ -1,7 +1,6 @@
 import { routerRedux } from 'dva/router';
-import { stringify } from 'querystring';
 import * as service from '../utils/service';
-import { setAuthority } from '@/utils/authority';
+import { setAuthority, clearToken } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
 const gatwayName = '/api';
@@ -44,24 +43,13 @@ const Model = {
             }
           }
 
-          routerRedux.replace(redirect || '/')
+          yield put(routerRedux.replace(redirect || '/'));
         }
       }
     },
 
     *logout(_, { put }) {
-      const { redirect } = getPageQuery(); // redirect
-
-      if (window.location.pathname !== '/user/login' && !redirect) {
-        yield put(
-          routerRedux.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          }),
-        );
-      }
+      clearToken();
     },
   },
   reducers: {

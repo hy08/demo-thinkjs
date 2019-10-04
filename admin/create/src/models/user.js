@@ -16,24 +16,27 @@ const UserModel = {
       // });
     },
 
-    *checkCurrent(_, { call, put }) {
+    *fetchCurrent(_, { call, put }) {
       let token = localStorage.getItem('token');
       if (!token) {
-        message.error('请登录系统')
         return;
+      } else {
+        let tokenArray = token.split('.')
+        if (tokenArray.length !== 3) {
+          message.error('身份验证错误，请重新登录')
+          return;
+        }
+        let payload = JSON.parse(Base64.decode(tokenArray[1]))
+        if (Date.now() > payload.exp * 1000) {
+          message.error('登录已超时，请重新登录')
+          clearToken();
+          return;
+        }
+        yield put({
+          type: 'saveCurrentUser',
+          payload: payload.userInfo,
+        });
       }
-      let tokenArray = token.split('.')
-      if (tokenArray.length !== 3) {
-        message.error('身份验证错误，请重新登录')
-        return;
-      }
-      let payload = JSON.parse(Base64.decode(tokenArray[1]))
-      if (Date.now() > payload.exp * 1000) {
-        message.error('登录已超时，请重新登录')
-        clearToken();
-        return;
-      }
-
     },
   },
   reducers: {

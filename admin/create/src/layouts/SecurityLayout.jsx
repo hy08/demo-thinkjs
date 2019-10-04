@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Redirect } from 'umi';
 import { stringify } from 'querystring';
+import { isEmpty } from 'lodash';
 import PageLoading from '@/components/PageLoading';
 
 class SecurityLayout extends React.Component {
@@ -25,7 +26,7 @@ class SecurityLayout extends React.Component {
   render() {
     const { isReady } = this.state;
     const { children, loading, currentUser } = this.props;
-    const isLogin = currentUser && currentUser.userid;
+    const isLogin = !isEmpty(currentUser);
     const queryString = stringify({
       redirect: window.location.href,
     });

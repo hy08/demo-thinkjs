@@ -88,9 +88,13 @@ export default {
             },
             {
               path: '/welcome',
-              name: 'welcome',
-              icon: 'smile',
+              name: '欢迎',
               component: './Welcome',
+            },
+            {
+              name: '基本设置',
+              path: '/setting',
+              component: './setting',
             },
             {
               component: './404',
@@ -149,11 +153,11 @@ export default {
   },
   chainWebpack: webpackPlugin,
   proxy: {
-    "/api": {
-      "target": "http://localhost:8360",
-      "cookieDomainRewrite": "localhost:8360",
-      "changeOrigin": true,
-      "logLevel": "debug"
-    }
-  }
+    '/api': {
+      target: 'http://localhost:8360',
+      cookieDomainRewrite: 'localhost:8360',
+      changeOrigin: true,
+      logLevel: 'debug',
+    },
+  },
 };
