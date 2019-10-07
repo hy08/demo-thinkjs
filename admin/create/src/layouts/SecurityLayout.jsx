@@ -1,37 +1,50 @@
-import React from 'react';
-import { connect } from 'dva';
+import React, { Component } from 'react';
 import { Redirect } from 'umi';
+import { message } from 'antd';
 import { stringify } from 'querystring';
-import { isEmpty } from 'lodash';
+import { clearToken } from '../utils/authority';
 import PageLoading from '@/components/PageLoading';
 
-class SecurityLayout extends React.Component {
+export default class SecurityLayout extends Component {
   state = {
     isReady: false,
+    isLogin: false,
   };
 
   componentDidMount() {
     this.setState({
       isReady: true,
     });
-    const { dispatch } = this.props;
-
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
+    let token = localStorage.getItem('token');
+    if (!token) {
+      message.error('用户尚未登录，请登录后台系统');
+      return;
+    } else {
+      let tokenArray = token.split('.')
+      if (tokenArray.length !== 3) {
+        message.error('身份验证错误，请重新登录')
+        return;
+      }
+      let payload = JSON.parse(Base64.decode(tokenArray[1]))
+      if (Date.now() > payload.exp * 1000) {
+        message.error('登录已超时，请重新登录')
+        clearToken();
+        return;
+      }
+      this.setState({
+        isLogin: true,
       });
     }
   }
 
   render() {
-    const { isReady } = this.state;
-    const { children, loading, currentUser } = this.props;
-    const isLogin = !isEmpty(currentUser);
+    const { isReady, isLogin } = this.state;
+    const { children } = this.props;
     const queryString = stringify({
       redirect: window.location.href,
     });
 
-    if ((!isLogin && loading) || !isReady) {
+    if (!isReady) {
       return <PageLoading />;
     }
 
@@ -42,8 +55,3 @@ class SecurityLayout extends React.Component {
     return children;
   }
 }
-
-export default connect(({ user, loading }) => ({
-  currentUser: user.currentUser,
-  loading: loading.models.user,
-}))(SecurityLayout);

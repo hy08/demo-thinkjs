@@ -46,7 +46,7 @@ const Model = {
     },
   },
   reducers: {
-    saveCurrentUser(state, action) {
+    saveCurrentUser111(state, action) {
       return { ...state, currentUser: action.payload || {} };
     },
 

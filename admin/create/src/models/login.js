@@ -50,6 +50,10 @@ const Model = {
 
     *logout(_, { put }) {
       clearToken();
+      yield put({
+        type: 'user/saveCurrentUser',
+        payload: {},
+      });
     },
   },
   reducers: {
