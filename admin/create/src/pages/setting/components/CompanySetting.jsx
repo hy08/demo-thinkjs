@@ -1,55 +1,11 @@
-import { Button, Form, Input, Select, Upload, message } from 'antd';
-import React, { Component, Fragment } from 'react';
+import { Button, Form, Input, message } from 'antd';
+import React, { Component } from 'react';
 import { connect } from 'dva';
-// import GeographicView from './GeographicView';
-import PhoneView from './PhoneView';
 import { isEmpty } from 'lodash';
 import styles from './BaseView.less';
 
 const FormItem = Form.Item;
-const { Option } = Select; // 头像组件 方便以后独立，增加裁剪之类的功能
 
-const AvatarView = ({ avatar }) => (
-  <Fragment>
-    <div className={styles.avatar_title}>Avatar</div>
-    <div className={styles.avatar}>
-      <img src={avatar} alt="avatar" />
-    </div>
-    <Upload fileList={[]}>
-      <div className={styles.button_view}>
-        <Button icon="upload">Change avatar</Button>
-      </div>
-    </Upload>
-  </Fragment>
-);
-
-const validatorGeographic = (_, value, callback) => {
-  const { province, city } = value;
-
-  if (!province.key) {
-    callback('Please input your province!');
-  }
-
-  if (!city.key) {
-    callback('Please input your city!');
-  }
-
-  callback();
-};
-
-const validatorPhone = (rule, value, callback) => {
-  const values = value.split('-');
-
-  if (!values[0]) {
-    callback('Please input your area code!');
-  }
-
-  if (!values[1]) {
-    callback('Please input your phone number!');
-  }
-
-  callback();
-};
 
 @connect(({ user }) => ({
   currentUser: user.currentUser,
@@ -73,21 +29,6 @@ class CompanySetting extends Component {
     }
   };
 
-  getAvatarURL() {
-    const { currentUser } = this.props;
-
-    if (currentUser) {
-      if (currentUser.avatar) {
-        return currentUser.avatar;
-      }
-
-      const url = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
-      return url;
-    }
-
-    return '';
-  }
-
   getViewDom = ref => {
     this.view = ref;
   };
@@ -97,7 +38,7 @@ class CompanySetting extends Component {
     const { form } = this.props;
     form.validateFields(err => {
       if (!err) {
-        message.success('.-src.basic.update.success');
+        message.success('公司设置已保存');
       }
     });
   };
@@ -110,97 +51,50 @@ class CompanySetting extends Component {
       <div className={styles.baseView} ref={this.getViewDom}>
         <div className={styles.left}>
           <Form layout="vertical" hideRequiredMark>
-            <FormItem label=".-src.basic.email">
-              {getFieldDecorator('email', {
-                rules: [
-                  {
-                    required: true,
-                    message: '.-src.basic.email-message',
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-            <FormItem label=".-src.basic.nickname">
+            <FormItem label="公司名称">
               {getFieldDecorator('name', {
                 rules: [
                   {
                     required: true,
-                    message: '.-src.basic.nickname-message',
+                    message: '请输入公司全称!',
                   },
                 ],
               })(<Input />)}
             </FormItem>
-            <FormItem label=".-src.basic.profile">
-              {getFieldDecorator('profile', {
-                rules: [
-                  {
-                    required: true,
-                    message: '.-src.basic.profile-message',
-                  },
-                ],
-              })(<Input.TextArea placeholder=".-src.basic.profile-placeholder" rows={4} />)}
-            </FormItem>
-            <FormItem label=".-src.basic.country">
-              {getFieldDecorator('country', {
-                rules: [
-                  {
-                    required: true,
-                    message: '.-src.basic.country-message',
-                  },
-                ],
-              })(
-                <Select
-                  style={{
-                    maxWidth: 220,
-                  }}
-                >
-                  <Option value="China">中国</Option>
-                </Select>,
-              )}
-            </FormItem>
-            <FormItem label=".-src.basic.geographic">
-              {/* {getFieldDecorator('geographic', {
-                rules: [
-                  {
-                    required: true,
-                    message: '.-src.basic.geographic-message',
-                  },
-                  {
-                    validator: validatorGeographic,
-                  },
-                ],
-              })(<GeographicView />)} */}
-            </FormItem>
-            <FormItem label=".-src.basic.address">
-              {getFieldDecorator('address', {
-                rules: [
-                  {
-                    required: true,
-                    message: '.-src.basic.address-message',
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-            <FormItem label=".-src.basic.phone">
+            <FormItem label="联系电话">
               {getFieldDecorator('phone', {
                 rules: [
                   {
                     required: true,
-                    message: '.-src.basic.phone-message',
-                  },
-                  {
-                    validator: validatorPhone,
+                    pattern: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
+                    message: '请输入正确的公司电话',
                   },
                 ],
-              })(<PhoneView />)}
+              })(<Input />)}
             </FormItem>
-            <Button type="primary" onClick={this.handlerSubmit}>
-              Update Information
-            </Button>
+            <FormItem label="邮箱">
+              {getFieldDecorator('email', {
+                rules: [
+                  {
+                    required: false,
+                    pattern: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
+                    message: '请输入正确的公司邮箱',
+                  },
+                ],
+              })(<Input />)}
+            </FormItem>
+            <FormItem label="公司地址">
+              {getFieldDecorator('address', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入公司详细地址',
+                  },
+                ],
+              })(<Input />)}
+            </FormItem>
+            <Button type="primary" onClick={this.handlerSubmit}>保存</Button>
           </Form>
-        </div>
-        <div className={styles.right}>
-          <AvatarView avatar={this.getAvatarURL()} />
         </div>
       </div>
     );

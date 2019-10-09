@@ -31,10 +31,6 @@ class Setting extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'user/fetchCurrent',
-    });
     window.addEventListener('resize', this.resize);
     this.resize();
   }

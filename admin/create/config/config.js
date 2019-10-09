@@ -72,6 +72,9 @@ export default {
           path: '/user/login',
           component: './user/login',
         },
+        {
+          component: './404',
+        },
       ],
     },
     {
@@ -84,12 +87,7 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
-            },
-            {
-              path: '/welcome',
-              name: '欢迎',
-              component: './Welcome',
+              redirect: '/setting',
             },
             {
               name: '基本设置',
