@@ -1,8 +1,10 @@
 import { Button, Form, Input, message } from 'antd';
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import router from 'umi/router';
 import { isEmpty } from 'lodash';
 import styles from './BaseView.less';
+import { clearToken } from '@/utils/authority';
 
 const FormItem = Form.Item;
 
@@ -11,10 +13,17 @@ const FormItem = Form.Item;
   currentUser: user.currentUser,
 }))
 class UserSetting extends Component {
-  view = undefined;
 
   componentDidMount() {
-    this.setBaseInfo();
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'user/fetchCurrent',
+      payload: {
+        success: () => {
+          this.setBaseInfo();
+        }
+      }
+    })
   }
 
   setBaseInfo = () => {
@@ -29,16 +38,22 @@ class UserSetting extends Component {
     }
   };
 
-  getViewDom = ref => {
-    this.view = ref;
-  };
-
   handlerSubmit = event => {
     event.preventDefault();
-    const { form } = this.props;
+    const { currentUser, form, dispatch } = this.props;
     form.validateFields(err => {
       if (!err) {
-        message.success('公司设置已保存');
+        dispatch({
+          type: 'user/putUser',
+          payload: {
+            data: { id: currentUser.id, ...form.getFieldsValue() },
+            success: () => {
+              message.success('个人设置已保存,请重新登录');
+              clearToken();
+              router.push('/user/login');
+            }
+          }
+        });
       }
     });
   };

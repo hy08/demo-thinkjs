@@ -16,7 +16,7 @@ module.exports = class extends BaseRest {
     }
     delete userInfo.password;
     delete userInfo.encrypt;
-    const token = await this.session('userInfo', userInfo);
+    const token = await this.session(`userInfo`, userInfo);
     return this.success({ token: token, status: 'ok' });
   }
 };

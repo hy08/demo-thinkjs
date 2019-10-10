@@ -8,37 +8,49 @@ const FormItem = Form.Item;
 
 
 @connect(({ user }) => ({
-  currentUser: user.currentUser,
+  company: user.company,
 }))
 class CompanySetting extends Component {
-  view = undefined;
 
   componentDidMount() {
-    this.setBaseInfo();
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'user/getCompany',
+      payload: {
+        success: () => {
+          this.setBaseInfo();
+        }
+      }
+    })
   }
 
   setBaseInfo = () => {
-    const { currentUser, form } = this.props;
+    const { company, form } = this.props;
 
-    if (!isEmpty(currentUser)) {
+    if (!isEmpty(company)) {
       Object.keys(form.getFieldsValue()).forEach(key => {
         const obj = {};
-        obj[key] = currentUser[key] || null;
+        obj[key] = company[key] || null;
         form.setFieldsValue(obj);
       });
     }
   };
 
-  getViewDom = ref => {
-    this.view = ref;
-  };
-
   handlerSubmit = event => {
     event.preventDefault();
-    const { form } = this.props;
+    const { form, dispatch } = this.props;
     form.validateFields(err => {
       if (!err) {
-        message.success('公司设置已保存');
+        dispatch({
+          type: 'user/putCompany',
+          payload: {
+            data: form.getFieldsValue(),
+            success: () => {
+              this.setBaseInfo();
+              message.success('公司设置已保存');
+            }
+          }
+        });
       }
     });
   };

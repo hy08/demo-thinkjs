@@ -93,7 +93,7 @@ class Login extends Component {
             />
           </Tab>
           <div>
-            <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
+            {/* <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               自动登录
             </Checkbox>
             <a
@@ -103,7 +103,7 @@ class Login extends Component {
               href=""
             >
               忘记密码
-            </a>
+            </a> */}
           </div>
           <Submit loading={submitting}>登录</Submit>
         </LoginComponents>

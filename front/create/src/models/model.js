@@ -1,5 +1,4 @@
 import * as service from '../utils/service';
-import { message } from 'antd';
 const gatwayName = '/api';
 
 export default {
