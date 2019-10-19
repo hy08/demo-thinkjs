@@ -22,10 +22,19 @@ module.exports = [
     enable: !think.isCli,
     options: {
       debug: isDev,
-      templates: {
-        404: path.join(think.ROOT_PATH, 'view/error_404.html'),
-        500: path.join(think.ROOT_PATH, 'view/error_500.html')
-      }
+      error(err, ctx) {
+        console.log(err);
+        // ctx.fail(500, '服务器异常');
+      },
+      contentType(ctx) {
+        // All request url starts of /api or request header contains `X-Requested-With: XMLHttpRequest` will output json error
+        const APIRequest = /^\/api/.test(ctx.request.path);
+        const AJAXRequest = ctx.is('X-Requested-With', 'XMLHttpRequest');
+        return APIRequest || AJAXRequest ? 'json' : 'html';
+      },
+      // templates: {
+      //   404: path.join(think.ROOT_PATH, 'view/error_404.html'),
+      // }
     }
   },
   {

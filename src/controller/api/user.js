@@ -8,7 +8,14 @@ module.exports = class extends BaseRest {
   }
   async putAction() {
     const data = this.post();
-    const res = await this.model('user').where(`id=${data.id}`).update(data);
+    const user = this.model('user');
+    let res = null;
+    if (think.isEmpty(data.password)) {
+      res = await user.where(`id=${data.id}`).update(data);
+    } else {
+      data.password = user.sign({}, data.password);
+      res = await user.where(`id=${data.id}`).update(data);
+    }
     if (res) {
       return this.success(data);
     } else {
