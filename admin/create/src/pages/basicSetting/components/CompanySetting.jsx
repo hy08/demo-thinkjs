@@ -13,15 +13,19 @@ const FormItem = Form.Item;
 class CompanySetting extends Component {
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'user/getCompany',
-      payload: {
-        success: () => {
-          this.setBaseInfo();
+    const { company, dispatch } = this.props;
+    if (isEmpty(company)) {
+      dispatch({
+        type: 'user/getCompany',
+        payload: {
+          success: () => {
+            this.setBaseInfo();
+          }
         }
-      }
-    })
+      })
+    } else {
+      this.setBaseInfo();
+    }
   }
 
   setBaseInfo = () => {

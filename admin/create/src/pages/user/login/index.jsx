@@ -1,8 +1,8 @@
-import { Alert, Checkbox } from 'antd';
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import LoginComponents from './components/Login';
+import { Alert } from 'antd';
 import md5 from 'js-md5';
+import LoginComponents from './components/Login';
 import styles from './style.less';
 const { Tab, UserName, Password, Submit } = LoginComponents;
 

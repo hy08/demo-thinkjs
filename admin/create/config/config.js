@@ -87,12 +87,19 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/setting',
+              redirect: '/basicSetting',
             },
             {
               name: '基本设置',
-              path: '/setting',
-              component: './setting',
+              path: '/basicSetting',
+              component: './basicSetting',
+            },
+            {
+              name: '商品管理',
+              path: '/productSetting',
+              routes: [
+                { name: '商品种类', path: '/productSetting/category', component: './product/Category' },
+              ],
             },
             {
               component: './404',
