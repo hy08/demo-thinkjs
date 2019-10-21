@@ -25,15 +25,22 @@ const Model = {
       yield put({ type: '_saveCategoryList', payload: data });
     },
     *updateCategory({ payload }, { call, put }) {
-      let data = yield call(service.putCmd, `${gatwayName}/category/${payload.id}`, payload.data);
+      let data = yield call(service.putCmd, `${gatwayName}/category/${payload.data.id}`, payload.data);
       if (!!data.error) {
         return;
       }
       yield put({ type: '_updateCategory', payload: data });
       payload.success && payload.success();
     },
+    // *deleteCategory({ payload }, { call, put }) {
+    //   let data = yield call(service.deleteCmd, `${gatwayName}/category/${payload.data.id}`);
+    //   if (!!data.error) {
+    //     return;
+    //   }
+    //   payload.success && payload.success();
+    // },
     *deleteCategory({ payload }, { call, put }) {
-      let data = yield call(service.deleteCmd, `${gatwayName}/category/${payload.id}`);
+      let data = yield call(service._deleteCmd, `${gatwayName}/category`, payload.data);
       if (!!data.error) {
         return;
       }

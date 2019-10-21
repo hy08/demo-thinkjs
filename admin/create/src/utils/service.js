@@ -40,7 +40,7 @@ export function getCmd(url, params) {
 
 export function deleteCmd(url) {
   return request(url, {
-    method: 'DELETE'
+    method: 'DELETE',
   });
 }
 

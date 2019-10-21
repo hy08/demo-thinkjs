@@ -9,8 +9,13 @@ module.exports = class extends BaseRest {
    * @returns
    */
   async getAction() {
-    const catagory = await this.model(modelName);
-    const data = await catagory.order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();;
+    let catagory = await this.model(modelName);
+    let data = null;
+    if (this.get('startTime') && this.get('endTime')) {
+      data = await catagory.where({ modify_time: ['between', this.get('startTime'), this.get('endTime')] }).order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();
+    } else {
+      data = await catagory.order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();
+    }
     return this.success(data);
   }
 
@@ -23,7 +28,7 @@ module.exports = class extends BaseRest {
     const createTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const data = {
       code: this.post('code'),
-      catagory: this.post('name'),
+      category: this.post('category'),
       create_time: createTime,
       modify_time: createTime
     };
@@ -49,8 +54,7 @@ module.exports = class extends BaseRest {
     const updateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const data = {
       id: id,
-      code: requestData.code,
-      category: requestData.name,
+      category: requestData.category,
       modify_time: updateTime
     };
     const res = await this.model(modelName).where({ id: id }).update(data);
@@ -67,10 +71,11 @@ module.exports = class extends BaseRest {
    * @returns
    */
   async deleteAction() {
-    if (!this.id) {
+    const id = this.post('id');
+    if (!id) {
       return this.fail(20000, '商品类别不存在');
     }
-    const rows = await this.model(modelName).where({ id: this.id }).delete();
+    const rows = await this.model(modelName).where({ id: id }).delete();
     if (rows) {
       return this.success({ affectedRows: rows }, '删除成功');
     } else {

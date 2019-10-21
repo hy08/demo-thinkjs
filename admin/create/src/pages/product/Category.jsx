@@ -1,13 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Form, Table, Button, Modal, Input, Popconfirm } from 'antd';
+import { Form, Table, Button, Modal, Input, Popconfirm, DatePicker } from 'antd';
 import { isEmpty } from 'lodash';
 import uuid from 'uuid';
 import commonStyles from '../../styles/common.less';
+import { isThisISOWeek } from 'date-fns';
 
+const { RangePicker } = DatePicker;
 const CollectionCreateForm = Form.create({
   name: 'form_in_modal', mapPropsToFields: (props) => ({
-    name: props.data.name
+    category: Form.createFormField({
+      value: props.data.category
+    }),
   })
 })(
   // eslint-disable-next-line
@@ -15,6 +19,16 @@ const CollectionCreateForm = Form.create({
     render() {
       const { visible, onCancel, onOk, type, form } = this.props;
       const { getFieldDecorator } = form;
+      const formItemLayout = {
+        labelCol: {
+          xs: { span: 18 },
+          sm: { span: 4 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 16 },
+        },
+      };
       return (
         <Modal
           visible={visible}
@@ -22,9 +36,9 @@ const CollectionCreateForm = Form.create({
           onCancel={onCancel}
           onOk={onOk}
         >
-          <Form layout="vertical">
+          <Form layout="horizontal" {...formItemLayout}>
             <Form.Item label="种类名称">
-              {getFieldDecorator('name', {
+              {getFieldDecorator('category', {
                 rules: [{ required: true, message: '请输入种类名称!' }],
               })(<Input />)}
             </Form.Item>
@@ -43,25 +57,44 @@ class Category extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      date: [null, null],
       modalVisible: false,
       add: true,
       category: {
         code: '',
-        name: ''
+        category: ''
       },
       page: {
         current: 1,
-        pageSize: 2
+        pageSize: 10
       }
     }
   }
   componentDidMount() {
+    this.search();
+  }
+  search = () => {
     const { dispatch } = this.props;
-    const { page } = this.state;
+    const { page, date } = this.state;
+    let queryData = { ...page }
+    if (date[0] && date[1]) {
+      queryData.startTime = date[0].format('YYYY-MM-DD HH:mm:ss');
+      queryData.endTime = date[1].format('YYYY-MM-DD HH:mm:ss');
+    }
     dispatch({
       type: 'product/readCategoryList',
-      payload: page
+      payload: queryData
     })
+  }
+  reset = () => {
+    this.setState(({
+      date: [null, null]
+    }))
+  }
+  handleChange = (key, value) => {
+    this.setState(({
+      [key]: value
+    }))
   }
   openModal = (add, record) => {
     this.setState(({
@@ -73,7 +106,7 @@ class Category extends Component {
   closeModal = () => {
     this.setState(({
       modalVisible: false,
-      category: { ...{ code: '', name: '' } }
+      category: { ...{ code: '', category: '' } }
     }))
   }
   onShowSizeChange = (current, pageSize) => {
@@ -84,7 +117,9 @@ class Category extends Component {
           pageSize: pageSize
         }
       }
-    }))
+    }), () => {
+      this.search();
+    });
   }
   saveFormRef = formRef => {
     this.formRef = formRef;
@@ -96,19 +131,61 @@ class Category extends Component {
         return;
       }
       console.log('Received values of form: ', values);
-      // form.resetFields();
       const { dispatch } = this.props;
-      dispatch(
-        { type: 'product/addCategory' }
-      )
+      const { add, category } = this.state;
+      if (add) {
+        dispatch(
+          {
+            type: 'product/createCategory',
+            payload: {
+              data: {
+                code: uuid(),
+                category: values.category
+              },
+              success: () => {
+                this.search();
+              }
+            }
+          }
+        )
+      } else {
+        dispatch(
+          {
+            type: 'product/updateCategory',
+            payload: {
+              data: {
+                id: category.id,
+                category: values.category
+              },
+              success: () => {
+                this.search();
+              }
+            }
+          }
+        )
+      }
       this.closeModal();
     });
   }
   deleteCategory = (record) => {
+    const { dispatch } = this.props;
+    dispatch(
+      {
+        type: 'product/deleteCategory',
+        payload: {
+          data: {
+            id: record.id,
+          },
+          success: () => {
+            this.search();
+          }
+        }
+      }
+    )
   }
   render() {
     const { categoryList, total } = this.props;
-    const { modalVisible, add, page: { current, pageSize }, category } = this.state;
+    const { date, modalVisible, add, page: { current, pageSize }, category } = this.state;
     const columns = [
       {
         title: '序号',
@@ -129,17 +206,26 @@ class Category extends Component {
         title: '操作',
         key: 'action',
         render: (text, record) => {
-          return <Fragment>
+          return <div className={commonStyles.rowOperate}>
             <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(false, record) }}>修改</Button>
             <Popconfirm title="确定删除该记录?" onConfirm={() => this.deleteCategory(record)}>
               <Button type='danger' size='small' icon='delete'>删除</Button>
             </Popconfirm>
-          </Fragment>
+          </div>
         }
       },
     ];
     return (
       <div className={commonStyles.main}>
+        <div className={commonStyles.condition}>
+          <div>
+            <span className={commonStyles.label}>请选择日期</span><RangePicker value={date} onChange={value => { this.handleChange('date', value) }} />
+          </div>
+          <div>
+            <Button type='primary' icon="search" onClick={this.search}>查询</Button>
+            <Button type='default' onClick={this.reset}>重置</Button>
+          </div>
+        </div>
         <div className={commonStyles.operate}>
           <Button type='primary' icon="plus" onClick={() => { this.openModal(true) }}>新增</Button>
         </div>
@@ -150,6 +236,7 @@ class Category extends Component {
               pageSize: pageSize,
               total: total,
               showSizeChanger: true,
+              onChange: this.onShowSizeChange,
               onShowSizeChange: this.onShowSizeChange
             }} />
         </div>

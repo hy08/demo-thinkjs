@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import RightContent from '@/components/GlobalHeader/RightContent';
+import styles from './BasicLayout.less';
 import logo from '../assets/logo.svg';
 
 
