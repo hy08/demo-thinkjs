@@ -98,8 +98,19 @@ export default {
               name: '商品管理',
               path: '/productSetting',
               routes: [
-                { name: '商品种类', path: '/productSetting/category', component: './product/Category' },
+                { name: '商品分类', path: '/productSetting/category', component: './product/Category' },
+                { name: '商品列表', path: '/productSetting/product', component: './product/index' },
               ],
+            },
+            {
+              name: '设备管理',
+              path: '/devices',
+              component: './devices',
+            },
+            {
+              name: '留言管理',
+              path: '/comment',
+              component: './comment',
             },
             {
               component: './404',

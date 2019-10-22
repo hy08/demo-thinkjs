@@ -38,9 +38,10 @@ export function getCmd(url, params) {
   });
 }
 
-export function deleteCmd(url) {
+export function deleteCmd(url, data) {
   return request(url, {
     method: 'DELETE',
+    body: '{}'
   });
 }
 

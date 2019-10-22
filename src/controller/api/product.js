@@ -1,11 +1,11 @@
 const BaseRest = require('../rest.js');
 const moment = require('moment');
 
-const modelName = 'product_category';
+const modelName = 'product';
 module.exports = class extends BaseRest {
   /**
    *
-   * 获取所有商品类别
+   * 获取商品
    * @returns
    */
   async getAction() {
@@ -20,7 +20,7 @@ module.exports = class extends BaseRest {
   }
 
   /**
- * 新增商品类别
+ * 新增商品
  *
  * @returns
  */
@@ -41,7 +41,7 @@ module.exports = class extends BaseRest {
   }
 
   /**
-   * 更新商品类别
+   * 更新商品
    *
    * @returns
    */
@@ -68,7 +68,7 @@ module.exports = class extends BaseRest {
 
   /**
    *
-   * 删除商品类别
+   * 删除商品
    * @returns
    */
   async deleteAction() {

@@ -30,17 +30,9 @@ const Model = {
         return;
       }
       yield put({ type: '_updateCategory', payload: data });
-      payload.success && payload.success();
     },
-    // *deleteCategory({ payload }, { call, put }) {
-    //   let data = yield call(service.deleteCmd, `${gatwayName}/category/${payload.data.id}`);
-    //   if (!!data.error) {
-    //     return;
-    //   }
-    //   payload.success && payload.success();
-    // },
     *deleteCategory({ payload }, { call, put }) {
-      let data = yield call(service._deleteCmd, `${gatwayName}/category`, payload.data);
+      let data = yield call(service.deleteCmd, `${gatwayName}/category/${payload.data.id}`);
       if (!!data.error) {
         return;
       }
@@ -58,8 +50,8 @@ const Model = {
     _updateCategory(state, { payload }) {
       let { categoryList } = state;
       for (var i = 0; i < categoryList.length; i++) {
-        if (categoryList[i].id === payload.id) {
-          categoryList[i] = payload;
+        if (categoryList[i].id === payload.data.id) {
+          categoryList[i] = { ...categoryList[i], ...payload.data };
           break;
         }
       }
