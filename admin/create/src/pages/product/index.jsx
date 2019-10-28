@@ -8,8 +8,20 @@ import commonStyles from '../../styles/common.less';
 const { RangePicker } = DatePicker;
 const CollectionCreateForm = Form.create({
   name: 'form_in_modal', mapPropsToFields: (props) => ({
-    category: Form.createFormField({
-      value: props.data.category
+    name: Form.createFormField({
+      value: props.data.name
+    }),
+    categoryCode: Form.createFormField({
+      value: props.data.categoryCode
+    }),
+    picList: Form.createFormField({
+      value: props.data.picList
+    }),
+    intro: Form.createFormField({
+      value: props.data.intro
+    }),
+    modifyTime: Form.createFormField({
+      value: props.data.modifyTime
     }),
   })
 })(
@@ -49,7 +61,7 @@ const CollectionCreateForm = Form.create({
 );
 
 @connect(({ product }) => ({
-  categoryList: product.categoryList,
+  products: product.products,
   total: product.total,
 }))
 class Category extends Component {
@@ -58,10 +70,14 @@ class Category extends Component {
     this.state = {
       date: [null, null],
       modalVisible: false,
-      add: true,
-      category: {
-        code: '',
-        category: ''
+      type: 'true',
+      product: {
+        id: '',
+        name: '',
+        categoryCode: null,
+        picList: [],
+        intro: '',
+        modifyTime: null
       },
       page: {
         current: 1,
@@ -70,7 +86,7 @@ class Category extends Component {
     }
   }
   componentDidMount() {
-    this.search();
+    // this.search();
   }
   search = () => {
     const { dispatch } = this.props;
@@ -95,11 +111,11 @@ class Category extends Component {
       [key]: value
     }))
   }
-  openModal = (add, record) => {
+  openModal = (type, record) => {
     this.setState(({
       modalVisible: true,
-      add: add,
-      category: { ...record }
+      type: type,
+      products: { ...record }
     }));
   }
   closeModal = () => {
@@ -179,8 +195,8 @@ class Category extends Component {
     )
   }
   render() {
-    const { categoryList, total } = this.props;
-    const { date, modalVisible, add, page: { current, pageSize }, category } = this.state;
+    const { products, total } = this.props;
+    const { date, modalVisible, type, page: { current, pageSize }, product } = this.state;
     const columns = [
       {
         title: '序号',
@@ -188,7 +204,12 @@ class Category extends Component {
         key: 'index',
       },
       {
-        title: '类别',
+        title: '商品种类',
+        dataIndex: 'category',
+        key: 'category',
+      },
+      {
+        title: '商品名称',
         dataIndex: 'category',
         key: 'category',
       },
@@ -202,7 +223,10 @@ class Category extends Component {
         key: 'action',
         render: (text, record) => {
           return <div className={commonStyles.rowOperate}>
+            <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(false, record) }}>详情</Button>
             <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(false, record) }}>修改</Button>
+            <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(false, record) }}>上架</Button>
+            <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(false, record) }}>下架</Button>
             <Popconfirm title="确定删除该记录?" onConfirm={() => this.deleteCategory(record)}>
               <Button type='danger' size='small' icon='delete'>删除</Button>
             </Popconfirm>
@@ -222,10 +246,10 @@ class Category extends Component {
           </div>
         </div>
         <div className={commonStyles.operate}>
-          <Button type='primary' icon="plus" onClick={() => { this.openModal(true) }}>新增</Button>
+          <Button type='primary' icon="plus" onClick={() => { this.openModal('add') }}>新增</Button>
         </div>
         <div className={commonStyles.tableContainer}>
-          <Table columns={columns} dataSource={categoryList}
+          <Table columns={columns} dataSource={products}
             pagination={{
               current: current,
               pageSize: pageSize,
@@ -236,8 +260,8 @@ class Category extends Component {
             }} />
         </div>
         <CollectionCreateForm
-          type={add ? '新增' : '修改'}
-          data={category}
+          type={type === 'add' ? '新增商品' : type === 'view' ? '商品详情' : '商品修改'}
+          data={product}
           wrappedComponentRef={this.saveFormRef}
           visible={modalVisible}
           onCancel={this.closeModal}

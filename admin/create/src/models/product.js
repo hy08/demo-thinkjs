@@ -38,6 +38,14 @@ const Model = {
       }
       payload.success && payload.success();
     },
+    //创建商品
+    *createProduct({ payload }, { call, put }) {
+      let data = yield call(service.postCmd, `${gatwayName}/product`, payload.data);
+      if (!!data.error) {
+        return;
+      }
+      payload.success && payload.success();
+    },
   },
   reducers: {
     _saveCategoryList(state, { payload }) {

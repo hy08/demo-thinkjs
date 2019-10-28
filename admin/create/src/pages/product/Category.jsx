@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form, Table, Button, Modal, Input, Popconfirm, DatePicker } from 'antd';
-import { isEmpty } from 'lodash';
 import uuid from 'uuid';
 import commonStyles from '../../styles/common.less';
 
