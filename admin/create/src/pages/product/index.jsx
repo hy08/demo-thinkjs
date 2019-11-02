@@ -1,11 +1,18 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Form, Table, Button, Modal, Input, Popconfirm, DatePicker } from 'antd';
+import {
+  Form, Table, Button, Modal,
+  Input, Popconfirm, DatePicker, Select
+} from 'antd';
 import { isEmpty } from 'lodash';
+import MyUpload from '../../components/Upload';
 import uuid from 'uuid';
 import commonStyles from '../../styles/common.less';
 
+const { TextArea } = Input;
+const { Option } = Select;
 const { RangePicker } = DatePicker;
+
 const CollectionCreateForm = Form.create({
   name: 'form_in_modal', mapPropsToFields: (props) => ({
     name: Form.createFormField({
@@ -14,21 +21,15 @@ const CollectionCreateForm = Form.create({
     categoryCode: Form.createFormField({
       value: props.data.categoryCode
     }),
-    picList: Form.createFormField({
-      value: props.data.picList
-    }),
     intro: Form.createFormField({
       value: props.data.intro
-    }),
-    modifyTime: Form.createFormField({
-      value: props.data.modifyTime
-    }),
+    })
   })
 })(
   // eslint-disable-next-line
   class extends React.Component {
     render() {
-      const { visible, onCancel, onOk, type, form } = this.props;
+      const { visible, onCancel, onOk, type, form, data } = this.props;
       const { getFieldDecorator } = form;
       const formItemLayout = {
         labelCol: {
@@ -43,15 +44,39 @@ const CollectionCreateForm = Form.create({
       return (
         <Modal
           visible={visible}
-          title={type + "商品类别"}
+          title={type}
           onCancel={onCancel}
           onOk={onOk}
         >
           <Form layout="horizontal" {...formItemLayout}>
-            <Form.Item label="类别名称">
-              {getFieldDecorator('category', {
-                rules: [{ required: true, message: '请输入种类名称!' }],
-              })(<Input />)}
+            <Form.Item label="商品名称">
+              {getFieldDecorator('name', {
+                rules: [{ required: true, message: '请输入商品名称!' }],
+              })(<Input placeholder="请输入商品名称" />)}
+            </Form.Item>
+            <Form.Item label="商品类别">
+              {getFieldDecorator('categoryCode', {
+                rules: [{ required: true, message: '请选择商品类别!' }],
+              })(<Select placeholder='请选择商品类别'>
+                {data.categoryList.map(category => {
+                  return <Option key={category.id} value={category.code}>{category.category}</Option>
+                })}
+              </Select>)}
+            </Form.Item>
+            <Form.Item label="商品介绍">
+              {getFieldDecorator('intro', {
+                rules: [{ required: true, message: '请输入商品介绍!' }],
+              })(<TextArea placeholder='请输入商品介绍' />)}
+            </Form.Item>
+            <Form.Item label="商品图片">
+              <MyUpload
+                type='picture'
+                attachmentList={data.picList}
+                accept='.png,.jpg,jpeg,.gif'
+                maxFileSize={1}
+                maxFileLength={4}
+                changeAttachmentList={this.props.changeAttachmentList}
+              />
             </Form.Item>
           </Form>
         </Modal>
@@ -62,7 +87,8 @@ const CollectionCreateForm = Form.create({
 
 @connect(({ product }) => ({
   products: product.products,
-  total: product.total,
+  categoryList: product.categoryList,
+  total: product.productTotal,
 }))
 class Category extends Component {
   constructor(props) {
@@ -86,6 +112,11 @@ class Category extends Component {
     }
   }
   componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'product/readCategoryList',
+      payload: {}
+    })
     // this.search();
   }
   search = () => {
@@ -194,8 +225,13 @@ class Category extends Component {
       }
     )
   }
+  changeAttachmentList = (attachmentList) => {
+    this.setState({
+      picList: [...attachmentList]
+    })
+  }
   render() {
-    const { products, total } = this.props;
+    const { products, total, categoryList } = this.props;
     const { date, modalVisible, type, page: { current, pageSize }, product } = this.state;
     const columns = [
       {
@@ -210,8 +246,8 @@ class Category extends Component {
       },
       {
         title: '商品名称',
-        dataIndex: 'category',
-        key: 'category',
+        dataIndex: 'name',
+        key: 'name',
       },
       {
         title: '更新时间',
@@ -261,11 +297,12 @@ class Category extends Component {
         </div>
         <CollectionCreateForm
           type={type === 'add' ? '新增商品' : type === 'view' ? '商品详情' : '商品修改'}
-          data={product}
+          data={{ ...product, ...{ categoryList: categoryList } }}
           wrappedComponentRef={this.saveFormRef}
           visible={modalVisible}
           onCancel={this.closeModal}
           onOk={this.handleOk}
+          changeAttachmentList={this.changeAttachmentList}
         />
       </div>
     );

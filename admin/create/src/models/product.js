@@ -6,8 +6,9 @@ const Model = {
   namespace: 'product',
   state: {
     categoryList: [],
+    total: 0,
     products: [],
-    total: 0
+    productTotal:0
   },
   effects: {
     *createCategory({ payload }, { call, put }) {

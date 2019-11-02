@@ -1,6 +1,6 @@
 think.beforeStartServer(async () => {
   const hooks = [];
-
+  console.log(111111111)
   for (const Service of Object.values(think.app.services)) {
     const isHookService = think.isFunction(Service.registerHook);
     if (!isHookService) {
