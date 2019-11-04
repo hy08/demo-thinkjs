@@ -5,7 +5,7 @@ import {
   Input, Popconfirm, DatePicker, Select
 } from 'antd';
 import { isEmpty } from 'lodash';
-import MyUpload from '../../components/Upload';
+import MyUpload from '../../components/Upload/index';
 import uuid from 'uuid';
 import commonStyles from '../../styles/common.less';
 
@@ -226,9 +226,9 @@ class Category extends Component {
     )
   }
   changeAttachmentList = (attachmentList) => {
-    this.setState({
-      picList: [...attachmentList]
-    })
+    this.setState((prevState) => ({
+      product: { ...prevState, ...{ picList: [...attachmentList] } }
+    }))
   }
   render() {
     const { products, total, categoryList } = this.props;

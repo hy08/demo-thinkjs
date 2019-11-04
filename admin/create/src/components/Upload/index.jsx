@@ -12,7 +12,7 @@ class MyUpload extends Component {
     const { attachmentList, maxFileSize, maxFileLength } = this.props;
     if (isEmpty(fileList) || isEmpty(file) || maxFileSize <= 0 || maxFileLength <= 0) return;
 
-    console.log("uploadChange", JSON.stringify(file), JSON.stringify(fileList));
+    console.log("uploadChange", file, fileList);
 
     let currentFileList = cloneDeep(attachmentList);
     if (file.size > maxFileLength * 1024 * 1024) {
@@ -25,12 +25,12 @@ class MyUpload extends Component {
       const fileIndex = currentFileList.findIndex(i => i.uid == f.uid);
       if (currentFileList[fileIndex]) {
         if (!f.url) {
-          f.fileId = f.response && f.response[0] && f.response[0].fileId || "";
-          f.localName = f.response && f.response[0] &&
-            f.response[0].localName || "";
-          f.url = f.response && f.response[0] &&
-            f.response[0].openUrl &&
-            f.response[0].openUrl.replace(/http:\/\/[^\/]*/, "") || "";
+          f.fileId = f.response && f.response.data && f.response.data.fileId || "";
+          f.localName = f.response && f.response.data &&
+            f.response.data.localName || "";
+          f.url = f.response && f.response.data &&
+            f.response.data.openUrl &&
+            f.response.data.openUrl.replace(/http:\/\/[^\/]*/, "") || "";
         }
         f.uploadType = "0";
         currentFileList[fileIndex] = f;
@@ -45,13 +45,14 @@ class MyUpload extends Component {
   removeFile = (file) => {
     if (!isEmpty(file)) {
       console.log("removeFile_", file);
-      const _file = isEmpty(file) || isEmpty(file.response) || !Array.isArray(file.response) ? "" :
-        file.response.find(f => f.localName == file.localName);
+      const _file = isEmpty(file) || isEmpty(file.response) ? "" : file.response;
       if (_file) {
         this.props.dispatch({
           type: "static/deleteStaticResource",
           payload: {
-            fileId: _file.fileId,
+            data: {
+              fileId: _file.data.fileId,
+            },
             success: (id) => {
               this.removeFileToChangeState(id);
             }
@@ -64,7 +65,7 @@ class MyUpload extends Component {
   }
   removeFileToChangeState = (id) => {
     const { attachmentList } = this.props;
-    let currentFileList = attachmentList.filter(f => f.uid !== file.uid);
+    let currentFileList = attachmentList.filter(f => f.fileId !== id);
     const { changeAttachmentList } = this.props;
     changeAttachmentList(currentFileList);
   }

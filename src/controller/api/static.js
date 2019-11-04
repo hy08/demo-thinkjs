@@ -25,10 +25,7 @@ module.exports = class extends BaseRest {
     const filepath = path.join(think.ROOT_PATH, 'www' + savepath);
     think.mkdir(path.dirname(filepath));
     rename(file.path, filepath);
-
-    let data = { url: savepath, basename: basename, filepath: filepath };
-    await this.hook('upload', data);
-    delete data.filepath;
+    let data = { fileId: savepath, localName: file.name, basename: basename, openUrl: filepath };
     return this.success(data, '上传成功');
   }
 
@@ -38,14 +35,14 @@ module.exports = class extends BaseRest {
    * @returns
    */
   async deleteAction() {
-    if (!this.id) {
-      return this.fail(20000, '商品类别不存在');
-    }
-    const rows = await this.model(modelName).where({ id: this.id }).delete();
-    if (rows) {
-      return this.success({ affectedRows: rows }, '删除成功');
-    } else {
-      return this.fail(1000, '删除失败');
+    const fileId = this.post('fileId');
+    const filepath = path.join(think.ROOT_PATH, 'www' + fileId);
+    try {
+      fs.unlinkSync(filepath);
+      const data = { fileId: fileId }
+      return this.success(data, '删除成功');
+    } catch (error) {
+      return this.fail(500, '删除文件异常');
     }
   }
 };
