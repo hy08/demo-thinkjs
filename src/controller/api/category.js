@@ -1,5 +1,7 @@
 const BaseRest = require('../rest.js');
 const moment = require('moment');
+const lodash = require('lodash');
+const GlobalVar = require('../../utils/G_Enum');
 
 const modelName = 'product_category';
 module.exports = class extends BaseRest {
@@ -10,11 +12,15 @@ module.exports = class extends BaseRest {
    */
   async getAction() {
     let catagory = await this.model(modelName);
+    const queryData = this.get();
+    const startTime = queryData.startTime ? queryData.startTime : GlobalVar.G_Date.initial.format('YYYY-MM-DD HH:mm:ss');
+    const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.final.format('YYYY-MM-DD HH:mm:ss');
+    const pagination = lodash.isNil(queryData.current) || lodash.isNil(queryData.pageSize) ? false : { current: queryData.current, pageSize: queryData.pageSize }
     let data = null;
-    if (this.get('startTime') && this.get('endTime')) {
-      data = await catagory.where({ modify_time: ['between', this.get('startTime'), this.get('endTime')] }).order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();
+    if (pagination) {
+      data = await catagory.where({ modify_time: ['between', startTime, endTime] }).order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();
     } else {
-      data = await catagory.order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();
+      data = await catagory.where({ modify_time: ['between', startTime, endTime] }).order('modify_time DESC').countSelect();
     }
     return this.success(data);
   }

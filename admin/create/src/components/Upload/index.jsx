@@ -14,7 +14,7 @@ class MyUpload extends Component {
 
     console.log("uploadChange", file, fileList);
 
-    let currentFileList = cloneDeep(attachmentList);
+    let currentFileList = cloneDeep(attachmentList || []);
     if (file.size > maxFileLength * 1024 * 1024) {
       message.error(`附件不能超过${maxFileSize}MB,请重新上传`);
       fileList = fileList.filter(f => f.uid !== file.uid);
@@ -40,7 +40,7 @@ class MyUpload extends Component {
     }
     currentFileList = currentFileList.slice(-maxFileLength);
     const { changeAttachmentList } = this.props;
-    changeAttachmentList(currentFileList);
+    changeAttachmentList && changeAttachmentList(currentFileList);
   };
   removeFile = (file) => {
     if (!isEmpty(file)) {
@@ -67,7 +67,7 @@ class MyUpload extends Component {
     const { attachmentList } = this.props;
     let currentFileList = attachmentList.filter(f => f.fileId !== id);
     const { changeAttachmentList } = this.props;
-    changeAttachmentList(currentFileList);
+    changeAttachmentList && changeAttachmentList(currentFileList);
   }
   render() {
     const { accept, avtor, type, attachmentList } = this.props;

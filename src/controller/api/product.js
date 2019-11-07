@@ -1,6 +1,7 @@
 const BaseRest = require('../rest.js');
+const lodash = require('lodash');
 const moment = require('moment');
-
+const GlobalVar = require('../../utils/G_Enum');
 const modelName = 'product';
 module.exports = class extends BaseRest {
   /**
@@ -9,13 +10,21 @@ module.exports = class extends BaseRest {
    * @returns
    */
   async getAction() {
-    let catagory = await this.model(modelName);
+    let product = await this.model(modelName);
+    const queryData = this.get();
+    const startTime = queryData.startTime ? queryData.startTime : GlobalVar.G_Date.initial.format('YYYY-MM-DD HH:mm:ss');
+    const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.final.format('YYYY-MM-DD HH:mm:ss');
+    const categoryCode = queryData.categoryCode ? queryData.categoryCode : ['!=', null];
+    const name = queryData.name ? queryData.name : ['!=', null];
+    //是否需要分页
+    const pagination = lodash.isNil(queryData.current) || lodash.isNil(queryData.pageSize) ? false : { current: queryData.current, pageSize: queryData.pageSize }
     let data = null;
-    if (this.get('startTime') && this.get('endTime')) {
-      data = await catagory.where({ modify_time: ['between', this.get('startTime'), this.get('endTime')] }).order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();
+    if (pagination) {
+      data = await product.where({ modify_time: ['between', startTime, endTime], category_code: categoryCode, name: name, }).order('modify_time DESC').page(pagination.current, pagination.pageSize).countSelect();
     } else {
-      data = await catagory.order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();
+      data = await product.where({ modify_time: ['between', startTime, endTime], category_code: categoryCode, name: name, }).order('modify_time DESC').countSelect();
     }
+    console.log('data', data)
     return this.success(data);
   }
 
@@ -26,9 +35,12 @@ module.exports = class extends BaseRest {
  */
   async postAction() {
     const createTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    const pics = this.post('picList') ? lodash.join(this.post('picList'), ',') : '';
     const data = {
-      code: this.post('code'),
-      category: this.post('category'),
+      name: this.post('name'),
+      category_code: this.post('categoryCode'),
+      intro: this.post('intro'),
+      pics: pics,
       create_time: createTime,
       modify_time: createTime
     };

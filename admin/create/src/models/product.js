@@ -8,15 +8,22 @@ const Model = {
     categoryList: [],
     total: 0,
     products: [],
-    productTotal:0
+    productTotal: 0
   },
   effects: {
-    *createCategory({ payload }, { call, put }) {
-      let data = yield call(service.postCmd, `${gatwayName}/category`, payload.data);
+    *createProduct({ payload }, { call, put }) {
+      let data = yield call(service.postCmd, `${gatwayName}/product`, payload.data);
       if (!!data.error) {
         return;
       }
       payload.success && payload.success();
+    },
+    *readProductList({ payload }, { call, put }) {
+      let data = yield call(service.getCmd, `${gatwayName}/product`, payload.data);
+      if (!!data.error) {
+        return;
+      }
+      yield put({ type: '_saveProductList', payload: data });
     },
     *readCategoryList({ payload }, { call, put }) {
       let data = yield call(service.getCmd, `${gatwayName}/category`, payload);
@@ -49,6 +56,13 @@ const Model = {
     },
   },
   reducers: {
+    _saveProductList(state, { payload }) {
+      payload.data.data = payload.data.data.map((row, index) => {
+        row.index = index + 1;
+        return row;
+      })
+      return { ...state, products: [...payload.data.data], productTotal: payload.data.count };
+    },
     _saveCategoryList(state, { payload }) {
       payload.data.data = payload.data.data.map((row, index) => {
         row.index = index + 1;

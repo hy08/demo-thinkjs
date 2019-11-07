@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import {
   Form, Table, Button, Modal,
-  Input, Popconfirm, DatePicker, Select
+  Input, Popconfirm, DatePicker, Select, message
 } from 'antd';
 import { isEmpty } from 'lodash';
 import MyUpload from '../../components/Upload/index';
@@ -23,11 +23,20 @@ const CollectionCreateForm = Form.create({
     }),
     intro: Form.createFormField({
       value: props.data.intro
+    }),
+    attachmentList: Form.createFormField({
+      value: props.data.picList
     })
   })
 })(
   // eslint-disable-next-line
   class extends React.Component {
+    normFile = e => {
+      if (Array.isArray(e)) {
+        return e;
+      }
+      return e && e.fileList;
+    };
     render() {
       const { visible, onCancel, onOk, type, form, data } = this.props;
       const { getFieldDecorator } = form;
@@ -69,14 +78,16 @@ const CollectionCreateForm = Form.create({
               })(<TextArea placeholder='请输入商品介绍' />)}
             </Form.Item>
             <Form.Item label="商品图片">
-              <MyUpload
+              {getFieldDecorator('attachmentList', {
+                valuePropName: 'attachmentList',
+                trigger: 'changeAttachmentList',
+                getValueFromEvent: this.normFile,
+              })(<MyUpload
                 type='picture'
-                attachmentList={data.picList}
                 accept='.png,.jpg,jpeg,.gif'
                 maxFileSize={1}
                 maxFileLength={4}
-                changeAttachmentList={this.props.changeAttachmentList}
-              />
+              />)}
             </Form.Item>
           </Form>
         </Modal>
@@ -85,6 +96,9 @@ const CollectionCreateForm = Form.create({
   },
 );
 
+const Command = {
+  add: 1,
+}
 @connect(({ product }) => ({
   products: product.products,
   categoryList: product.categoryList,
@@ -94,21 +108,22 @@ class Category extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: [null, null],
-      modalVisible: false,
-      type: 'true',
+      queryData: {
+        date: [null, null],
+        categoryCode: null,
+        name: '',
+        current: 1,
+        pageSize: 10
+      },
       product: {
         id: '',
         name: '',
         categoryCode: null,
-        picList: [],
         intro: '',
         modifyTime: null
       },
-      page: {
-        current: 1,
-        pageSize: 10
-      }
+      modalVisible: false,
+      type: null,
     }
   }
   componentDidMount() {
@@ -117,18 +132,18 @@ class Category extends Component {
       type: 'product/readCategoryList',
       payload: {}
     })
-    // this.search();
+    this.search();
   }
   search = () => {
     const { dispatch } = this.props;
-    const { page, date } = this.state;
-    let queryData = { ...page }
+    const { queryData: { date } } = this.state;
+    let queryData = { ...queryData }
     if (date[0] && date[1]) {
       queryData.startTime = date[0].format('YYYY-MM-DD HH:mm:ss');
       queryData.endTime = date[1].format('YYYY-MM-DD HH:mm:ss');
     }
     dispatch({
-      type: 'product/readCategoryList',
+      type: 'product/readProductList',
       payload: queryData
     })
   }
@@ -177,17 +192,17 @@ class Category extends Component {
         return;
       }
       const { dispatch } = this.props;
-      const { add, category } = this.state;
-      if (add) {
+      const { type, product } = this.state;
+      if (type === Command.add) {
+        const data = { ...values };
+        data.picList = data.attachmentList.map(attachment => attachment.fileId);
         dispatch(
           {
-            type: 'product/createCategory',
+            type: 'product/createProduct',
             payload: {
-              data: {
-                code: uuid(),
-                category: values.category
-              },
+              data: data,
               success: () => {
+                message.success('商品新增成功!');
                 this.search();
               }
             }
@@ -225,14 +240,9 @@ class Category extends Component {
       }
     )
   }
-  changeAttachmentList = (attachmentList) => {
-    this.setState((prevState) => ({
-      product: { ...prevState, ...{ picList: [...attachmentList] } }
-    }))
-  }
   render() {
     const { products, total, categoryList } = this.props;
-    const { date, modalVisible, type, page: { current, pageSize }, product } = this.state;
+    const { queryData: { current, pageSize, date, categoryCode, name }, modalVisible, type, product } = this.state;
     const columns = [
       {
         title: '序号',
@@ -274,7 +284,23 @@ class Category extends Component {
       <div className={commonStyles.main}>
         <div className={commonStyles.condition}>
           <div>
-            <span className={commonStyles.label}>请选择日期</span><RangePicker value={date} onChange={value => { this.handleChange('date', value) }} />
+            <span className={commonStyles.label}>更新日期</span>
+            <RangePicker value={date} onChange={value => { this.handleChange('date', value) }} />
+          </div>
+          <div>
+            <span className={commonStyles.label}>商品种类</span>
+            <Select placeholder='请选择商品类别'
+              className={commonStyles.select}
+              value={categoryCode}
+              onChange={value => { this.handleChange('categoryCode', value) }}>
+              {categoryList.map(category => {
+                return <Option key={category.id} value={category.code}>{category.category}</Option>
+              })}
+            </Select>
+          </div>
+          <div>
+            <span className={commonStyles.label}>商品名称</span>
+            <Input placeholder='请填写商品名称' value={name} onChange={value => { this.handleChange('name', value) }} />
           </div>
           <div>
             <Button type='primary' icon="search" onClick={this.search}>查询</Button>
@@ -282,7 +308,7 @@ class Category extends Component {
           </div>
         </div>
         <div className={commonStyles.operate}>
-          <Button type='primary' icon="plus" onClick={() => { this.openModal('add') }}>新增</Button>
+          <Button type='primary' icon="plus" onClick={() => { this.openModal(Command.add) }}>新增</Button>
         </div>
         <div className={commonStyles.tableContainer}>
           <Table columns={columns} dataSource={products}
@@ -302,7 +328,6 @@ class Category extends Component {
           visible={modalVisible}
           onCancel={this.closeModal}
           onOk={this.handleOk}
-          changeAttachmentList={this.changeAttachmentList}
         />
       </div>
     );
