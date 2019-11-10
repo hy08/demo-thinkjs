@@ -1,12 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
 import {
-  Form, Table, Button, Modal,
+  Form, Table, Button, Modal, Switch,
   Input, Popconfirm, DatePicker, Select, message
 } from 'antd';
-import { isEmpty } from 'lodash';
+import { split, isEmpty } from 'lodash';
 import MyUpload from '../../components/Upload/index';
-import uuid from 'uuid';
 import commonStyles from '../../styles/common.less';
 
 const { TextArea } = Input;
@@ -24,6 +23,9 @@ const CollectionCreateForm = Form.create({
     intro: Form.createFormField({
       value: props.data.intro
     }),
+    status: Form.createFormField({
+      value: props.data.status
+    }),
     attachmentList: Form.createFormField({
       value: props.data.picList
     })
@@ -39,6 +41,8 @@ const CollectionCreateForm = Form.create({
     };
     render() {
       const { visible, onCancel, onOk, type, form, data } = this.props;
+      const disabled = type === Command.view;
+      const title = type === Command.add ? '新增商品' : type === Command.view ? '商品详情' : '商品修改';
       const { getFieldDecorator } = form;
       const formItemLayout = {
         labelCol: {
@@ -52,8 +56,9 @@ const CollectionCreateForm = Form.create({
       };
       return (
         <Modal
+          width={600}
           visible={visible}
-          title={type}
+          title={title}
           onCancel={onCancel}
           onOk={onOk}
         >
@@ -61,12 +66,12 @@ const CollectionCreateForm = Form.create({
             <Form.Item label="商品名称">
               {getFieldDecorator('name', {
                 rules: [{ required: true, message: '请输入商品名称!' }],
-              })(<Input placeholder="请输入商品名称" />)}
+              })(<Input placeholder="请输入商品名称" disabled={disabled} />)}
             </Form.Item>
             <Form.Item label="商品类别">
               {getFieldDecorator('categoryCode', {
                 rules: [{ required: true, message: '请选择商品类别!' }],
-              })(<Select placeholder='请选择商品类别'>
+              })(<Select placeholder='请选择商品类别' disabled={disabled}>
                 {data.categoryList.map(category => {
                   return <Option key={category.id} value={category.code}>{category.category}</Option>
                 })}
@@ -75,7 +80,13 @@ const CollectionCreateForm = Form.create({
             <Form.Item label="商品介绍">
               {getFieldDecorator('intro', {
                 rules: [{ required: true, message: '请输入商品介绍!' }],
-              })(<TextArea placeholder='请输入商品介绍' />)}
+              })(<TextArea placeholder='请输入商品介绍' disabled={disabled} />)}
+            </Form.Item>
+            <Form.Item label="商品状态">
+              {getFieldDecorator('status', {
+                valuePropName: 'checked',
+                rules: [{ required: true, message: '请选择商品状态!' }],
+              })(<Switch checkedChildren="上架" unCheckedChildren="下架" disabled={disabled} />)}
             </Form.Item>
             <Form.Item label="商品图片">
               {getFieldDecorator('attachmentList', {
@@ -83,6 +94,7 @@ const CollectionCreateForm = Form.create({
                 trigger: 'changeAttachmentList',
                 getValueFromEvent: this.normFile,
               })(<MyUpload
+                disabled={disabled}
                 type='picture'
                 accept='.png,.jpg,jpeg,.gif'
                 maxFileSize={1}
@@ -98,6 +110,8 @@ const CollectionCreateForm = Form.create({
 
 const Command = {
   add: 1,
+  view: 2,
+  eidt: 3,
 }
 @connect(({ product }) => ({
   products: product.products,
@@ -120,6 +134,7 @@ class Category extends Component {
         name: '',
         categoryCode: null,
         intro: '',
+        status: true,
         modifyTime: null
       },
       modalVisible: false,
@@ -136,15 +151,14 @@ class Category extends Component {
   }
   search = () => {
     const { dispatch } = this.props;
-    const { queryData: { date } } = this.state;
-    let queryData = { ...queryData }
-    if (date[0] && date[1]) {
-      queryData.startTime = date[0].format('YYYY-MM-DD HH:mm:ss');
-      queryData.endTime = date[1].format('YYYY-MM-DD HH:mm:ss');
-    }
+    const { queryData: { date }, queryData } = this.state;
+    let data = { ...queryData }
+    data.startTime = date[0] ? date[0].format('YYYY-MM-DD HH:mm:ss') : '';
+    data.endTime = date[1] ? date[1].format('YYYY-MM-DD HH:mm:ss') : '';
+    delete data.date;
     dispatch({
       type: 'product/readProductList',
-      payload: queryData
+      payload: { data }
     })
   }
   reset = () => {
@@ -158,10 +172,33 @@ class Category extends Component {
     }))
   }
   openModal = (type, record) => {
+    if (record) {
+      record.categoryCode = record.category_code;
+      record.picList = split(record.pics, ',').filter(pic => pic !== '');
+      record.picList = record.picList.map((pic, index) => {
+        let obj = {};
+        let names = split(pic, '/');
+        let name = names[names.length - 1];
+        obj.uid = index;
+        obj.status = 'done';
+        obj.name = name;
+        obj.url = window.location.origin + pic;
+        obj.thumbUrl = window.location.origin + pic;
+        obj.response = {
+          data: {
+            fileId: pic
+          }
+        }
+        return obj;
+      })
+    } else {
+      record = this.state.product;
+    }
+
     this.setState(({
       modalVisible: true,
       type: type,
-      products: { ...record }
+      product: { ...record }
     }));
   }
   closeModal = () => {
@@ -228,7 +265,7 @@ class Category extends Component {
     const { dispatch } = this.props;
     dispatch(
       {
-        type: 'product/deleteCategory',
+        type: 'product/deleteProduct',
         payload: {
           data: {
             id: record.id,
@@ -269,10 +306,8 @@ class Category extends Component {
         key: 'action',
         render: (text, record) => {
           return <div className={commonStyles.rowOperate}>
-            <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(false, record) }}>详情</Button>
-            <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(false, record) }}>修改</Button>
-            <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(false, record) }}>上架</Button>
-            <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(false, record) }}>下架</Button>
+            <Button type='primary' size='small' icon='profile' onClick={() => { this.openModal(Command.view, record) }}>详情</Button>
+            <Button type='primary' size='small' icon='edit' onClick={() => { this.openModal(Command.edit, record) }}>修改</Button>
             <Popconfirm title="确定删除该记录?" onConfirm={() => this.deleteCategory(record)}>
               <Button type='danger' size='small' icon='delete'>删除</Button>
             </Popconfirm>
@@ -322,7 +357,7 @@ class Category extends Component {
             }} />
         </div>
         <CollectionCreateForm
-          type={type === 'add' ? '新增商品' : type === 'view' ? '商品详情' : '商品修改'}
+          type={type}
           data={{ ...product, ...{ categoryList: categoryList } }}
           wrappedComponentRef={this.saveFormRef}
           visible={modalVisible}

@@ -22,7 +22,7 @@ module.exports = class extends BaseRest {
       const date = new Date();
       const year = date.getFullYear();
       const month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
-      const savepath = '/uploads/' + year + '/' + month + '/' + basename;
+      const savepath = '/www/uploads/' + year + '/' + month + '/' + basename;
       const filepath = path.join(think.ROOT_PATH, 'www' + savepath);
       think.mkdir(path.dirname(filepath));
       rename(file.path, filepath);

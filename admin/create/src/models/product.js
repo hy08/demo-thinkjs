@@ -11,20 +11,6 @@ const Model = {
     productTotal: 0
   },
   effects: {
-    *createProduct({ payload }, { call, put }) {
-      let data = yield call(service.postCmd, `${gatwayName}/product`, payload.data);
-      if (!!data.error) {
-        return;
-      }
-      payload.success && payload.success();
-    },
-    *readProductList({ payload }, { call, put }) {
-      let data = yield call(service.getCmd, `${gatwayName}/product`, payload.data);
-      if (!!data.error) {
-        return;
-      }
-      yield put({ type: '_saveProductList', payload: data });
-    },
     *readCategoryList({ payload }, { call, put }) {
       let data = yield call(service.getCmd, `${gatwayName}/category`, payload);
       if (!!data.error) {
@@ -46,9 +32,23 @@ const Model = {
       }
       payload.success && payload.success();
     },
-    //创建商品
+    //商品
     *createProduct({ payload }, { call, put }) {
       let data = yield call(service.postCmd, `${gatwayName}/product`, payload.data);
+      if (!!data.error) {
+        return;
+      }
+      payload.success && payload.success();
+    },
+    *readProductList({ payload }, { call, put }) {
+      let data = yield call(service.getCmd, `${gatwayName}/product`, payload.data);
+      if (!!data.error) {
+        return;
+      }
+      yield put({ type: '_saveProductList', payload: data });
+    },
+    *deleteProduct({ payload }, { call, put }) {
+      let data = yield call(service.deleteCmd, `${gatwayName}/product/${payload.data.id}`);
       if (!!data.error) {
         return;
       }
@@ -58,7 +58,9 @@ const Model = {
   reducers: {
     _saveProductList(state, { payload }) {
       payload.data.data = payload.data.data.map((row, index) => {
+        row = { ...row, ...row.category };
         row.index = index + 1;
+        row.key = index + 1;
         return row;
       })
       return { ...state, products: [...payload.data.data], productTotal: payload.data.count };
@@ -66,6 +68,7 @@ const Model = {
     _saveCategoryList(state, { payload }) {
       payload.data.data = payload.data.data.map((row, index) => {
         row.index = index + 1;
+        row.key = index + 1;
         return row;
       })
       return { ...state, categoryList: [...payload.data.data], total: payload.data.count };
@@ -83,3 +86,4 @@ const Model = {
   },
 };
 export default Model;
+

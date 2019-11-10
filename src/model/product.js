@@ -4,10 +4,12 @@ module.exports = class extends think.Model {
     return {
       product_category: {
         type: think.Model.BELONG_TO,
-        model: 'product_category',
-        key: 'code',
-        fKey: 'category_code',
-        field: 'category'
+        key: 'category_code',
+        fKey: 'code',
+        field: (rModel, model) => {
+          return 'code,category'
+        },
+        name: 'category'
       }
     };
   }

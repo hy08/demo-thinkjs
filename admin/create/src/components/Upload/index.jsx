@@ -70,19 +70,21 @@ class MyUpload extends Component {
     changeAttachmentList && changeAttachmentList(currentFileList);
   }
   render() {
-    const { accept, avtor, type, attachmentList } = this.props;
+    const { accept, avtor, disabled, type, attachmentList } = this.props;
     return (
       <div>
         {!avtor ?
           <Upload action={'/api/static'}
+            disabled={disabled}
             accept={accept}
             listType={type}
             headers={{ Authorization: localStorage.getItem('token') }}
+            defaultFileList={attachmentList}
             fileList={attachmentList}
             withCredentials={true}
             onRemove={this.removeFile}
             onChange={this.uploadChange}>
-            <Button>
+            <Button disabled={disabled}>
               <Icon type="upload" /> 上传
             </Button>
           </Upload>
