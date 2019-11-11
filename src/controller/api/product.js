@@ -13,7 +13,7 @@ module.exports = class extends BaseRest {
     let product = await this.model(modelName);
     const queryData = this.get();
     const startTime = queryData.startTime ? queryData.startTime : GlobalVar.G_Date.initial.format('YYYY-MM-DD HH:mm:ss');
-    const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.final.format('YYYY-MM-DD HH:mm:ss');
+    const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.tomorrow.format('YYYY-MM-DD HH:mm:ss');
     const categoryCode = queryData.categoryCode && queryData.categoryCode !== 'null' ? queryData.categoryCode : ['!=', null];
     const name = queryData.name && queryData.name !== 'null' ? queryData.name : ['!=', null];
     //是否需要分页

@@ -11,6 +11,13 @@ const Model = {
     productTotal: 0
   },
   effects: {
+    *createCategory({ payload }, { call, put }) {
+      let data = yield call(service.postCmd, `${gatwayName}/category`, payload.data);
+      if (!!data.error) {
+        return;
+      }
+      payload.success && payload.success();
+    },
     *readCategoryList({ payload }, { call, put }) {
       let data = yield call(service.getCmd, `${gatwayName}/category`, payload);
       if (!!data.error) {
@@ -47,6 +54,13 @@ const Model = {
       }
       yield put({ type: '_saveProductList', payload: data });
     },
+    *updateProduct({ payload }, { call, put }) {
+      let data = yield call(service.putCmd, `${gatwayName}/product/${payload.data.id}`, payload.data);
+      if (!!data.error) {
+        return;
+      }
+      yield put({ type: '_updateProduct', payload: data });
+    },
     *deleteProduct({ payload }, { call, put }) {
       let data = yield call(service.deleteCmd, `${gatwayName}/product/${payload.data.id}`);
       if (!!data.error) {
@@ -82,6 +96,17 @@ const Model = {
         }
       }
       return { ...state, categoryList: [...categoryList] };
+    },
+    _updateProduct(state, { payload }) {
+      let { products } = state;
+      for (var i = 0; i < products.length; i++) {
+        if (products[i].id === payload.data.id) {
+          const data = { ...payload.data, ...payload.data.category };
+          products[i] = { ...products[i], ...data };
+          break;
+        }
+      }
+      return { ...state, products: [...products] };
     },
   },
 };

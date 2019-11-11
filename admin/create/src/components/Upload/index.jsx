@@ -45,22 +45,23 @@ class MyUpload extends Component {
   removeFile = (file) => {
     if (!isEmpty(file)) {
       console.log("removeFile_", file);
-      const _file = isEmpty(file) || isEmpty(file.response) ? "" : file.response;
-      if (_file) {
-        this.props.dispatch({
-          type: "static/deleteStaticResource",
-          payload: {
-            data: {
-              fileId: _file.data.fileId,
-            },
-            success: (id) => {
-              this.removeFileToChangeState(id);
-            }
-          },
-        });
-      } else {
-        this.removeFileToChangeState(_file.fileId);
-      }
+      this.removeFileToChangeState(file.fileId);
+      // const _file = isEmpty(file) || isEmpty(file.response) ? "" : file.response;
+      // if (_file) {
+      //   this.props.dispatch({
+      //     type: "static/deleteStaticResource",
+      //     payload: {
+      //       data: {
+      //         fileId: _file.data.fileId,
+      //       },
+      //       success: (id) => {
+      //         this.removeFileToChangeState(id);
+      //       }
+      //     },
+      //   });
+      // } else {
+      //   this.removeFileToChangeState(_file.fileId);
+      // }
     }
   }
   removeFileToChangeState = (id) => {

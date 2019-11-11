@@ -1,34 +1,43 @@
 const BaseRest = require('../rest.js');
+const lodash = require('lodash');
 const moment = require('moment');
-
-const modelName = 'product_category';
+const GlobalVar = require('../../utils/G_Enum');
+const modelName = 'device';
 module.exports = class extends BaseRest {
   /**
    *
-   * 获取所有商品类别
+   * 获取设备
    * @returns
    */
   async getAction() {
-    let catagory = await this.model(modelName);
+    let product = await this.model(modelName);
+    const queryData = this.get();
+    const startTime = queryData.startTime ? queryData.startTime : GlobalVar.G_Date.initial.format('YYYY-MM-DD HH:mm:ss');
+    const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.tomorrow.format('YYYY-MM-DD HH:mm:ss');
+    const name = queryData.name && queryData.name !== 'null' ? queryData.name : ['!=', null];
+    //是否需要分页
+    const pagination = lodash.isNil(queryData.current) || lodash.isNil(queryData.pageSize) ? false : { current: queryData.current, pageSize: queryData.pageSize }
     let data = null;
-    if (this.get('startTime') && this.get('endTime')) {
-      data = await catagory.where({ modify_time: ['between', this.get('startTime'), this.get('endTime')] }).order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();
+    if (pagination) {
+      data = await product.where({ modify_time: ['between', startTime, endTime], name: name, }).order('modify_time DESC').page(pagination.current, pagination.pageSize).countSelect();
     } else {
-      data = await catagory.order('modify_time DESC').page(this.get('current'), this.get('pageSize')).countSelect();
+      data = await product.where({ modify_time: ['between', startTime, endTime], name: name, }).order('modify_time DESC').select();
     }
     return this.success(data);
   }
 
   /**
- * 新增商品类别
+ * 新增设备
  *
  * @returns
  */
   async postAction() {
     const createTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    const pics = this.post('picList') ? lodash.join(this.post('picList'), ',') : '';
     const data = {
-      code: this.post('code'),
-      category: this.post('category'),
+      name: this.post('name'),
+      intro: this.post('intro'),
+      pics: pics,
       create_time: createTime,
       modify_time: createTime
     };
@@ -41,20 +50,22 @@ module.exports = class extends BaseRest {
   }
 
   /**
-   * 更新商品类别
+   * 更新设备
    *
    * @returns
    */
   async putAction() {
     const id = this.id;
     if (!id) {
-      return this.fail(40000, '商品类型不存在');
+      return this.fail(40000, '设备不存在');
     }
     const requestData = this.post();
     const updateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const data = {
       id: id,
-      category: requestData.category,
+      name: requestData.name,
+      pics: requestData.picList ? lodash.join(requestData.picList, ',') : '',
+      intro: requestData.intro,
       modify_time: updateTime
     };
     const res = await this.model(modelName).where({ id: id }).update(data);
@@ -62,18 +73,18 @@ module.exports = class extends BaseRest {
       const newData = await this.model(modelName).where({ id: id }).find();
       return this.success(newData);
     } else {
-      return this.fail(20000, '商品类型更新失败');
+      return this.fail(20000, '设备更新失败');
     }
   }
 
   /**
    *
-   * 删除商品类别
+   * 删除设备
    * @returns
    */
   async deleteAction() {
     if (!this.id) {
-      return this.fail(20000, '商品类别不存在');
+      return this.fail(20000, '设备不存在');
     }
     const rows = await this.model(modelName).where({ id: this.id }).delete();
     if (rows) {

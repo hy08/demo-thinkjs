@@ -175,5 +175,11 @@ export default {
       changeOrigin: true,
       logLevel: 'debug',
     },
+    '/uploads': {
+      target: 'http://localhost:8360',
+      cookieDomainRewrite: 'localhost:8360',
+      changeOrigin: true,
+      logLevel: 'debug',
+    },
   },
 };

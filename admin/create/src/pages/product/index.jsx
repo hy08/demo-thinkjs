@@ -4,13 +4,15 @@ import {
   Form, Table, Button, Modal, Switch,
   Input, Popconfirm, DatePicker, Select, message
 } from 'antd';
-import { split, isEmpty } from 'lodash';
+import { split } from 'lodash';
+import { Command } from '../../utils/emun';
 import MyUpload from '../../components/Upload/index';
 import commonStyles from '../../styles/common.less';
 
 const { TextArea } = Input;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+
 
 const CollectionCreateForm = Form.create({
   name: 'form_in_modal', mapPropsToFields: (props) => ({
@@ -26,7 +28,7 @@ const CollectionCreateForm = Form.create({
     status: Form.createFormField({
       value: props.data.status
     }),
-    attachmentList: Form.createFormField({
+    picList: Form.createFormField({
       value: props.data.picList
     })
   })
@@ -89,7 +91,7 @@ const CollectionCreateForm = Form.create({
               })(<Switch checkedChildren="上架" unCheckedChildren="下架" disabled={disabled} />)}
             </Form.Item>
             <Form.Item label="商品图片">
-              {getFieldDecorator('attachmentList', {
+              {getFieldDecorator('picList', {
                 valuePropName: 'attachmentList',
                 trigger: 'changeAttachmentList',
                 getValueFromEvent: this.normFile,
@@ -107,18 +109,12 @@ const CollectionCreateForm = Form.create({
     }
   },
 );
-
-const Command = {
-  add: 1,
-  view: 2,
-  eidt: 3,
-}
 @connect(({ product }) => ({
   products: product.products,
   categoryList: product.categoryList,
   total: product.productTotal,
 }))
-class Category extends Component {
+class Product extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -132,10 +128,10 @@ class Category extends Component {
       product: {
         id: '',
         name: '',
-        categoryCode: null,
+        categoryCode: undefined,
         intro: '',
         status: true,
-        modifyTime: null
+        picList: []
       },
       modalVisible: false,
       type: null,
@@ -143,39 +139,60 @@ class Category extends Component {
   }
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'product/readCategoryList',
-      payload: {}
-    })
     this.search();
   }
-  search = () => {
-    const { dispatch } = this.props;
-    const { queryData: { date }, queryData } = this.state;
-    let data = { ...queryData }
-    data.startTime = date[0] ? date[0].format('YYYY-MM-DD HH:mm:ss') : '';
-    data.endTime = date[1] ? date[1].format('YYYY-MM-DD HH:mm:ss') : '';
-    delete data.date;
-    dispatch({
-      type: 'product/readProductList',
-      payload: { data }
+  //重置
+  reset = () => {
+    this.setState({
+      queryData: {
+        date: [null, null],
+        categoryCode: null,
+        name: '',
+        current: 1,
+        pageSize: 10
+      }
     })
   }
-  reset = () => {
-    this.setState(({
-      date: [null, null]
-    }))
+  //查询条件改变回调
+  handleQueryChange = (key, value) => {
+    const { queryData } = this.state;
+    this.setState({
+      queryData: {
+        ...queryData, ...{
+          [key]: value
+        }
+      }
+    })
   }
-  handleChange = (key, value) => {
+  //分页条件改变回调
+  onShowSizeChange = (current, pageSize) => {
+    const { queryData } = this.state;
     this.setState(({
-      [key]: value
-    }))
+      queryData: {
+        ...queryData, ...{
+          current: current,
+          pageSize: pageSize
+        }
+      }
+    }), () => {
+      this.search();
+    });
   }
   openModal = (type, record) => {
-    if (record) {
-      record.categoryCode = record.category_code;
-      record.picList = split(record.pics, ',').filter(pic => pic !== '');
-      record.picList = record.picList.map((pic, index) => {
+    let newRecord = record ? { ...record } : {};
+    if (type === Command.add) {
+      newRecord = {
+        id: '',
+        name: '',
+        categoryCode: undefined,
+        intro: '',
+        status: true
+      };
+    } else {
+      newRecord['categoryCode'] = record.category_code;
+      newRecord.status = record.status === 1 ? true : false;
+      newRecord.picList = split(record.pics, ',').filter(pic => pic !== '');
+      newRecord.picList = newRecord.picList.map((pic, index) => {
         let obj = {};
         let names = split(pic, '/');
         let name = names[names.length - 1];
@@ -191,37 +208,45 @@ class Category extends Component {
         }
         return obj;
       })
-    } else {
-      record = this.state.product;
     }
 
     this.setState(({
       modalVisible: true,
       type: type,
-      product: { ...record }
+      product: { ...newRecord }
     }));
   }
   closeModal = () => {
     this.setState(({
       modalVisible: false,
-      category: { ...{ code: '', category: '' } }
+      product: {
+        id: '',
+        name: '',
+        categoryCode: undefined,
+        intro: '',
+        status: true,
+        picList: []
+      },
+      type: null,
     }))
-  }
-  onShowSizeChange = (current, pageSize) => {
-    this.setState(({
-      page: {
-        ...{
-          current: current,
-          pageSize: pageSize
-        }
-      }
-    }), () => {
-      this.search();
-    });
   }
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
+  //read
+  search = () => {
+    const { dispatch } = this.props;
+    const { queryData: { date }, queryData } = this.state;
+    let data = { ...queryData }
+    data.startTime = date[0] ? date[0].format('YYYY-MM-DD HH:mm:ss') : '';
+    data.endTime = date[1] ? date[1].format('YYYY-MM-DD HH:mm:ss') : '';
+    delete data.date;
+    dispatch({
+      type: 'product/readProductList',
+      payload: { data }
+    })
+  }
+  //create | update
   handleOk = () => {
     const { form } = this.formRef.props;
     form.validateFields((err, values) => {
@@ -232,7 +257,8 @@ class Category extends Component {
       const { type, product } = this.state;
       if (type === Command.add) {
         const data = { ...values };
-        data.picList = data.attachmentList.map(attachment => attachment.fileId);
+        data.picList = data.picList ? data.picList.map(attachment => attachment.fileId) : [];
+        data.status = data.status ? 1 : 0;
         dispatch(
           {
             type: 'product/createProduct',
@@ -246,14 +272,14 @@ class Category extends Component {
           }
         )
       } else {
+        const data = { ...values };
+        data.picList = data.picList ? data.picList.map(attachment => attachment.fileId) : [];
+        data.status = data.status ? 1 : 0;
         dispatch(
           {
-            type: 'product/updateCategory',
+            type: 'product/updateProduct',
             payload: {
-              data: {
-                id: category.id,
-                category: values.category
-              }
+              data: { ...{ id: product.id }, ...data }
             }
           }
         )
@@ -261,6 +287,7 @@ class Category extends Component {
       this.closeModal();
     });
   }
+  //delete
   deleteCategory = (record) => {
     const { dispatch } = this.props;
     dispatch(
@@ -277,6 +304,7 @@ class Category extends Component {
       }
     )
   }
+
   render() {
     const { products, total, categoryList } = this.props;
     const { queryData: { current, pageSize, date, categoryCode, name }, modalVisible, type, product } = this.state;
@@ -320,14 +348,14 @@ class Category extends Component {
         <div className={commonStyles.condition}>
           <div>
             <span className={commonStyles.label}>更新日期</span>
-            <RangePicker value={date} onChange={value => { this.handleChange('date', value) }} />
+            <RangePicker value={date} onChange={value => { this.handleQueryChange('date', value) }} />
           </div>
           <div>
             <span className={commonStyles.label}>商品种类</span>
             <Select placeholder='请选择商品类别'
               className={commonStyles.select}
               value={categoryCode}
-              onChange={value => { this.handleChange('categoryCode', value) }}>
+              onChange={value => { this.handleQueryChange('categoryCode', value) }}>
               {categoryList.map(category => {
                 return <Option key={category.id} value={category.code}>{category.category}</Option>
               })}
@@ -335,7 +363,7 @@ class Category extends Component {
           </div>
           <div>
             <span className={commonStyles.label}>商品名称</span>
-            <Input placeholder='请填写商品名称' value={name} onChange={value => { this.handleChange('name', value) }} />
+            <Input placeholder='请填写商品名称' value={name} onChange={e => { this.handleQueryChange('name', e.target.value) }} />
           </div>
           <div>
             <Button type='primary' icon="search" onClick={this.search}>查询</Button>
@@ -369,4 +397,4 @@ class Category extends Component {
   }
 }
 
-export default Category;
+export default Product;
