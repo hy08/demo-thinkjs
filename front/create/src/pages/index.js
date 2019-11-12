@@ -1,56 +1,9 @@
-import styles from './index.css';
-
+// import styles from './index.css';
+// import Skitter from '../components/Skitter/Skitter';
 export default function () {
   return (
-    <ul className={styles.list}>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-      <li>首页</li>
-    </ul>
+    <div>
+      {/* <Skitter /> */}
+    </div>
   );
 }

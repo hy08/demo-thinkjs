@@ -22,6 +22,9 @@ export default {
       },
     }],
   ],
+  "externals": {
+    jquery: 'jQuery'
+  },
   routes: [
     {
       path: '/',
@@ -30,25 +33,31 @@ export default {
         {
           path: '/',
           exact: true,
+          title: '首页',
           component: 'index',
         },
         {
+          title: '关于我们',
           path: '/about',
           component: './about/index',
         },
         {
+          title: '产品展示',
           path: '/products',
           component: './products/index',
         },
         {
+          title: '设备展示',
           path: '/devices',
           component: './devices/index',
         },
         {
+          title: '联系我们',
           path: '/linkus',
           component: './linkus/index',
         },
         {
+          title: '留言',
           path: '/comment',
           component: './comment/index',
         },
