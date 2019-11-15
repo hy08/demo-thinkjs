@@ -14,7 +14,7 @@ module.exports = class extends BaseRest {
     let catagory = await this.model(modelName);
     const queryData = this.get();
     const startTime = queryData.startTime ? queryData.startTime : GlobalVar.G_Date.initial.format('YYYY-MM-DD HH:mm:ss');
-    const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.final.format('YYYY-MM-DD HH:mm:ss');
+    const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.tomorrow.format('YYYY-MM-DD HH:mm:ss');
     const pagination = lodash.isNil(queryData.current) || lodash.isNil(queryData.pageSize) ? false : { current: queryData.current, pageSize: queryData.pageSize }
     let data = null;
     if (pagination) {
