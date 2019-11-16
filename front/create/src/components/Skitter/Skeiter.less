@@ -1,0 +1,37 @@
+.skitter {
+  max-width: 100%;
+  background: #fff;
+
+  :global {
+    .info_slide_dots {
+      bottom: 10px;
+
+      .image_number {
+        width: 104px;
+        height: 3px;
+        background: #fff;
+      }
+
+      .image_number.image_number_select {
+        background: #d92428;
+      }
+
+      .image_number:hover {
+        background: #d92428;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  &.isIndex {
+    :global {
+      .info_slide_dots {
+        display: none !important;
+      }
+    }
+  }
+
+  .banner {
+    display: block;
+  }
+}

@@ -1,6 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Link from 'umi/link';
+import classnames from 'classnames';
 import $ from 'jquery';
+import styles from './Skeiter.less';
 
 class Skitter extends React.Component {
   constructor(props) {
@@ -10,29 +13,35 @@ class Skitter extends React.Component {
   };
   componentDidMount() {
     $(function () {
-      // $('.skitter-large').skitter();
-      console.log($)
+      $('.skitter').skitter({
+        interval: 3000,
+        velocity: 0.8
+      });
     });
   }
   render() {
+    const { imgUrlList, isIndex } = this.props;
+    const lis = imgUrlList.map(url => {
+      return (
+        <li key={url}>
+          <a href='javascript:void(0)' className={styles.banner}>
+            <img src={url} className='cubeShow' />
+          </a>
+        </li>
+      )
+    })
     return (
-      <div class="skitter skitter-large">
+      <div className={classnames('skitter', styles.skitter, { [styles.isIndex]: isIndex })}>
         <ul>
-          <li>
-            <Link to="/"><img src={require('./index_banner01.jpg')} class="cut" /></Link>
-            <div class="label_text"><p>cut</p></div>
-          </li>
-          <li>
-            <Link to="/"><img src={require('./index_banner02.jpg')} class="cut" /></Link>
-            <div class="label_text"><p>swapBlocks</p></div>
-          </li>
-          <li>
-            <Link to="/"><img src={require('./index_banner03.jpg')} class="cut" /></Link>
-            <div class="label_text"><p>swapBarsBack</p></div>
-          </li>
+          {lis}
         </ul>
       </div>
     );
   }
 };
+Skitter.propTypes = {
+  isIndex: PropTypes.bool,
+  imgUrlList: PropTypes.array
+}
+
 export default Skitter;

@@ -34,7 +34,7 @@ export default {
           path: '/',
           exact: true,
           title: '首页',
-          component: 'index',
+          component: './Index/index',
         },
         {
           title: '关于我们',
