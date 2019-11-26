@@ -65,7 +65,9 @@ class Index extends React.Component {
               <p className={styles.label}>现代化工业标准厂房</p>
             </div>
           </div>
-          {LinkBotton({ url: '/about', title: '了解更多' })}
+          <div className={styles.linkWrap}>
+            {LinkBotton({ url: '/about', title: '了解更多' })}
+          </div>
           <div className={styles.sectionLine}></div>
         </div>
       </div>

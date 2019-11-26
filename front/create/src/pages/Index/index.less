@@ -1,3 +1,45 @@
+@textColor: #585858;
+@blueColor: #3366ff;
+@linkColor: #007ec5;
+
+.linkBotton {
+  display: block;
+  width: 156px;
+  height: 47px;
+  padding: 3px;
+  border: 2px solid @linkColor;
+  border-radius: 30px;
+  box-sizing: border-box;
+  background-color: #fff;
+  cursor: pointer;
+
+  .btnContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    background-color: @linkColor;
+
+    .icon {
+      margin-right: 5px;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .btnTitleText {
+      font-size: 16px;
+      color: #fff;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 1px 10px 1px @linkColor;
+  }
+}
+
 .section {
   position: relative;
   width: 1200px;
@@ -9,6 +51,10 @@
     height: 104px;
     margin: 56px auto 0;
 
+    p {
+      text-align: center;
+    }
+
     p:first-child {
       font-family: 'Microsoft Yahei', Arial, Verdana, sans-serif;
       font-size: 28px;
@@ -19,12 +65,69 @@
     }
 
     p:last-child {
+      margin-top: 5px;
       font-size: 18px;
 
       .blueColor {
-        color: #3366ff;
+        color: @blueColor;
       }
     }
+  }
+
+  .intro {
+    margin: 0 auto 20px;
+    width: 918px;
+
+    p {
+      line-height: 2.2;
+      font-size: 14px;
+      text-indent: 4em;
+      color: @textColor;
+    }
+  }
+
+  .self {
+    display: flex;
+    justify-content: space-between;
+    width: 988px;
+    margin: 0 auto;
+
+    >div {
+      text-align: center;
+
+      .countWrap {
+
+        span:first-child {
+          font-size: 60px;
+          font-weight: normal;
+          color: @textColor;
+        }
+
+        span:last-child {
+          margin-left: 5px;
+          font-size: 20px;
+          font-weight: 600;
+          color: #000;
+        }
+      }
+
+      .label {
+        font-size: 16px;
+        color: @textColor;
+      }
+    }
+
+    >div:nth-child(2) {
+      border-left: 2px dotted rgba(88, 88, 88, 0.3);
+      border-right: 2px dotted rgba(88, 88, 88, 0.3);
+      width: 400px;
+    }
+  }
+
+  .linkWrap {
+    display: flex;
+    justify-content: center;
+    margin: 70px auto 0;
   }
 }
 
