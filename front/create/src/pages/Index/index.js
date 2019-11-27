@@ -1,6 +1,5 @@
 import React from 'react';
 import { Icon } from 'antd';
-import Skitter from '../../components/Skitter/Skitter';
 import Link from 'umi/link';
 import classnames from 'classnames';
 import styles from './index.less';
@@ -20,22 +19,13 @@ function LinkBotton(props) {
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      bannerList: [
-        require('./index_banner01.jpg'),
-        require('./index_banner02.jpg'),
-        require('./index_banner03.jpg')
-      ],
-    };
   };
   componentDidMount() {
     // 请求数据
   }
   render() {
-    const { bannerList } = this.state;
     return (
       <div className={styles.container}>
-        <Skitter isIndex={true} imgUrlList={bannerList} />
         <div className={classnames(styles.section, styles.section1)}>
           <div className={styles.header}>
             <p>关于三艺强</p>
