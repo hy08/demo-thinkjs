@@ -38,16 +38,16 @@ export default {
         },
         {
           title: '关于我们',
-          path: '/about',
-          component: './about/index',
+          path: '/about/:id',
+          component: './about/index/$id',
         },
         {
-          title: '产品展示',
+          title: '产品展示/:id',
           path: '/products',
           component: './products/index',
         },
         {
-          title: '设备展示',
+          title: '设备展示/:id',
           path: '/devices',
           component: './devices/index',
         },
