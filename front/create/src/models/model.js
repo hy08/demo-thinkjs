@@ -13,7 +13,7 @@ export default {
         let currentRoute = location.pathname.substr(1);
         currentRoute = currentRoute.length === 0 ? 'index' : currentRoute;
         dispatch({
-          type: 'model/saveAppRoute',
+          type: 'saveAppRoute',
           payload: {
             currentRoute: currentRoute
           }

@@ -21,6 +21,12 @@ class Header extends React.Component {
   };
   render() {
     const { currentRoute } = this.props;
+    let selectedKey = null;
+    if (currentRoute.indexOf('about') !== -1) {
+      selectedKey = 'about';
+    } else {
+      selectedKey = currentRoute;
+    }
     return (
       <div className={styles.topNav}>
         <div className={styles.logo}>
@@ -28,12 +34,12 @@ class Header extends React.Component {
             <img src={require('./header.png')} alt="昆山三艺强印刷有限公司" />
           </Link>
         </div>
-        <Menu selectedKeys={[currentRoute]} mode="horizontal">
+        <Menu selectedKeys={[selectedKey]} mode="horizontal">
           <Menu.Item key="index">
             <Link to="/">首页</Link>
           </Menu.Item>
           <Menu.Item key="about">
-            <Link to="/about">关于</Link>
+            <Link to="/about/1">关于</Link>
           </Menu.Item>
           <Menu.Item key="products">
             <Link to="/products">产品展示</Link>

@@ -2,7 +2,6 @@
 // ref: https://umijs.org/config/
 export default {
   treeShaking: true,
-  "exportStatic": {},
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
@@ -39,15 +38,16 @@ export default {
         {
           title: '关于我们',
           path: '/about/:id',
-          component: './about/index/$id',
+          exact: true,
+          component: './about/index',
         },
         {
-          title: '产品展示/:id',
+          title: '产品展示',
           path: '/products',
           component: './products/index',
         },
         {
-          title: '设备展示/:id',
+          title: '设备展示',
           path: '/devices',
           component: './devices/index',
         },

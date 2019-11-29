@@ -46,7 +46,7 @@ class Footer extends React.Component {
             <ul>
               <li>网站导航</li>
               <li>
-                <Link to="/about">关于我们</Link>
+                <Link to="/about/1">关于我们</Link>
               </li>
               <li>
                 <Link to="/products">产品展示</Link>
