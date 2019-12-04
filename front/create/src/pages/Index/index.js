@@ -56,7 +56,7 @@ class Index extends React.Component {
             </div>
           </div>
           <div className={styles.linkWrap}>
-            {LinkBotton({ url: '/about', title: '了解更多' })}
+            {LinkBotton({ url: '/about/1', title: '了解更多' })}
           </div>
           <div className={styles.sectionLine}></div>
         </div>
