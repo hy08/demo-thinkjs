@@ -8,6 +8,12 @@ const CONTENT_TYPE = {
   INTRO: '1',
   CULTURE: '2',
 }
+const photoList = [
+  { url: require('./1.png'), label_1: 'Knowledge', leael_2: '我们崇尚知识' },
+  { url: require('./2.png'), label_1: '', leael_2: '我们充满热情' },
+  { url: require('./3.png'), label_1: 'Value', leael_2: '我们创造价值' },
+  { url: require('./4.png'), label_1: 'Art', leael_2: '我们做艺术品' }
+]
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -80,6 +86,7 @@ class Index extends React.Component {
           <p>我们坚持：一切以客户满意为宗旨的工作理念。</p>
           <p>我们坚持：一切以团队成长为目标的发展理念。</p>
           <div className={styles.photoWrap}>
+
           </div>
         </div>
       </>
