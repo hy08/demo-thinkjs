@@ -4,31 +4,16 @@ import Link from 'umi/link';
 import { Icon } from 'antd';
 import styles from './Footer.less';
 
+@connect(({ model }) => ({
+  company: model.company
+}))
 class Footer extends React.Component {
-  static defaultProps = {
+  static defaultProps = {}
 
-  }
   constructor(props) {
     super(props);
-    this.state = {
-      phone: '',
-      address: ''
-    };
   };
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'model/getCompany',
-      payload: {
-        success: data => {
-          this.setState({
-            phone: data.phone,
-            address: data.address
-          })
-        }
-      }
-    });
-  }
+
   getTabTitle = (iconType, title) => {
     return (
       <div className={styles.tabTitle}>
@@ -38,7 +23,7 @@ class Footer extends React.Component {
     )
   }
   render() {
-    const { phone, address } = this.state;
+    const { phone, address } = this.props.company;
     return (
       <div className={styles.footer}>
         <div className={styles.content}>
@@ -90,9 +75,5 @@ class Footer extends React.Component {
     );
   };
 };
-Footer.propTypes = {
-}
-function mapStateToProps(state) {
-  return {};
-};
-export default connect(mapStateToProps)(Footer);
+
+export default Footer;

@@ -4,6 +4,7 @@ const gatwayName = '/api';
 export default {
   namespace: 'model',
   state: {
+    company: {},
     devices: [],
     currentRoute: 'index'
   },
@@ -27,12 +28,15 @@ export default {
       if (!!data.error) {
         return;
       }
-      payload.success && payload.success(data.data)
+      yield put({ type: '_saveCompany', payload: { data: data.data } });
     },
   },
   reducers: {
     saveAppRoute(state, { payload }) {
       return { ...state, currentRoute: payload.currentRoute };
+    },
+    _saveCompany(state, { payload }) {
+      return { ...state, company: payload.data };
     },
     _saveDevices(state, { payload }) {
       let data = [];

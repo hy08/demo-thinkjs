@@ -6,7 +6,7 @@ import styles from './index.less';
 
 export default function MyMenu(props) {
   const menus = props.menus.map(menu => {
-    return <Link to={menu.href} className={classnames({ [styles.current]: menu.current })}>{menu.name}</Link>
+    return <Link key={menu.name} to={menu.href} className={classnames(styles.link, { [styles.current]: menu.current })}>{menu.name}</Link>
   })
   return (
     <div className={classnames(styles.linkWrap, { [styles.isSmallSpace]: props.isSmallSpace })}>
