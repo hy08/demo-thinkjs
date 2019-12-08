@@ -1,29 +1,50 @@
 import React from 'react';
+import { connect } from 'dva';
 import { Icon } from 'antd';
+import { split } from 'lodash';
 import Link from 'umi/link';
 import classnames from 'classnames';
 import styles from './index.less';
 
-function LinkBotton(props) {
-  return (
-    <Link className={styles.linkBotton}
-      to={props.url}>
-      <div className={styles.btnContent}>
-        <Icon type='link' className={styles.icon} />
-        <span className={styles.btnTitleText}>{props.title}</span>
-      </div>
-    </Link>
-  )
-}
-
+@connect(() => ({}))
 class Index extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      products: [],
+      devices: []
+    }
   };
   componentDidMount() {
-    // 请求数据
+    const { dispatch } = this.props;
+    // 获取三个类别的第一个商品信息
+    dispatch({
+      type: 'model/getProducts',
+      payload: {
+        data: {
+          index: true
+        },
+        success: data => {
+          this.setState({ products: data })
+        }
+      }
+    })
+    //获取三个设备信息
+    dispatch({
+      type: 'model/getDevices',
+      payload: {
+        data: {
+          current: 0,
+          pageSize: 3
+        },
+        success: data => {
+          this.setState({ devices: data })
+        }
+      }
+    })
   }
   render() {
+    const { products, devices } = this.state;
     return (
       <div className={styles.container}>
         <div className={classnames(styles.section, styles.section1)}>
@@ -60,8 +81,75 @@ class Index extends React.Component {
           </div>
           <div className={styles.sectionLine}></div>
         </div>
+        <div className={classnames(styles.section, styles.section2)}>
+          <div className={styles.header}>
+            <p>产品展示</p>
+            <p><span className={styles.blueColor}>P</span>RODUCT</p>
+          </div>
+          <div className={classnames(styles.intro, styles.center)}>
+            <p>拥有专业设计 – 快速打样 – 个性化定制 –智能化制造及物流系统等行业优势，</p>
+            <p>为客户提供专业、快速、低成本、高品质的产品包装加工一站式服务。</p>
+          </div>
+          <div className={styles.self}>
+            {products.map(product => {
+              return (
+                <div className={styles.photoWrap} key={product.category_code}
+                  style={{ backgroundImage: `url(${window.location.origin + split(product.pics, ',')[0]})` }}>
+                  <div className={styles.cover}>
+                    <p className={styles.coverTitle} title={product.name}>{product.name}</p>
+                    <p className={styles.coverContent} title={product.intro}>{product.intro}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <div className={styles.linkWrap}>
+            {LinkBotton({ url: '/products', title: '了解更多' })}
+          </div>
+          <div className={styles.sectionLine}></div>
+        </div>
+        <div className={classnames(styles.section, styles.section2)}>
+          <div className={styles.header}>
+            <p>设备展示</p>
+            <p><span className={styles.blueColor}>E</span>QUIPMENT</p>
+          </div>
+          <div className={classnames(styles.intro, styles.center)}>
+            <p>UV印刷机主要应用于：金、银卡、PET、PVC等材料的印刷；</p>
+            <p>主要生产产品：高档化妆品盒、高档礼盒、精装盒，手提袋等；</p>
+            <p>印刷特点：多色、高效、环保，联机UV逆向可以组合三十种效果。</p>
+          </div>
+          <div className={styles.self}>
+            {devices.map(device => {
+              return (
+                <div className={styles.photoWrap} key={device.id}
+                  style={{ backgroundImage: `url(${window.location.origin + split(device.pics, ',')[0]})` }}>
+                  <div className={styles.cover}>
+                    <p className={styles.coverTitle} title={device.name}>{device.name}</p>
+                    <p className={styles.coverContent} title={device.intro}>{device.intro}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <div className={styles.linkWrap}>
+            {LinkBotton({ url: '/devices', title: '了解更多' })}
+          </div>
+        </div>
       </div>
     );
   }
 }
+
+function LinkBotton(props) {
+  return (
+    <Link className={styles.linkBotton}
+      to={props.url}>
+      <div className={styles.btnContent}>
+        <Icon type='link' className={styles.icon} />
+        <span className={styles.btnTitleText}>{props.title}</span>
+      </div>
+    </Link>
+  )
+}
+
 export default Index;

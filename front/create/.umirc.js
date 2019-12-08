@@ -43,12 +43,12 @@ export default {
         },
         {
           title: '产品展示',
-          path: '/products',
+          path: '/products/:category?/:productId?',
           component: './products/index',
         },
         {
           title: '设备展示',
-          path: '/devices',
+          path: '/devices/:id?',
           component: './devices/index',
         },
         {
@@ -70,6 +70,12 @@ export default {
       "cookieDomainRewrite": "localhost:8360",
       "changeOrigin": true,
       "logLevel": "debug"
-    }
+    },
+    '/uploads': {
+      target: 'http://localhost:8360',
+      cookieDomainRewrite: 'localhost:8360',
+      changeOrigin: true,
+      logLevel: 'debug',
+    },
   }
 }

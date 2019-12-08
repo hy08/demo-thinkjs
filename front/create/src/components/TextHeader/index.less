@@ -1,0 +1,28 @@
+.header {
+  width: 190px;
+  height: 104px;
+  margin: 56px auto 0;
+  @blueColor: #3366ff;
+
+  p {
+    text-align: center;
+  }
+
+  p:first-child {
+    font-family: 'Microsoft Yahei', Arial, Verdana, sans-serif;
+    font-size: 28px;
+    color: #000;
+    line-height: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  p:last-child {
+    margin-top: 5px;
+    font-size: 18px;
+
+    .blueColor {
+      color: @blueColor;
+    }
+  }
+}

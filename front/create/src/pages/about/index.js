@@ -25,35 +25,39 @@ class Index extends React.Component {
     this.state = {
       links: [],
       menus: [
-        { name: '公司简介', href: '/about/1' },
-        { name: '品牌文化', href: '/about/2' }
+        { name: '公司简介', href: '/about/1', current: false, type: CONTENT_TYPE.INTRO },
+        { name: '品牌文化', href: '/about/2', current: false, type: CONTENT_TYPE.CULTURE }
       ],
       companyName: '',
       contentType: props.match.params.id
     };
   };
   componentDidMount() {
-    this.setMyBreadcrumb();
+    this.setMyBreadcrumbAndMenus();
   }
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.match.params, this.props.match.params)) {
       this.setState({ contentType: this.props.match.params.id }, () => {
-        this.setMyBreadcrumb();
+        this.setMyBreadcrumbAndMenus();
       });
     }
   }
-  setMyBreadcrumb = () => {
-    const { contentType } = this.state;
+  setMyBreadcrumbAndMenus = () => {
+    const { contentType, menus } = this.state;
     const links = [];
     switch (contentType) {
       case CONTENT_TYPE.INTRO:
-        links.push({ name: '公司简介', href: '/about/1' })
+        links.push({ name: '公司简介', href: '/about/1' });
         break;
       default:
         links.push({ name: '品牌文化', href: '/about/2' })
         break;
     }
-    this.setState({ links });
+    let menu = menus.find(menu => menu.type === contentType);
+    if (menu) {
+      menu.current = true;
+    }
+    this.setState({ links, menus: [...menus] });
   }
   renderHeader = () => {
     return (

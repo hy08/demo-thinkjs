@@ -16,10 +16,17 @@ module.exports = class extends BaseRest {
     const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.tomorrow.format('YYYY-MM-DD HH:mm:ss');
     const categoryCode = queryData.categoryCode && queryData.categoryCode !== 'null' ? queryData.categoryCode : ['!=', null];
     const name = queryData.name && queryData.name !== 'null' ? queryData.name : ['!=', null];
+    //是否来自前台首页
+    const fromIndex = queryData.index !== 'null' ? true : false;
     //是否需要分页
-    const pagination = lodash.isNil(queryData.current) || lodash.isNil(queryData.pageSize) ? false : { current: queryData.current, pageSize: queryData.pageSize }
+    const pagination = lodash.isNil(queryData.current) || lodash.isNil(queryData.pageSize) ? false : { current: queryData.current, pageSize: queryData.pageSize };
+    const id = queryData.id;
     let data = null;
-    if (pagination) {
+    if (id) {
+      data = await product.where({ id: id }).find();
+    } else if (fromIndex) {
+      data = await product.group('category_code').order('modify_time DESC').limit(3).select();
+    } else if (pagination) {
       data = await product.where({ modify_time: ['between', startTime, endTime], category_code: categoryCode, name: name, }).order('modify_time DESC').page(pagination.current, pagination.pageSize).countSelect();
     } else {
       data = await product.where({ modify_time: ['between', startTime, endTime], category_code: categoryCode, name: name, }).order('modify_time DESC').select();

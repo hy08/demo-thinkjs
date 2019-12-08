@@ -40,95 +40,173 @@
   }
 }
 
-.section {
+.container {
   position: relative;
-  width: 1200px;
-  height: 618px;
-  margin: 0 auto;
+  overflow: hidden;
 
-  .header {
-    width: 190px;
-    height: 104px;
-    margin: 56px auto 0;
-
-    p {
-      text-align: center;
-    }
-
-    p:first-child {
-      font-family: 'Microsoft Yahei', Arial, Verdana, sans-serif;
-      font-size: 28px;
-      color: #000;
-      line-height: normal;
-      word-wrap: break-word;
-      word-break: break-all;
-    }
-
-    p:last-child {
-      margin-top: 5px;
-      font-size: 18px;
-
-      .blueColor {
-        color: @blueColor;
-      }
-    }
+  .transition {
+    transition: top .5s ease-in 0s;
   }
 
-  .intro {
-    margin: 0 auto 20px;
-    width: 918px;
+  .section {
+    width: 1200px;
+    margin: 0 auto 80px;
 
-    p {
-      line-height: 2.2;
-      font-size: 14px;
-      text-indent: 4em;
-      color: @textColor;
-    }
-  }
+    .header {
+      width: 190px;
+      height: 104px;
+      margin: 56px auto 0;
 
-  .self {
-    display: flex;
-    justify-content: space-between;
-    width: 988px;
-    margin: 0 auto;
-
-    >div {
-      text-align: center;
-
-      .countWrap {
-
-        span:first-child {
-          font-size: 60px;
-          font-weight: normal;
-          color: @textColor;
-        }
-
-        span:last-child {
-          margin-left: 5px;
-          font-size: 20px;
-          font-weight: 600;
-          color: #000;
-        }
+      p {
+        text-align: center;
       }
 
-      .label {
-        font-size: 16px;
+      p:first-child {
+        font-family: 'Microsoft Yahei', Arial, Verdana, sans-serif;
+        font-size: 28px;
+        color: #000;
+        line-height: normal;
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+
+      p:last-child {
+        margin-top: 5px;
+        font-size: 18px;
+
+        .blueColor {
+          color: @blueColor;
+        }
+      }
+    }
+
+    .intro {
+      margin: 0 auto 20px;
+      width: 918px;
+
+      &.center {
+        text-align: center;
+      }
+
+      p {
+        line-height: 2.2;
+        font-size: 14px;
+        text-indent: 4em;
         color: @textColor;
       }
     }
 
-    >div:nth-child(2) {
-      border-left: 2px dotted rgba(88, 88, 88, 0.3);
-      border-right: 2px dotted rgba(88, 88, 88, 0.3);
-      width: 400px;
+    .self {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 auto;
+    }
+
+    .linkWrap {
+      display: flex;
+      justify-content: center;
+      margin: 70px auto 0;
+    }
+
+    .sectionLine {
+      position: absolute;
+      left: 0;
+      width: 100vw;
+      border-top: 1px solid rgba(178, 178, 178, 1);
+      margin: 40px 0;
     }
   }
 
-  .linkWrap {
-    display: flex;
-    justify-content: center;
-    margin: 70px auto 0;
+  .section1 {
+    .self {
+      width: 988px;
+
+      >div {
+        text-align: center;
+
+        .countWrap {
+
+          span:first-child {
+            font-size: 60px;
+            font-weight: normal;
+            color: @textColor;
+          }
+
+          span:last-child {
+            margin-left: 5px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+          }
+        }
+
+        .label {
+          font-size: 16px;
+          color: @textColor;
+        }
+      }
+
+      >div:nth-child(2) {
+        border-left: 2px dotted rgba(88, 88, 88, 0.3);
+        border-right: 2px dotted rgba(88, 88, 88, 0.3);
+        width: 400px;
+      }
+    }
+  }
+
+  .section2 {
+    .self {
+      .photoWrap {
+        position: relative;
+        width: 385px;
+        height: 372px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        overflow: hidden;
+        cursor: pointer;
+
+        .cover {
+          position: absolute;
+          top: calc(~'100% - 40px');
+          width: 100%;
+          height: 100%;
+          background: #333;
+          opacity: 0.7;
+          .transition;
+
+          p {
+            text-align: center;
+            color: #fff;
+          }
+
+          .coverTitle {
+            padding: 0;
+            margin: 0;
+            font-size: 16px;
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #ccc;
+          }
+
+          .coverContent {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(~'100% - 40px');
+            overflow: hidden;
+            line-height: 20px;
+            font-size: 13px;
+          }
+        }
+
+        &:hover {
+          .cover {
+            top: 0;
+            .transition;
+          }
+        }
+      }
+    }
   }
 }
-
-.section1 {}
