@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "dva";
 import { Menu } from 'antd';
+import { split } from 'lodash';
 import styles from './Header.less';
 import Link from 'umi/link';
 
@@ -22,11 +23,8 @@ class Header extends React.Component {
   render() {
     const { currentRoute } = this.props;
     let selectedKey = null;
-    if (currentRoute.indexOf('about') !== -1) {
-      selectedKey = 'about';
-    } else {
-      selectedKey = currentRoute;
-    }
+    let routeMember = split(currentRoute, '/');
+    selectedKey = routeMember[0];
     return (
       <div className={styles.topNav}>
         <div className={styles.logo}>

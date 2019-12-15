@@ -43,7 +43,7 @@ export default {
         },
         {
           title: '产品展示',
-          path: '/products/:category?/:productId?',
+          path: '/products/:categoryCode?/:productId?',
           component: './products/index',
         },
         {

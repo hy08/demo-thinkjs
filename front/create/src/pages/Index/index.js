@@ -12,6 +12,7 @@ class Index extends React.Component {
     super(props);
     this.state = {
       products: [],
+      categorys: [],
       devices: []
     }
   };
@@ -91,17 +92,19 @@ class Index extends React.Component {
             <p>为客户提供专业、快速、低成本、高品质的产品包装加工一站式服务。</p>
           </div>
           <div className={styles.self}>
-            {products.map(product => {
-              return (
-                <div className={styles.photoWrap} key={product.category_code}
-                  style={{ backgroundImage: `url(${window.location.origin + split(product.pics, ',')[0]})` }}>
-                  <div className={styles.cover}>
-                    <p className={styles.coverTitle} title={product.name}>{product.name}</p>
-                    <p className={styles.coverContent} title={product.intro}>{product.intro}</p>
+            {
+              products.map(product => {
+                return (
+                  <div className={styles.photoWrap} key={product.category_code}
+                    style={{ backgroundImage: `url(${window.location.origin + split(product.pics, ',')[0]})` }}>
+                    <div className={styles.cover}>
+                      <p className={styles.coverTitle} title={product.name}>{product.name}</p>
+                      <p className={styles.coverContent} title={product.intro}>{product.intro}</p>
+                    </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })
+            }
           </div>
           <div className={styles.linkWrap}>
             {LinkBotton({ url: '/products', title: '了解更多' })}

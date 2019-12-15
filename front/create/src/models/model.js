@@ -31,8 +31,16 @@ export default {
       yield put({ type: '_saveCompany', payload: { data: data.data } });
     },
     // 获取商品种类信息
-    * getProducts({ payload }, { put, call, select }) {
+    * getCategorys({ payload, success }, { put, call, select }) {
       let data = yield call(service.getCmd, `${gatwayName}/category`, payload.data);
+      if (!!data.error) {
+        return;
+      }
+      success && success(data.data.data);
+    },
+    // 获取商品信息
+    * getProducts({ payload }, { put, call, select }) {
+      let data = yield call(service.getCmd, `${gatwayName}/product`, payload.data);
       if (!!data.error) {
         return;
       }
@@ -61,43 +69,6 @@ export default {
     },
     _saveCompany(state, { payload }) {
       return { ...state, company: payload.data };
-    },
-    _saveDevices(state, { payload }) {
-      let data = [];
-      data = payload.list.map((l) => {
-        return Object.assign(l, { accessStatus: String(l.accessStatus) });
-      });
-      return { ...state, devices: data, totalSize: payload.totalSize };
-    },
-    _addDevice(state, { payload }) {
-      let { devices } = state;
-      devices.push(payload)
-      return { ...state, devices: [...devices] };
-    },
-    _editDevice(state, { payload }) {
-      let { devices } = state;
-      for (var i = 0; i < devices.length; i++) {
-        if (devices[i].mac === payload.mac) {
-          devices[i] = payload;
-          break;
-        }
-      }
-      return { ...state, devices: [...devices] };
-    },
-    _deleteDevice(state, { payload }) {
-      let { devices } = state;
-      devices = devices.filter(u => u.id !== payload);
-      return { ...state, devices: [...devices] };
-    },
-    _deleteDevices(state, { payload }) {
-      let { devices } = state;
-      devices = devices.filter(device => {
-        return payload.ids.findIndex(id => id === device.id) === -1;
-      });
-      return { ...state, devices: [...devices] };
-    },
-    _saveLinkInfo(state, { payload }) {
-      return { ...state, linkInfo: [...payload.linkInfo] };
     },
   },
 };
