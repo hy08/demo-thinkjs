@@ -14,10 +14,10 @@ module.exports = class extends BaseRest {
     const queryData = this.get();
     const startTime = queryData.startTime ? queryData.startTime : GlobalVar.G_Date.initial.format('YYYY-MM-DD HH:mm:ss');
     const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.tomorrow.format('YYYY-MM-DD HH:mm:ss');
-    const categoryCode = queryData.categoryCode && queryData.categoryCode !== 'null' ? queryData.categoryCode : ['!=', null];
-    const name = queryData.name && queryData.name !== 'null' ? queryData.name : ['!=', null];
+    const categoryCode = !lodash.isNil(queryData.categoryCode) ? queryData.categoryCode : ['!=', null];
+    const name = !lodash.isNil(queryData.name) ? queryData.name : ['!=', null];
     //是否来自前台首页
-    const fromIndex = queryData.index !== 'null' ? true : false;
+    const fromIndex = !lodash.isNil(queryData.index) ? true : false;
     //是否需要分页
     const pagination = lodash.isNil(queryData.current) || lodash.isNil(queryData.pageSize) ? false : { current: queryData.current, pageSize: queryData.pageSize };
     const id = queryData.id;

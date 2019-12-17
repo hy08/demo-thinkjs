@@ -8,10 +8,13 @@
 }
 
 .content {
+  min-width: 1200px;
   padding-top: 80px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .footer {
-  background: #2e2e2e;
+  min-width: 1200px;
+  background: #323232;
 }

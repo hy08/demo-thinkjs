@@ -15,7 +15,7 @@ class Skitter extends React.Component {
     $(function () {
       $('.skitter').skitter({
         interval: 3000,
-        velocity: 0.8
+        velocity: 0.8,
       });
     });
   }

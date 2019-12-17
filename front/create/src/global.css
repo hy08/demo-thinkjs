@@ -24,3 +24,7 @@ p {
   margin-left: 0;
   transition: all 300ms cubic-bezier(.61, .15, .29, 1.26);
 }
+
+.transition-exit.transition-exit-active {
+  display: none;
+}

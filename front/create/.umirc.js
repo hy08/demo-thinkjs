@@ -8,7 +8,7 @@ export default {
       antd: true,
       dva: true,
       dynamicImport: { webpackChunkName: true },
-      title: 'create',
+      title: '三艺强',
       dll: false,
       routes: {
         exclude: [

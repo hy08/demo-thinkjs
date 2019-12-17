@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'dva';
-import { isEqual, isNil } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import MyBreadcrumb from '../../components/MyBreadcrumb';
 import MyMenu from '../../components/MyMenu';
+import TextHeader from '../../components/TextHeader';
 import styles from './index.less';
 
-@connect(({ model }) => ({
-  products: model.products,
-}))
+@connect(({ model }) => ({}))
 class Category extends React.Component {
   constructor(props) {
     super(props);
@@ -16,20 +15,31 @@ class Category extends React.Component {
       categoryCode: props.categoryCode,
       current: 1,
       pageSize: 10,
-      breadcrumb: [],
-      menus: [
-        // { name: '公司简介', href: '/about/1', current: false, type: CONTENT_TYPE.INTRO },
-        // { name: '品牌文化', href: '/about/2', current: false, type: CONTENT_TYPE.CULTURE }
+      breadcrumbs: [
+        { name: '产品展示', href: '/products' }
       ],
+      menus: [],
+      products: []
     };
   };
 
   componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'model/getCategorys',
+      payload: {
+        current: 0,
+        pageSize: 100
+      },
+      success: (data) => {
+        this.setMyBreadcrumbAndMenus(data);
+      }
+    });
     this.getProductsInCategory();
   }
   componentDidUpdate(prevProps) {
     //商品种类变化，重新请求数据
-    if (prevProps.match.params.categoryCode !== this.props.match.params.categoryCode) {
+    if (prevProps.match && (prevProps.match.params.categoryCode !== this.props.match.params.categoryCode)) {
       const { categoryCode } = this.props.match.params;
       this.setState({
         categoryCode,
@@ -41,50 +51,38 @@ class Category extends React.Component {
   //获取对应种类的商品
   getProductsInCategory = () => {
     const { categoryCode, current, pageSize } = this.state;
-    let payload = {
-      data: {
-        current,
-        pageSize
-      }
+    let payloadData = {
+      current: current - 1,
+      pageSize
     };
     if (!isNil(categoryCode)) {
-      payload.data.categoryCode = categoryCode;
+      payloadData.categoryCode = categoryCode;
     }
     const { dispatch } = this.props;
     dispatch({
-      type: 'model/getCategorys',
-      payload: payload,
+      type: 'model/getProducts',
+      payload: {
+        data: payloadData
+      },
       success: (data) => {
-        this.setMyBreadcrumbAndMenus(data);
+        this.setState({ products: data })
       }
-    })
+    });
   }
   //设置
-  setMyBreadcrumbAndMenus = () => {
-    // const { contentType, menus } = this.state;
-    // const links = [];
-    // switch (contentType) {
-    //   case CONTENT_TYPE.INTRO:
-    //     links.push({ name: '公司简介', href: '/about/1' });
-    //     break;
-    //   default:
-    //     links.push({ name: '品牌文化', href: '/about/2' })
-    //     break;
-    // }
-    // let menu = menus.find(menu => menu.type === contentType);
-    // if (menu) {
-    //   menu.current = true;
-    // }
-    // this.setState({ links, menus: [...menus] });
+  setMyBreadcrumbAndMenus = (categorys) => {
+    const { categoryCode, breadcrumbs } = this.state;
+    const currentCategory = categorys.find(category => category.code === categoryCode);
+    if (!isEmpty(currentCategory)) {
+      breadcrumbs.push({ name: currentCategory.category, href: '/products/' + currentCategory.code });
+    }
+    let menus = categorys.map(category => {
+      let current = !isEmpty(currentCategory) && category.code === currentCategory.code ? true : false;
+      return { name: category.category, href: '/products/' + category.code, current: current };
+    });
+    this.setState({ breadcrumbs, menus: [...menus] });
   }
-  renderHeader = () => {
-    // return (
-    //   <div className={styles.header}>
-    //     <header>三艺强印刷</header>
-    //     <p>KEVA</p>
-    //   </div>
-    // )
-  }
+  //渲染商品表格
   renderCompanyProfile = () => {
     // const { name } = this.props.company;
     // return (
@@ -100,44 +98,20 @@ class Category extends React.Component {
     //   </>
     // )
   }
-  //渲染菜单导航
-  renderCompanyCulture = () => {
-    // return (
-    //   <>
-    //     {this.renderHeader()}
-    //     <div className={styles.cultureContent}>
-    //       <p>"两聚两高"愿景：通过聚力创新、聚焦质量及服务营销，成为世界级品牌客户高度信赖的精品包装合作伙伴及内部员工高成长平台。</p>
-    //       <p>我们坚持：一切以客户满意为宗旨的工作理念。</p>
-    //       <p>我们坚持：一切以团队成长为目标的发展理念。</p>
-    //       <div className={styles.photoWrap}>
-    //         {photoList.map(photo => {
-    //           return (
-    //             <div key={photo.label_1} className={styles.photo}>
-    //               <img src={photo.url} alt={photo.label_1} />
-    //               <span>{photo.label_1}</span>
-    //               <span>{photo.label_2}</span>
-    //             </div>
-    //           )
-    //         })}
-    //       </div>
-    //     </div>
-    //   </>
-    // )
-  }
-  //渲染商品表格
-
   render() {
-    // const { links, menus, contentType } = this.state;
+    const { breadcrumbs, menus } = this.state;
     return (
       <div className={styles.container}>
-        分类页
-        {/* <div className={styles.headerNav}>
-          <MyBreadcrumb links={links} />
+        <div className={styles.headerNav}>
+          <MyBreadcrumb links={breadcrumbs} />
           <MyMenu menus={menus} />
         </div>
         <div className={styles.content}>
-          {contentType === CONTENT_TYPE.INTRO ? this.renderCompanyProfile() : this.renderCompanyCulture()}
-        </div> */}
+          <TextHeader
+            title='产品展示'
+            subTitle='PRODUCT SHOW​'
+            highLightIndexObj={{ first: 1, second: 9 }} />
+        </div>
       </div>
     );
   }

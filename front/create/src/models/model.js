@@ -32,7 +32,7 @@ export default {
     },
     // 获取商品种类信息
     * getCategorys({ payload, success }, { put, call, select }) {
-      let data = yield call(service.getCmd, `${gatwayName}/category`, payload.data);
+      let data = yield call(service.getCmd, `${gatwayName}/category`, payload);
       if (!!data.error) {
         return;
       }
@@ -44,15 +44,7 @@ export default {
       if (!!data.error) {
         return;
       }
-      payload.success && payload.success(data.data);
-    },
-    // 分页查询获取商品信息
-    * getProductsByPage({ payload }, { put, call, select }) {
-      let data = yield call(service.getCmd, `${gatwayName}/product`, payload.data);
-      if (!!data.error) {
-        return;
-      }
-      payload.success && payload.success(data.data.data);
+      payload.success && payload.success(data.data.data ? data.data.data : data.data);
     },
     // 获取三个设备信息
     * getDevices({ payload }, { put, call, select }) {
