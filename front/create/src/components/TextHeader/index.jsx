@@ -10,7 +10,7 @@ export default function TextHeader(props) {
       <p>{title}</p>
       <p>
         {subTitle.split('').map((letter, index) => {
-          return <span className={classnames({ [styles.blueColor]: index + 1 === first || index + 1 === second })}>{letter}</span>
+          return <span key={index} className={classnames({ [styles.blueColor]: index + 1 === first || index + 1 === second })}>{letter}</span>
         })}
       </p>
     </div>

@@ -44,7 +44,7 @@ export default {
       if (!!data.error) {
         return;
       }
-      payload.success && payload.success(data.data.data ? data.data.data : data.data);
+      payload.success && payload.success(data.data);
     },
     // 获取三个设备信息
     * getDevices({ payload }, { put, call, select }) {

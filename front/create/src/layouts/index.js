@@ -23,7 +23,10 @@ class BasicLayout extends Component {
     });
   }
   componentDidUpdate(prevProps) {
-    if (!isEqual(this.props.location.pathname, prevProps.location.pathname)) {
+    console.log(prevProps, this.props)
+    if (this.props.location.pathname.indexOf('products') !== -1 && prevProps.location.pathname.indexOf('products') !== -1) {
+      return;
+    } else if (!isEqual(this.props.location.pathname, prevProps.location.pathname)) {
       window.scrollTo(0, 0);
     }
   }
