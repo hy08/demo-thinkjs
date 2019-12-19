@@ -8,9 +8,9 @@ const gotoDestination = (href) => {
 }
 export default function PhotoTable(props) {
   const { list } = props;
-  const photoList = list.map(item => {
+  const photoList = list.map((item, index) => {
     return (
-      <div className={styles.imgWrap} onClick={() => { gotoDestination(item.href) }}>
+      <div key={index} className={styles.imgWrap} onClick={() => { gotoDestination(item.href) }}>
         <figure>
           <mark>
             <b></b>
@@ -29,9 +29,11 @@ export default function PhotoTable(props) {
 }
 
 PhotoTable.propTypes = {
-  list: PropTypes.shape({
-    photo: PropTypes.string.isRequired,
-    alt: PropTypes.string.isRequired,
-    href: PropTypes.string.isRequired,
-  })
+  list: PropTypes.arrayOf(PropTypes.shape(
+    {
+      photo: PropTypes.string.isRequired,
+      alt: PropTypes.string.isRequired,
+      href: PropTypes.string.isRequired,
+    }
+  ))
 }
