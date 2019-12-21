@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from "dva";
 import { Menu } from 'antd';
 import { split } from 'lodash';
-import styles from './Header.less';
 import Link from 'umi/link';
+import styles from './Header.less';
 
 class Header extends React.Component {
   constructor(props) {

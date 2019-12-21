@@ -52,7 +52,7 @@ export default {
       if (!!data.error) {
         return;
       }
-      payload.success && payload.success(data.data.data);
+      payload.success && payload.success(data.data);
     },
   },
   reducers: {

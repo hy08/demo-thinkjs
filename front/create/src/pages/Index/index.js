@@ -3,8 +3,14 @@ import { connect } from 'dva';
 import { Icon } from 'antd';
 import { split } from 'lodash';
 import Link from 'umi/link';
+import router from 'umi/router';
 import classnames from 'classnames';
 import styles from './index.less';
+
+const GotoType = {
+  product: 1,
+  device: 2
+}
 
 @connect(() => ({}))
 class Index extends React.Component {
@@ -39,10 +45,17 @@ class Index extends React.Component {
           pageSize: 3
         },
         success: data => {
-          this.setState({ devices: data })
+          this.setState({ devices: data.data })
         }
       }
     })
+  }
+  gotoDetail = (type, code) => {
+    if (type === GotoType.product) {
+      router.push('/products/' + code);
+    } else {
+      router.push('/devices/' + code);
+    }
   }
   render() {
     const { products, devices } = this.state;
@@ -96,6 +109,7 @@ class Index extends React.Component {
               products.map(product => {
                 return (
                   <div className={styles.photoWrap} key={product.category_code}
+                    onClick={() => { this.gotoDetail(GotoType.product, product.category_code) }}
                     style={{ backgroundImage: `url(${window.location.origin + split(product.pics, ',')[0]})` }}>
                     <div className={styles.cover}>
                       <p className={styles.coverTitle} title={product.name}>{product.name}</p>
@@ -125,6 +139,7 @@ class Index extends React.Component {
             {devices.map(device => {
               return (
                 <div className={styles.photoWrap} key={device.id}
+                  onClick={() => { this.gotoDetail(GotoType.device, device.id) }}
                   style={{ backgroundImage: `url(${window.location.origin + split(device.pics, ',')[0]})` }}>
                   <div className={styles.cover}>
                     <p className={styles.coverTitle} title={device.name}>{device.name}</p>

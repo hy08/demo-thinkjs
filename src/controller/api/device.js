@@ -10,18 +10,21 @@ module.exports = class extends BaseRest {
    * @returns
    */
   async getAction() {
-    let product = await this.model(modelName);
+    let device = await this.model(modelName);
     const queryData = this.get();
     const startTime = queryData.startTime ? queryData.startTime : GlobalVar.G_Date.initial.format('YYYY-MM-DD HH:mm:ss');
     const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.tomorrow.format('YYYY-MM-DD HH:mm:ss');
     const name = queryData.name && queryData.name !== 'null' ? queryData.name : ['!=', null];
     //是否需要分页
     const pagination = lodash.isNil(queryData.current) || lodash.isNil(queryData.pageSize) ? false : { current: queryData.current, pageSize: queryData.pageSize }
+    const id = queryData.id;
     let data = null;
-    if (pagination) {
-      data = await product.where({ modify_time: ['between', startTime, endTime], name: name, }).order('modify_time DESC').page(pagination.current, pagination.pageSize).countSelect();
+    if (id) {
+      data = await device.where({ id: id }).find();
+    } else if (pagination) {
+      data = await device.where({ modify_time: ['between', startTime, endTime], name: name, }).order('modify_time DESC').page(pagination.current, pagination.pageSize).countSelect();
     } else {
-      data = await product.where({ modify_time: ['between', startTime, endTime], name: name, }).order('modify_time DESC').select();
+      data = await device.where({ modify_time: ['between', startTime, endTime], name: name, }).order('modify_time DESC').select();
     }
     return this.success(data);
   }
