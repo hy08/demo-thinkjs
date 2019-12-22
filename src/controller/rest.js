@@ -16,12 +16,12 @@ module.exports = class extends think.Controller {
     this.header('Access-Control-Allow-Origin', '*');
 
     this.userInfo = await this.session('userInfo').catch(_ => ({}));
-
+    const createComment = this.isMethod('POST') && this.ctx.req.url.indexOf('comment') !== -1;
     const isAllowedMethod = this.isMethod('GET');
     const isAllowedResource = this.resource === 'token';
     const isLogin = !think.isEmpty(this.userInfo);
 
-    if (!isAllowedMethod && !isAllowedResource && !isLogin) {
+    if (!isAllowedMethod && !isAllowedResource && !isLogin && !createComment) {
       return this.ctx.throw(401, '请登录后操作');
     }
   }

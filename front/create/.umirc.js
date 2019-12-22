@@ -53,15 +53,21 @@ export default {
         },
         {
           title: '联系我们',
-          path: '/linkus',
+          path: '/linkus/:type',
           component: './linkus/index',
         },
         {
           title: '留言',
-          path: '/comment',
-          component: './comment/index',
+          path: '/linkus/:type',
+          component: './linkus/index',
+        },
+        {
+          component: './404',
         },
       ]
+    },
+    {
+      component: './404',
     },
   ],
   proxy: {

@@ -24,7 +24,7 @@ class Header extends React.Component {
     const { currentRoute } = this.props;
     let selectedKey = null;
     let routeMember = split(currentRoute, '/');
-    selectedKey = routeMember[0];
+    selectedKey = routeMember[0] !== 'linkus' ? routeMember[0] : currentRoute;
     return (
       <div className={styles.topNav}>
         <div className={styles.logo}>
@@ -45,11 +45,11 @@ class Header extends React.Component {
           <Menu.Item key="devices">
             <Link to="/devices">设备展示</Link>
           </Menu.Item>
-          <Menu.Item key="linkus">
-            <Link to="/linkus">联系我们</Link>
+          <Menu.Item key="linkus/1">
+            <Link to="/linkus/1">联系我们</Link>
           </Menu.Item>
-          <Menu.Item key="comment">
-            <Link to="/comment">留言</Link>
+          <Menu.Item key="linkus/2">
+            <Link to="/linkus/2">留言</Link>
           </Menu.Item>
         </Menu>
 

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { isEqual } from 'lodash';
+import { isEqual, split } from 'lodash';
 import { connect } from "dva";
 import withRouter from 'umi/withRouter';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
@@ -23,8 +23,9 @@ class BasicLayout extends Component {
     });
   }
   componentDidUpdate(prevProps) {
-    console.log(prevProps, this.props)
-    if (this.props.location.pathname.indexOf('products') !== -1 && prevProps.location.pathname.indexOf('products') !== -1) {
+    let prevParams = split(prevProps.location.pathname, '/');
+    let nextParams = split(this.props.location.pathname, '/');
+    if (prevParams.length > 2 && nextParams.length > 2) {
       return;
     } else if (!isEqual(this.props.location.pathname, prevProps.location.pathname)) {
       window.scrollTo(0, 0);

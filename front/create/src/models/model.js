@@ -54,6 +54,14 @@ export default {
       }
       payload.success && payload.success(data.data);
     },
+    // 新增留言
+    * createComment({ payload, success }, { put, call, select }) {
+      let data = yield call(service.postCmd, `${gatwayName}/comment`, payload);
+      if (!!data.error) {
+        return;
+      }
+      success && success();
+    },
   },
   reducers: {
     saveAppRoute(state, { payload }) {

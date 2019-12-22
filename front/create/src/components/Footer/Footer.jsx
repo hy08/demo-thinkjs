@@ -40,10 +40,10 @@ class Footer extends React.Component {
                 <Link to="/devices">设备展示</Link>
               </li>
               <li>
-                <Link to="/linkus">联系我们</Link>
+                <Link to="/linkus/1">联系我们</Link>
               </li>
               <li>
-                <Link to="/comment">敬请留言</Link>
+                <Link to="/linkus/2">敬请留言</Link>
               </li>
             </ul>
           </div>
