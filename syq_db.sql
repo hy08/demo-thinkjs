@@ -29,7 +29,7 @@ CREATE TABLE `comment` (
   `comment` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL,
   `create_time` char(20) COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +38,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (2,'123','123','123','2019-12-22 17:46:49'),(3,'444','444','444','2019-12-22 17:48:49');
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +122,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (12,'说明书1','dfc1a4a6-17c5-4b2d-8ec8-97c9afc3d4ac','/uploads/2019/11/9357e2eca771320a067ed1479e1cd9ef.png','说明书1','2019-11-15 19:00:28','2019-11-15 19:00:28',1),(13,'说明书2','dfc1a4a6-17c5-4b2d-8ec8-97c9afc3d4ac','/uploads/2019/11/dc7c983c6609d8580f6ddeed5c462d6c.png','说明书2','2019-11-15 19:00:47','2019-11-15 19:00:47',1),(14,'说明书3','dfc1a4a6-17c5-4b2d-8ec8-97c9afc3d4ac','/uploads/2019/11/019085709d071235cfa5cc2e30dd73d8.png','说明书3','2019-11-15 19:01:00','2019-11-15 19:01:00',1),(15,'说明书1','dfc1a4a6-17c5-4b2d-8ec8-97c9afc3d4ac','/uploads/2019/11/35e8e9d4e9f930fdd43af2019ec6bba6.png','说明书1','2019-11-15 19:01:09','2019-11-15 19:01:09',1),(16,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/a77231d8b85dac1d54e6f23deac22d14.png','单卡盒1','2019-11-15 19:01:38','2019-11-15 19:01:38',1),(17,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/50fda00d14a8af3227d5347b4661a91d.png','单卡盒1','2019-11-15 19:01:47','2019-11-15 19:01:47',1),(18,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/905c03dd0da113e6db622f2aca2b88ba.png','单卡盒1','2019-11-15 19:01:56','2019-11-15 19:01:56',1),(19,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/9cbe0cec5c07a8c6b846bad26dfd33cf.png','单卡盒1','2019-11-15 19:02:15','2019-11-15 19:02:15',1),(20,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/29e1b224cbca60d8a7cf9426f0a6ca1c.png','单卡盒1','2019-11-15 19:02:32','2019-11-15 19:02:32',1),(21,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/3dc68ecc3d11e77d1bf8b4ad8b798248.png','单卡盒1','2019-11-15 19:02:41','2019-11-15 19:02:41',1),(22,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/1f0d3b44911b0c135507b2fa5c61bee7.png,/uploads/2019/11/c46d35987754289dd6c9a968ade38d01.png','单卡盒1','2019-11-15 19:03:07','2019-11-15 19:03:07',1),(23,'手提袋1','152e7bef-4589-44e3-93e2-07bc593047b1','/uploads/2019/11/1bb71e0fc72770c7b85db44d6bdd6ec2.png,/uploads/2019/11/a89f314764187fc869b00a038b986c9a.png','手提袋1','2019-11-15 19:04:56','2019-11-15 19:04:56',1);
+INSERT INTO `product` VALUES (12,'说明书1','dfc1a4a6-17c5-4b2d-8ec8-97c9afc3d4ac','/uploads/2019/11/9357e2eca771320a067ed1479e1cd9ef.png','说明书1','2019-11-15 19:00:28','2019-11-15 19:00:28',1),(13,'说明书2','dfc1a4a6-17c5-4b2d-8ec8-97c9afc3d4ac','/uploads/2019/11/dc7c983c6609d8580f6ddeed5c462d6c.png','说明书2','2019-11-15 19:00:47','2019-11-15 19:00:47',1),(14,'说明书3','dfc1a4a6-17c5-4b2d-8ec8-97c9afc3d4ac','/uploads/2019/11/019085709d071235cfa5cc2e30dd73d8.png','说明书3','2019-11-15 19:01:00','2019-11-15 19:01:00',1),(15,'说明书1','dfc1a4a6-17c5-4b2d-8ec8-97c9afc3d4ac','/uploads/2019/11/35e8e9d4e9f930fdd43af2019ec6bba6.png','说明书1','2019-11-15 19:01:09','2019-11-15 19:01:09',1),(16,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/a77231d8b85dac1d54e6f23deac22d14.png','单卡盒1','2019-11-15 19:01:38','2019-11-15 19:01:38',1),(17,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/9357e2eca771320a067ed1479e1cd9ef.png','单卡盒1','2019-11-15 19:01:47','2019-11-15 19:01:47',1),(18,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/905c03dd0da113e6db622f2aca2b88ba.png','单卡盒1','2019-11-15 19:01:56','2019-11-15 19:01:56',1),(19,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/9cbe0cec5c07a8c6b846bad26dfd33cf.png','单卡盒1','2019-11-15 19:02:15','2019-11-15 19:02:15',1),(20,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/29e1b224cbca60d8a7cf9426f0a6ca1c.png','单卡盒1','2019-11-15 19:02:32','2019-11-15 19:02:32',1),(21,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/3dc68ecc3d11e77d1bf8b4ad8b798248.png','单卡盒1','2019-11-15 19:02:41','2019-11-15 19:02:41',1),(22,'单卡盒1','72ef1ece-02d6-4aad-845d-c9af10529532','/uploads/2019/11/1f0d3b44911b0c135507b2fa5c61bee7.png,/uploads/2019/11/9357e2eca771320a067ed1479e1cd9ef.png','单卡盒1','2019-11-15 19:03:07','2019-11-15 19:03:07',1),(23,'手提袋1','152e7bef-4589-44e3-93e2-07bc593047b1','/uploads/2019/11/1bb71e0fc72770c7b85db44d6bdd6ec2.png,/uploads/2019/11/a89f314764187fc869b00a038b986c9a.png','手提袋1','2019-11-15 19:04:56','2019-11-15 19:04:56',1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,4 +191,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-05 18:19:50
+-- Dump completed on 2019-12-28 17:14:54
