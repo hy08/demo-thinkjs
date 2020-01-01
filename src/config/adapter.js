@@ -76,21 +76,21 @@ exports.session = {
  * view adapter config
  * @type {Object}
  */
-exports.view = {
-  type: 'ejs',
-  common: {
-    viewPath: path.join(think.ROOT_PATH, 'view'),
-    extname: '.html',
-    sep: '_' //seperator between controller and action
-  },
-  ejs: {
-    //options
-    handle: ejs,
-    beforeRender: (ejs, handleOptions) => {
-      //do something before render the template.
-    }
-  }
-};
+// exports.view = {
+//   type: 'ejs',
+//   common: {
+//     viewPath: path.join(think.ROOT_PATH, 'view'),
+//     extname: '.html',
+//     sep: '_' //seperator between controller and action
+//   },
+//   ejs: {
+//     //options
+//     handle: ejs,
+//     beforeRender: (ejs, handleOptions) => {
+//       //do something before render the template.
+//     }
+//   }
+// };
 
 /**
  * logger adapter config

@@ -6,7 +6,7 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Skitter from '../components/Skitter/Skitter';
 import TopNav from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
-import styles from './index.css';
+import styles from './index.less';
 
 const bannerList = [
   require('./index_banner01.jpg'),
@@ -48,7 +48,7 @@ class BasicLayout extends Component {
             </CSSTransition>
           </TransitionGroup>
         </div>
-        <div className={styles.footer}><Footer /></div>
+        <Footer />
       </div>
     );
   }
