@@ -15,6 +15,9 @@ const plugins = [
       dva: {
         hmr: true,
       },
+      base: '/admin',
+      publicPath: '/admin',
+      dynamicImport: true,
       locale: {
         // default false
         enable: false,
