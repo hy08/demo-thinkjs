@@ -14,8 +14,8 @@ module.exports = class extends BaseRest {
     const queryData = this.get();
     const startTime = queryData.startTime ? queryData.startTime : GlobalVar.G_Date.initial.format('YYYY-MM-DD HH:mm:ss');
     const endTime = queryData.endTime ? queryData.endTime : GlobalVar.G_Date.tomorrow.format('YYYY-MM-DD HH:mm:ss');
-    const categoryCode = !lodash.isNil(queryData.categoryCode) ? queryData.categoryCode : ['!=', null];
-    const name = !lodash.isNil(queryData.name) ? queryData.name : ['!=', null];
+    const categoryCode = queryData.categoryCode ? queryData.categoryCode : ['!=', null];
+    const name = queryData.name ? queryData.name : ['!=', null];
     //是否来自前台首页
     const fromIndex = !lodash.isNil(queryData.index) ? true : false;
     //是否需要分页

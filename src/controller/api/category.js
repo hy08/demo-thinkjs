@@ -81,6 +81,10 @@ module.exports = class extends BaseRest {
     if (!this.id) {
       return this.fail(20000, '商品类别不存在');
     }
+    const category = await this.model(modelName).where({ id: this.id }).find();
+    if (!lodash.isEmpty(category)) {
+      await this.model('product').where({ category_code: category.code }).delete();
+    }
     const rows = await this.model(modelName).where({ id: this.id }).delete();
     if (rows) {
       return this.success({ affectedRows: rows }, '删除成功');

@@ -120,7 +120,7 @@ class Product extends Component {
     this.state = {
       queryData: {
         date: [null, null],
-        categoryCode: null,
+        categoryCode: '',
         name: '',
         current: 1,
         pageSize: 10
