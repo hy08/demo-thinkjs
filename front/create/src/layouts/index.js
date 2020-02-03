@@ -9,9 +9,9 @@ import Footer from '../components/Footer/Footer';
 import styles from './index.less';
 
 const bannerList = [
-  require('./index_banner01.jpg'),
-  require('./index_banner02.jpg'),
-  require('./index_banner03.jpg')
+  require('./index_banner01.png'),
+  require('./index_banner02.png'),
+  require('./index_banner03.png')
 ]
 
 @connect(() => ({}))

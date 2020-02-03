@@ -8,7 +8,9 @@ export default {
       antd: true,
       dva: true,
       dynamicImport: true,
-      title: '三艺强',
+      title: {
+        defaultTitle: '三艺强'
+      },
       dll: false,
       routes: {
         exclude: [
@@ -28,6 +30,7 @@ export default {
     {
       path: '/',
       component: '../layouts/index',
+      title: '三艺强',
       routes: [
         {
           path: '/',
