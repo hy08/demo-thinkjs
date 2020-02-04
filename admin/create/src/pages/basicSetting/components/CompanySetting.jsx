@@ -77,6 +77,16 @@ class CompanySetting extends Component {
                 ],
               })(<Input />)}
             </FormItem>
+            <FormItem label="公司地址">
+              {getFieldDecorator('address', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入公司详细地址',
+                  },
+                ],
+              })(<Input />)}
+            </FormItem>
             <FormItem label="联系电话">
               {getFieldDecorator('phone', {
                 rules: [
@@ -88,6 +98,28 @@ class CompanySetting extends Component {
                 ],
               })(<Input />)}
             </FormItem>
+            <FormItem label="微信号">
+              {getFieldDecorator('wechat', {
+                rules: [
+                  {
+                    required: true,
+                    pattern: /^\w{1,}$/,
+                    message: '请输入正确的微信号',
+                  },
+                ],
+              })(<Input />)}
+            </FormItem>
+            <FormItem label="qq">
+              {getFieldDecorator('qq', {
+                rules: [
+                  {
+                    required: true,
+                    pattern: /^\d{5,20}$/,
+                    message: '请输入正确的qq号(5-20个数字)',
+                  },
+                ],
+              })(<Input />)}
+            </FormItem>
             <FormItem label="邮箱">
               {getFieldDecorator('email', {
                 rules: [
@@ -95,16 +127,6 @@ class CompanySetting extends Component {
                     required: false,
                     pattern: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
                     message: '请输入正确的公司邮箱',
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-            <FormItem label="公司地址">
-              {getFieldDecorator('address', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入公司详细地址',
                   },
                 ],
               })(<Input />)}

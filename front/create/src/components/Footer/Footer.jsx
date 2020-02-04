@@ -57,7 +57,7 @@ class Footer extends React.Component {
           </div>
           <div className={styles.about}>
             {this.getTabTitle('idcard', '关于公司')}
-            <p className={styles.tabContent, styles.intro}>三艺强三艺强三艺强三艺强三艺强三艺强三艺强三艺强三艺强三艺强三艺强三艺强</p>
+            <p className={styles.tabContent, styles.intro}>公司拥有一批专业的印刷技术人才，专业检测仪器及全自动化的印刷设备，从产品设计、到投入生产，每个环节都严格品质把关。</p>
           </div>
           <div className={styles.linkus}>
             {this.getTabTitle('phone', '联系我们')}

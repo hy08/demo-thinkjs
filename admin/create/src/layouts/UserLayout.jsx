@@ -3,7 +3,7 @@ import DocumentTitle from 'react-document-title';
 import Link from 'umi/link';
 import React from 'react';
 import { connect } from 'dva';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.jpg';
 import styles from './UserLayout.less';
 
 const UserLayout = props => {

@@ -4,7 +4,7 @@ import Link from 'umi/link';
 import { connect } from 'dva';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import styles from './BasicLayout.less';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.jpg';
 
 
 const BasicLayout = props => {

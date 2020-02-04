@@ -10,8 +10,23 @@ import styles from './index.less';
 const GotoType = {
   product: 1,
   device: 2
-}
-
+};
+const PhotoList = [
+  require('./unnamed1.png'),
+  require('./unnamed2.png'),
+  require('./unnamed3.png'),
+  require('./unnamed4.png'),
+  require('./unnamed5.png'),
+  require('./unnamed6.png'),
+];
+const KehuList = [
+  require('./kehu1.png'),
+  require('./kehu2.png'),
+  require('./kehu3.png'),
+  require('./kehu4.png'),
+  require('./kehu5.png'),
+  require('./kehu6.png'),
+];
 @connect(() => ({}))
 class Index extends React.Component {
   constructor(props) {
@@ -61,31 +76,45 @@ class Index extends React.Component {
     const { products, devices } = this.state;
     return (
       <div className={styles.container}>
+        <div className={classnames(styles.section)}>
+          <div className={styles.header}>
+            <p>园区剪影</p>
+            <p><span className={styles.blueColor}>P</span>ark <span className={styles.blueColor}>S</span>ilhouette</p>
+          </div>
+          <div className={classnames(styles.self, styles.photoList)}>
+            {PhotoList.map(photo => {
+              return <img key={photo} src={photo} alt='剪影' />
+            })}
+          </div>
+          <div className={styles.sectionLine}></div>
+        </div>
         <div className={classnames(styles.section, styles.section1)}>
           <div className={styles.header}>
             <p>关于三艺强</p>
             <p><span className={styles.blueColor}>P</span><span>ROFILE</span></p>
           </div>
           <div className={styles.intro}>
-            <p>我司成立于1995年，至今有24年历史，位于江苏省昆山市（毗邻上海市），现有员工180名，三年以上员工占比80%，占地4万平方米，建有现代化标准厂房2万平方米以及2万平方的智能化工厂，主要产品 : 单卡盒 、精裱盒、手提纸袋、瓦楞彩盒、说明书等。拥有设计 – 快速打样 – 个性化定制 –智能化制造及物流系统等行业优势，打造世界级高端智能包装印刷综合体。</p>
-            <p>"两聚两高"愿景：通过聚力创新、聚焦质量及服务营销，成为世界级品牌客户高度信赖的精品包装合作伙伴及内部员工高成长平台。</p>
+            <p>我司是一家专业印刷定制不干胶标签的印刷厂，我厂主要生产不干胶标签，条码，二维码 贴纸，货运标签，价格卡，流水号标签，空白标签 等纸类不干胶产品，同时，我司还提供各种说明书，表单 ，送货单，包装彩盒（卡）等印刷，模切服务并提供最优惠的价格。</p>
+            <p>经营项目： 1、黑白彩色印刷各种不干胶标签、条形，二维码产品等专用标签。 2、代客加工：各类PVC,PET, PI, MAYLAR 材料模切成型及印刷服务。3、自动贴标机 / 卷筒标签印刷 / 产品印刷服务.</p>
+            <p>公司拥有一批专业的印刷技术人才，专业检测仪器及全自动化的印刷设备，从产品设计、到投入生产，每个环节都严格品质把关。</p>
+            <p>秉承着顾客至上，科技创新的宗旨，满足客户的需求是我们工作的第一目标，欢迎广大客户惠顾！ </p>
           </div>
           <div className={styles.self}>
             <div>
               <p className={styles.countWrap}>
-                <span>24</span><span>年</span>
+                <span>20</span><span>年</span>
               </p>
               <p className={styles.label}>丰富的行业经验</p>
             </div>
             <div>
               <p className={styles.countWrap}>
-                <span>180</span><span>名</span>
+                <span>17</span><span>名</span>
               </p>
               <p className={styles.label}>伙伴忠诚为您服务</p>
             </div>
             <div>
               <p className={styles.countWrap}>
-                <span>40000</span><span>平方米</span>
+                <span>500</span><span>平方米</span>
               </p>
               <p className={styles.label}>现代化工业标准厂房</p>
             </div>
@@ -131,9 +160,7 @@ class Index extends React.Component {
             <p><span className={styles.blueColor}>E</span>QUIPMENT</p>
           </div>
           <div className={classnames(styles.intro, styles.center)}>
-            <p>UV印刷机主要应用于：金、银卡、PET、PVC等材料的印刷；</p>
-            <p>主要生产产品：高档化妆品盒、高档礼盒、精装盒，手提袋等；</p>
-            <p>印刷特点：多色、高效、环保，联机UV逆向可以组合三十种效果。</p>
+            <p>专业检测仪器及全自动化的印刷设备，从产品设计、到投入生产，每个环节都严格品质把关。</p>
           </div>
           <div className={styles.self}>
             {devices.map(device => {
@@ -151,6 +178,18 @@ class Index extends React.Component {
           </div>
           <div className={styles.linkWrap}>
             {LinkBotton({ url: '/devices', title: '了解更多' })}
+          </div>
+          <div className={styles.sectionLine}></div>
+        </div>
+        <div className={classnames(styles.section)}>
+          <div className={styles.header}>
+            <p>主要客户</p>
+            <p><span className={styles.blueColor}>M</span>ain <span className={styles.blueColor}>C</span>ustomers</p>
+          </div>
+          <div className={classnames(styles.self, styles.kehuList)}>
+            {KehuList.map(kehu => {
+              return <img key={kehu} src={kehu} alt='客户' />
+            })}
           </div>
         </div>
       </div>

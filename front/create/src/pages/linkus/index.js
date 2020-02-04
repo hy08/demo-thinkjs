@@ -80,20 +80,28 @@ class Index extends React.Component {
       <div className={styles.comment}>
         <div className={styles.commentLeft}>
           <p className={styles.companyName}>{company.name}</p>
+          <div>
+            <Icon type="environment" />
+            <p>联系地址<br />{company.address}</p>
+          </div>
+          <div>
+            <Icon type="phone" />
+            <p>联系电话<br />{company.phone}</p>
+          </div>
+          <div>
+            <Icon type="wechat" />
+            <p>微信<br />{company.wechat}</p>
+          </div>
+          <div>
+            <Icon type="qq" />
+            <p>QQ<br />{company.qq}</p>
+          </div>
           {
             company.email && <div>
               <Icon type="mail" />
               <p>电子邮箱<br /><a href={'mailto:' + company.email}>{company.email}</a></p>
             </div>
           }
-          <div>
-            <Icon type="phone" />
-            <p>联系电话<br />{company.phone}</p>
-          </div>
-          <div>
-            <Icon type="environment" />
-            <p>联系地址<br />{company.address}</p>
-          </div>
         </div>
         <div className={styles.commentRight}>
           <Form labelCol={{ span: 5 }} wrapperCol={{ span: 18 }} onSubmit={this.handleSubmit}>
@@ -140,7 +148,9 @@ class Index extends React.Component {
           <p className={styles.companyName}>{company.name}</p>
           <p>地址: {company.address}</p>
           <p>电话: {company.phone}</p>
-          <p>邮箱: {company.email ? <a href={'mailto:' + company.email}>{company.email}</a> : ''}</p>
+          <p>微信: {company.wechat}</p>
+          <p>QQ: {company.qq}</p>
+          {company.email ? <p>邮箱: <a href={'mailto:' + company.email}>{company.email}</a> </p> : null}
         </div>
       </div>
     )

@@ -99,6 +99,25 @@
       display: flex;
       justify-content: space-between;
       margin: 0 auto;
+
+      &.photoList,&.kehuList {
+        flex-flow: row wrap;
+
+        img {
+          width: 384px;
+          margin-bottom: 20px;
+        }
+      }
+
+      &.kehuList {
+        flex-flow: row wrap;
+
+        img {
+          width: 310px;
+          height: 100px;
+          margin-bottom: 20px;
+        }
+      }
     }
 
     .linkWrap {
