@@ -13,6 +13,7 @@
     "react-dom": "^16.8.6"
   },
   "devDependencies": {
+    "@babel/polyfill": "^7.8.3",
     "babel-eslint": "^9.0.0",
     "classnames": "^2.2.6",
     "eslint": "^5.4.0",
@@ -31,7 +32,9 @@
     "react-transition-group": "^4.3.0",
     "slick-carousel": "^1.8.1",
     "umi": "^2.7.7",
-    "umi-plugin-react": "^1.8.4"
+    "umi-plugin-react": "^1.8.4",
+    "webpack-ant-icon-loader": "^1.0.8",
+    "webpack-bundle-analyzer": "^3.6.0"
   },
   "lint-staged": {
     "*.{js,jsx}": [

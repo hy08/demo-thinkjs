@@ -1,13 +1,28 @@
 
 // ref: https://umijs.org/config/
+
 export default {
   treeShaking: true,
+  //处理antd的icon太大问题
+  chainWebpack(config, { webpack }) {
+
+    // code split @ant-design/icons
+    config.module
+      .rule('@ant-design/icons')
+      .include.add(require.resolve('@ant-design/icons/lib/dist')).end()
+      .use('ant-icon')
+      .loader('webpack-ant-icon-loader');
+  },
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
       antd: true,
       dva: true,
-      dynamicImport: true,
+      dynamicImport: {
+        loadingComponent: './components/PageLoading/index',
+        webpackChunkName: true,
+        level: 3,
+      },
       title: {
         defaultTitle: '三艺强'
       },
