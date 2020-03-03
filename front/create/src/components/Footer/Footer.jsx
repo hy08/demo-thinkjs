@@ -69,7 +69,7 @@ class Footer extends React.Component {
           </div>
         </div>
         <div className={styles.copyright}>
-          版权所有：昆山三艺强印刷有限公司 © 2020　　苏ICP备xxxxxxxxx号-1
+          版权所有：昆山三艺强印刷有限公司 © 2020　　苏ICP备20005550号-1
         </div>
       </div>
     );
