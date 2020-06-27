@@ -1,18 +1,17 @@
-import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import './index.less'
+import Taro, { Component, Config } from '@tarojs/taro';
+import { View, Text } from '@tarojs/components';
+import './index.less';
 
 export default class Index extends Component {
+  componentWillMount() {}
 
-  componentWillMount () { }
+  componentDidMount() {}
 
-  componentDidMount () { }
+  componentWillUnmount() {}
 
-  componentWillUnmount () { }
+  componentDidShow() {}
 
-  componentDidShow () { }
-
-  componentDidHide () { }
+  componentDidHide() {}
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -23,13 +22,13 @@ export default class Index extends Component {
    */
   config: Config = {
     navigationBarTitleText: '首页'
-  }
+  };
 
-  render () {
+  render() {
     return (
-      <View className='index'>
+      <View className="index">
         <Text>Hello world!</Text>
       </View>
-    )
+    );
   }
 }

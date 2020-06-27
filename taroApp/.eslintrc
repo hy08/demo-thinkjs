@@ -1,0 +1,10 @@
+{
+  "extends": ["taro", "prettier"],
+  "rules": {
+    "no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
+    "import/no-commonjs": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }]
+  },
+  "parser": "babel-eslint",
+  "plugins": ["typescript"]
+}

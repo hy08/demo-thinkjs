@@ -26,6 +26,7 @@ node_modules/
 admin/create/dist/
 front/create/node_modules/
 admin/create/node_modules/
+.temp
 
 # IDE config
 .idea
