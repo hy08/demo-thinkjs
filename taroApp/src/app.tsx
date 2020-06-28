@@ -5,8 +5,8 @@ import './app.less';
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
-// if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
-//   require('nerv-devtools')
+// if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5') {
+//   require('nerv-devtools');
 // }
 
 class App extends Component {
@@ -27,12 +27,13 @@ class App extends Component {
    */
   config: Config = {
     pages: ['pages/index/index'],
+    debug: process.env.NODE_ENV !== 'production' ? true : false,
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black',
-    },
+      navigationBarTextStyle: 'black'
+    }
   };
 
   // 在 App 类中的 render() 函数没有实际作用
