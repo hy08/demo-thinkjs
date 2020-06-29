@@ -1,11 +1,13 @@
 import Taro, { Component } from "@tarojs/taro-h5";
+import '@tarojs/async-await';
+import { Provider } from "@tarojs/redux-h5";
 
+import dva from './dva';
+import models from './models/index';
+import 'taro-ui/dist/style/index.scss'; // 全局引入一次即可
 import './app.less';
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
-// if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
-//   require('nerv-devtools')
-// }
 import Nerv from 'nervjs';
 import { Router, createHistory, mountApis } from '@tarojs/router';
 Taro.initPxTransform({
@@ -28,6 +30,14 @@ mountApis({
   "basename": "/",
   "customRoutes": {}
 }, _taroHistory);
+if (process.env.NODE_ENV !== 'production' && true) {
+  require('nerv-devtools');
+}
+const dvaApp = dva.createApp({
+  initialState: {},
+  models
+});
+const store = dvaApp.getStore();
 class App extends Component {
   constructor() {
     super(...arguments);
@@ -49,14 +59,19 @@ class App extends Component {
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
   render() {
-    return <Router mode={"hash"} history={_taroHistory} routes={[{
-      path: '/pages/index/index',
-      componentLoader: () => import( /* webpackChunkName: "index_index" */'./pages/index/index'),
-      isIndex: true
-    }]} customRoutes={{}} />;
+    return <Provider store={store}>
+          
+                <Router mode={"hash"} history={_taroHistory} routes={[{
+        path: '/pages/index/index',
+        componentLoader: () => import( /* webpackChunkName: "index_index" */'./pages/index/index'),
+        isIndex: true
+      }]} customRoutes={{}} />
+                
+        </Provider>;
   }
   config = {
     pages: ["/pages/index/index"],
+    debug: process.env.NODE_ENV !== 'production' ? true : false,
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',

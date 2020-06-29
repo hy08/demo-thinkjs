@@ -1,3 +1,4 @@
+const path = require('path');
 const config = {
   projectName: 'taroApp',
   date: '2020-6-22',
@@ -9,9 +10,6 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  alias: {
-    '@': path.resolve(__dirname, '..', 'src')
-  },
   babel: {
     sourceMap: true,
     presets: [
@@ -79,6 +77,9 @@ const config = {
       }
     },
     esnextModules: ['taro-ui']
+  },
+  alias: {
+    '@': path.resolve(__dirname, '..', 'src')
   }
 };
 
