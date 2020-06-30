@@ -15,6 +15,9 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "rootDir": ".",
     "jsx": "preserve",
     "jsxFactory": "Taro.createElement",

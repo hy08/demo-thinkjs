@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import './index.less';
+import { AtTabBar } from 'taro-ui';
+import styles from './index.less';
 
 export default class Index extends Component {
   componentWillMount() {}
@@ -26,8 +27,12 @@ export default class Index extends Component {
 
   render() {
     return (
-      <View className="index">
-        <Text>Hello world!</Text>
+      <View className={styles.container}>
+        <AtTabBar
+          tabList={[{ title: '首页' }, { title: '产品' }, { title: '设备' }, { title: '公司' }, { title: '留言' }]}
+          onClick={() => {}}
+          current={0}
+        />
       </View>
     );
   }

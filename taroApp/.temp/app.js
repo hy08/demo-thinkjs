@@ -8,6 +8,9 @@ import 'taro-ui/dist/style/index.scss'; // 全局引入一次即可
 import './app.less';
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
+// if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5') {
+//   require('nerv-devtools');
+// }
 import Nerv from 'nervjs';
 import { Router, createHistory, mountApis } from '@tarojs/router';
 Taro.initPxTransform({
@@ -30,9 +33,6 @@ mountApis({
   "basename": "/",
   "customRoutes": {}
 }, _taroHistory);
-if (process.env.NODE_ENV !== 'production' && true) {
-  require('nerv-devtools');
-}
 const dvaApp = dva.createApp({
   initialState: {},
   models

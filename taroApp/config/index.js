@@ -61,6 +61,7 @@ const config = {
   h5: {
     publicPath: '/',
     staticDirectory: 'static',
+    esnextModules: ['taro-ui'],
     postcss: {
       autoprefixer: {
         enable: true,
@@ -75,11 +76,10 @@ const config = {
           generateScopedName: '[name]__[local]___[hash:base64:5]'
         }
       }
-    },
-    esnextModules: ['taro-ui']
+    }
   },
   alias: {
-    '@': path.resolve(__dirname, '..', 'src')
+    '@/*': path.resolve(__dirname, '..', 'src/*')
   }
 };
 

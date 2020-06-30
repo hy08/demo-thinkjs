@@ -1,7 +1,8 @@
 import Nerv from "nervjs";
 import Taro from "@tarojs/taro-h5";
-import { View, Text } from '@tarojs/components';
-import './index.less';
+import { View } from '@tarojs/components';
+import { AtTabBar } from 'taro-ui';
+import styles from './index.less';
 export default class Index extends Taro.Component {
   constructor() {
     super(...arguments);
@@ -19,8 +20,8 @@ export default class Index extends Taro.Component {
   componentDidShow() {}
   componentDidHide() {}
   render() {
-    return <View className="index">
-        <Text>Hello world!</Text>
+    return <View className={styles.container}>
+        <AtTabBar tabList={[{ title: '首页' }, { title: '产品' }, { title: '设备' }, { title: '公司' }, { title: '留言' }]} onClick={() => {}} current={0} />
       </View>;
   }
   config = {
