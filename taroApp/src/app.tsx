@@ -1,5 +1,4 @@
-import Taro, { Component, Config } from '@tarojs/taro';
-
+import Taro, { Config, Component } from '@tarojs/taro';
 import '@tarojs/async-await';
 import { Provider } from '@tarojs/redux';
 import Index from './pages/index/index';
@@ -8,6 +7,7 @@ import dva from './dva';
 import models from './models/index';
 
 import 'taro-ui/dist/style/index.scss'; // 全局引入一次即可
+import './assets/iconFont/iconfont.css';
 import './app.less';
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -39,7 +39,7 @@ class App extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    pages: ['pages/index/index'],
+    pages: ['pages/index/index', 'pages/money/index', 'pages/company/index', 'pages/message/index'],
     debug: process.env.NODE_ENV !== 'production' ? true : false,
     window: {
       backgroundTextStyle: 'light',

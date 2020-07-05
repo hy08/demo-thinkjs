@@ -5,6 +5,7 @@ import { Provider } from "@tarojs/redux-h5";
 import dva from './dva';
 import models from './models/index';
 import 'taro-ui/dist/style/index.scss'; // 全局引入一次即可
+import './assets/iconFont/iconfont.css';
 import './app.less';
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -65,12 +66,24 @@ class App extends Component {
         path: '/pages/index/index',
         componentLoader: () => import( /* webpackChunkName: "index_index" */'./pages/index/index'),
         isIndex: true
+      }, {
+        path: '/pages/money/index',
+        componentLoader: () => import( /* webpackChunkName: "money_index" */'./pages/money/index'),
+        isIndex: false
+      }, {
+        path: '/pages/company/index',
+        componentLoader: () => import( /* webpackChunkName: "company_index" */'./pages/company/index'),
+        isIndex: false
+      }, {
+        path: '/pages/message/index',
+        componentLoader: () => import( /* webpackChunkName: "message_index" */'./pages/message/index'),
+        isIndex: false
       }]} customRoutes={{}} />
                 
         </Provider>;
   }
   config = {
-    pages: ["/pages/index/index"],
+    pages: ["/pages/index/index", "/pages/money/index", "/pages/company/index", "/pages/message/index"],
     debug: process.env.NODE_ENV !== 'production' ? true : false,
     window: {
       backgroundTextStyle: 'light',

@@ -1,10 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro';
-
 import { View, Text } from '@tarojs/components';
-// import {  AtIcon } from 'taro-ui';
+// import { AtTabBar, AtIcon } from 'taro-ui';
 import TabBar from '@/components/tabBar/index';
 import { TabType } from '@/util/enum';
-import './index.less';
+// import './index.less';
 
 export default class Index extends Component {
   componentWillMount() {}
@@ -18,15 +17,14 @@ export default class Index extends Component {
   componentDidHide() {}
 
   config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '留言'
   };
 
-  handle;
   render() {
     return (
       <View className="page_index_container">
-        <Text>首页</Text>
-        <TabBar current={TabType.Home} />
+        <Text>留言</Text>
+        <TabBar current={TabType.Message} />
       </View>
     );
   }

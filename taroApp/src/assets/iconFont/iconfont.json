@@ -1,0 +1,44 @@
+{
+  "id": "1923751",
+  "name": "syq-print",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "三艺强官网",
+  "glyphs": [
+    {
+      "icon_id": "880162",
+      "name": "留言",
+      "font_class": "liuyan",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "1219691",
+      "name": "首页",
+      "font_class": "shouye",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "6901606",
+      "name": "公司",
+      "font_class": "gongsi",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "8245474",
+      "name": "产品库",
+      "font_class": "chanpinku",
+      "unicode": "e661",
+      "unicode_decimal": 58977
+    },
+    {
+      "icon_id": "9011933",
+      "name": "设备",
+      "font_class": "shebei",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    }
+  ]
+}
