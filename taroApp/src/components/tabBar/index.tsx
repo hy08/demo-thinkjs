@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro';
 import { FC } from 'react';
 import { View } from '@tarojs/components';
 import { AtTabBar } from 'taro-ui';
-import { MoneyType, TabType } from '@/util/enum';
+import { TabType } from '@/util/enum';
 
 type Props = {
   current?: TabType;
@@ -28,7 +28,7 @@ const handleNavigateTo = (index: number) => {
       break;
   }
   if (url) {
-    Taro.reLaunch({ url });
+    Taro.navigateTo({ url });
   }
 };
 const Tab: FC<Props> = ({ current }) => {

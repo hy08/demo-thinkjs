@@ -1,13 +1,16 @@
 import Nerv from "nervjs";
 import Taro from "@tarojs/taro-h5";
-import { View, Text } from '@tarojs/components';
+import { View, Image, Swiper, SwiperItem } from '@tarojs/components';
 // import {  AtIcon } from 'taro-ui';
 import TabBar from "../../components/tabBar/index";
 import { TabType } from "../../util/enum";
 import './index.less';
-export default class Index extends Taro.Component {
-  constructor() {
-    super(...arguments);
+import TextHeader from "../../components/textHeader/index";
+class Index extends Taro.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
   }
   componentWillMount() {}
   componentDidMount() {}
@@ -15,8 +18,30 @@ export default class Index extends Taro.Component {
   componentDidShow() {}
   componentDidHide() {}
   render() {
+    // const { currentBannerIndex } = this.state;
     return <View className="page_index_container">
-        <Text>首页</Text>
+        <Swiper className="page_index_banner" indicatorColor="#999" indicatorActiveColor="#333" circular indicatorDots>
+          <SwiperItem>
+            <Image className="page_index_banner_img" src={require('./index_banner01.png')} />
+          </SwiperItem>
+          <SwiperItem>
+            <Image className="page_index_banner_img" src={require('./index_banner02.png')} />
+          </SwiperItem>
+          <SwiperItem>
+            <Image className="page_index_banner_img" src={require('./index_banner03.png')} />
+          </SwiperItem>
+        </Swiper>
+        <View className="page_index_part1">
+          <TextHeader title="园区剪影" subTitle="Park Silhouette" highLightIndexObj={{ first: 1, second: 6 }} />
+          <View className="page_index_imgs">
+            <Image className="page_index_imgs_img" src={require('./unnamed1.png')} />
+            <Image className="page_index_imgs_img" src={require('./unnamed2.png')} />
+            <Image className="page_index_imgs_img" src={require('./unnamed3.png')} />
+            <Image className="page_index_imgs_img" src={require('./unnamed4.png')} />
+            <Image className="page_index_imgs_img" src={require('./unnamed5.png')} />
+            <Image className="page_index_imgs_img" src={require('./unnamed6.png')} />
+          </View>
+        </View>
         <TabBar current={TabType.Home} />
       </View>;
   }
@@ -24,3 +49,4 @@ export default class Index extends Taro.Component {
     navigationBarTitleText: '首页'
   };
 }
+export default Index;
