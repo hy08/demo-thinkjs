@@ -1,6 +1,5 @@
 import Taro from '@tarojs/taro';
 import { FC } from 'react';
-import { View } from '@tarojs/components';
 import { AtTabBar } from 'taro-ui';
 import { TabType } from '@/util/enum';
 
@@ -33,24 +32,22 @@ const handleNavigateTo = (index: number) => {
 };
 const Tab: FC<Props> = ({ current }) => {
   return (
-    <View className="com_tabBar_container">
-      <AtTabBar
-        fixed
-        color="#75878a"
-        fontSize={18}
-        tabList={[
-          { title: '首页', iconPrefixClass: 'icon', iconType: 'shouye' },
-          { title: '产品', iconPrefixClass: 'icon', iconType: 'chanpinku  ' },
-          { title: '设备', iconPrefixClass: 'icon', iconType: 'shebei' },
-          { title: '公司', iconPrefixClass: 'icon', iconType: 'gongsi' },
-          { title: '留言', iconPrefixClass: 'icon', iconType: 'liuyan' }
-        ]}
-        onClick={(index) => {
-          handleNavigateTo(index);
-        }}
-        current={current!}
-      />
-    </View>
+    <AtTabBar
+      fixed
+      color="#75878a"
+      fontSize={18}
+      tabList={[
+        { title: '首页', iconPrefixClass: 'icon', iconType: 'shouye' },
+        { title: '产品', iconPrefixClass: 'icon', iconType: 'chanpinku  ' },
+        { title: '设备', iconPrefixClass: 'icon', iconType: 'shebei' },
+        { title: '公司', iconPrefixClass: 'icon', iconType: 'gongsi' },
+        { title: '留言', iconPrefixClass: 'icon', iconType: 'liuyan' }
+      ]}
+      onClick={(index) => {
+        handleNavigateTo(index);
+      }}
+      current={current!}
+    />
   );
 };
 

@@ -1,3 +1,3 @@
-import counter from './counter';
+import model from './model';
 
-export default [counter];
+export default [model];

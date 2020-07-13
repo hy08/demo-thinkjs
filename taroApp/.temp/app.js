@@ -71,6 +71,10 @@ class App extends Component {
         componentLoader: () => import( /* webpackChunkName: "money_index" */'./pages/money/index'),
         isIndex: false
       }, {
+        path: '/pages/detail/index',
+        componentLoader: () => import( /* webpackChunkName: "detail_index" */'./pages/detail/index'),
+        isIndex: false
+      }, {
         path: '/pages/company/index',
         componentLoader: () => import( /* webpackChunkName: "company_index" */'./pages/company/index'),
         isIndex: false
@@ -83,7 +87,7 @@ class App extends Component {
         </Provider>;
   }
   config = {
-    pages: ["/pages/index/index", "/pages/money/index", "/pages/company/index", "/pages/message/index"],
+    pages: ["/pages/index/index", "/pages/money/index", "/pages/detail/index", "/pages/company/index", "/pages/message/index"],
     debug: process.env.NODE_ENV !== 'production' ? true : false,
     window: {
       backgroundTextStyle: 'light',

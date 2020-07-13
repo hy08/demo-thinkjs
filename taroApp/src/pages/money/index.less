@@ -1,0 +1,58 @@
+.page_money_container {
+  .page_money_list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start;
+    margin: 20px;
+    .page_money_item {
+      display: flex;
+      flex-flow: column;
+      width: calc(50% - 10px);
+      height: 500px;
+      border: 2px solid #ccc;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      .page_money_item_pic {
+        width: 100%;
+        height: 80%;
+      }
+      .page_money_item_name {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 20px;
+        height: 20%;
+        text-align: center;
+        background-color: #ff5722;
+        .page_money_item_text {
+          font-size: 28px;
+          color: #fff;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+  .page_money_device {
+    .page_money_device_title {
+      display: flex;
+      align-items: center;
+      height: 80px;
+      margin: 10px 20px;
+      .page_money_device_label {
+        width: 10px;
+        height: 100%;
+        margin-right: 20px;
+        background-color: #ff5722;
+      }
+      .page_money_device_text {
+        flex-grow: 1;
+        font-size: 40px;
+      }
+    }
+  }
+}

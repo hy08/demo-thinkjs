@@ -39,7 +39,7 @@ class App extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    pages: ['pages/index/index', 'pages/money/index', 'pages/company/index', 'pages/message/index'],
+    pages: ['pages/index/index', 'pages/money/index', 'pages/detail/index', 'pages/company/index', 'pages/message/index'],
     debug: process.env.NODE_ENV !== 'production' ? true : false,
     window: {
       backgroundTextStyle: 'light',

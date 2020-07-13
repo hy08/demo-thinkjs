@@ -1,7 +1,11 @@
 .page_index_container {
+  @textColor: #585858;
+  @blueColor: #3366ff;
+
+  padding-bottom: 130px;
+
   .page_index_banner {
-    .page_index_banner_img,
-    img {
+    .page_index_banner_img {
       height: 100%;
       width: 100%;
     }
@@ -17,6 +21,133 @@
       width: 30%;
       height: 200px;
       margin-bottom: 20px;
+    }
+  }
+  .page_index_self {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 20px;
+    .page_index_self_photoWrap {
+      position: relative;
+      width: 32%;
+      height: 200px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      overflow: hidden;
+      cursor: pointer;
+      .transition {
+        transition: top 0.5s ease-in 0s;
+      }
+      .page_index_cover {
+        position: absolute;
+        top: calc(~'100% - 40px');
+        width: 100%;
+        height: 100%;
+        background: #333;
+        opacity: 0.7;
+        .transition;
+
+        .page_index_cover_title,
+        .page_index_cover_cotent {
+          text-align: center;
+          color: #fff;
+        }
+
+        .page_index_cover_title {
+          padding: 0;
+          margin: 0;
+          font-size: 16px;
+          height: 40px;
+          line-height: 40px;
+          border-bottom: 1px solid #ccc;
+        }
+
+        .page_index_cover_cotent {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: calc(~'100% - 40px');
+          padding: 10px;
+          overflow: hidden;
+          line-height: 28px;
+          font-size: 13px;
+          box-sizing: border-box;
+          .page_index_cover_text {
+            text-align: left;
+          }
+        }
+      }
+
+      &:hover {
+        .page_index_cover {
+          top: 0;
+          .transition;
+        }
+      }
+    }
+  }
+  .page_index_linkWrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+  }
+  .page_index_intro {
+    margin: 0 20px;
+
+    .page_index_intro_content {
+      line-height: 2.2;
+      font-size: 14px;
+      text-indent: 4em;
+      color: @textColor;
+    }
+  }
+  .page_index_part2 {
+    .page_index_self {
+      .page_index_self_content {
+        flex-grow: 1;
+        text-align: center;
+
+        .page_index_part2_self_countWrap {
+          .page_index_part2_self_countWrap_first {
+            font-size: 60px;
+            font-weight: normal;
+            color: @textColor;
+          }
+
+          .page_index_part2_self_countWrap_second {
+            margin-left: 5px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+          }
+        }
+
+        .page_index_part2_self_label {
+          font-size: 16px;
+          color: @textColor;
+        }
+      }
+
+      .page_index_self_content_second {
+        border-left: 2px dotted rgba(88, 88, 88, 0.3);
+        border-right: 2px dotted rgba(88, 88, 88, 0.3);
+      }
+    }
+  }
+  .page_index_part5 {
+    .page_index_part5_kehuList {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      margin: 0 10px 20px;
+
+      .page_index_part5_kehu {
+        width: 200px;
+        height: 100px;
+        margin-bottom: 20px;
+      }
     }
   }
 }

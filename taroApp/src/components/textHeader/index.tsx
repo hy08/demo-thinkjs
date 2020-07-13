@@ -7,14 +7,14 @@ import { View, Text } from '@tarojs/components';
 type Props = {
   title: string;
   subTitle: string;
-  highLightIndexObj: { first: number; second: number };
+  highLightIndexObj: { first: number; second?: number };
 };
 const TextHeader: FC<Props> = ({ title, subTitle, highLightIndexObj }) => {
   const { first, second } = highLightIndexObj;
   return (
     <View className="com_textHeader_header">
-      <View>{title}</View>
-      <View>
+      <View className="com_textHeader_title">{title}</View>
+      <View className="com_textHeader_content">
         {subTitle.split('').map((letter, index) => {
           return (
             <Text key={index} className={classnames({ com_textHeader_blueColor: index + 1 === first || index + 1 === second })}>

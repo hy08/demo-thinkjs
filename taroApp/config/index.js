@@ -66,13 +66,16 @@ const config = {
       host: 'localhost', //其他电脑也可访问
       port: 8087,
       proxy: {
-        // change xxx-api/login => /mock-api/v1/login
-        // detail: https://cli.vuejs.org/config/#devserver-proxy
-        // '/chams': {
-        //   target: 'http://172.16.231.88:19213/',
-        //   logLevel: 'debug',
-        //   changeOrigin: true,
-        // },
+        '/api': {
+          target: 'http://localhost:8360',
+          changeOrigin: true,
+          logLevel: 'debug'
+        },
+        '/uploads': {
+          target: 'http://localhost:8360',
+          changeOrigin: true,
+          logLevel: 'debug'
+        }
       }
     },
     postcss: {
@@ -88,13 +91,13 @@ const config = {
           namingPattern: 'module', // 转换模式，取值为 global/module
           generateScopedName: '[name]__[local]___[hash:base64:5]'
         }
+      },
+      url: {
+        enable: true,
+        config: {
+          limit: 10240 // 设定转换尺寸上限
+        }
       }
-      // url: {
-      //   enable: true,
-      //   config: {
-      //     limit: 10240 // 设定转换尺寸上限
-      //   }
-      // }
     }
   },
   alias: {
