@@ -1,0 +1,33 @@
+.page_message_container {
+  padding-bottom: 130px;
+  @fontColor: #707070;
+  .page_message_header {
+    height: 100px;
+    display: flex;
+    align-items: center;
+  }
+  .page_message_form {
+    margin: 20px;
+    .page_message_item {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-items: center;
+      margin-bottom: 40px;
+      .page_message_item_label {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 120px;
+        flex-shrink: 0;
+        font-size: 28px;
+        color: @fontColor;
+      }
+      .page_message_item_control {
+        flex: auto;
+        &.page_message_item_control_textarea {
+          margin-left: 16px;
+        }
+      }
+    }
+  }
+}
