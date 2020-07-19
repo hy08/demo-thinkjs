@@ -1,15 +1,4 @@
 /**
- * MoneyType
- * @enum
- * @property {number} MoneyType.Product 产品
- * @property {number} MoneyType.Device  设备
- */
-export enum MoneyType {
-  Product,
-  Device
-}
-
-/**
  * Tab
  * @enum
  * @property {number} TabType.Home 首页

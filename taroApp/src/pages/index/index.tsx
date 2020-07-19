@@ -4,7 +4,8 @@ import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components';
 import { split } from 'lodash';
 import classnames from 'classnames';
 import TabBar from '@/components/tabBar/index';
-import { TabType, MoneyType } from '@/util/enum';
+import { TabType } from '@/util/enum';
+import { getOrigin } from '@/util/util';
 import TextHeader from '@/components/textHeader';
 import LinkBotton from '@/components/linkButton';
 import './index.less';
@@ -178,13 +179,13 @@ class Index extends Component<IProps, PageState> {
           </View>
           <View className="page_index_self">
             {products.map((product) => {
-              const url = split(product.pics, ',')[0] ? `url(${window.location.origin + split(product.pics, ',')[0]})` : `url(${NoPicUrl})`;
+              const url = split(product.pics, ',')[0] ? `url(${getOrigin() + split(product.pics, ',')[0]})` : `url(${NoPicUrl})`;
               return (
                 <View
                   className="page_index_self_photoWrap"
                   key={product.category_code}
                   onClick={() => {
-                    Taro.navigateTo({ url: `/pages/detail/index?type=${MoneyType.Product}&code=${product.id}` });
+                    Taro.navigateTo({ url: `/pages/detail/index?type=${TabType.Product}&id=${product.id}` });
                   }}
                   style={{ backgroundImage: url }}
                 >
@@ -199,7 +200,7 @@ class Index extends Component<IProps, PageState> {
             })}
           </View>
           <View className="page_index_linkWrap">
-            <LinkBotton url={`/pages/money/index?type=${MoneyType.Product}`} title="了解更多" />
+            <LinkBotton url={`/pages/money/index?type=${TabType.Product}`} title="了解更多" />
           </View>
         </View>
         <View className="page_index_part4">
@@ -211,13 +212,13 @@ class Index extends Component<IProps, PageState> {
           </View>
           <View className="page_index_self">
             {devices.map((device) => {
-              const url = split(device.pics, ',')[0] ? `url(${window.location.origin + split(device.pics, ',')[0]})` : `url(${NoPicUrl})`;
+              const url = split(device.pics, ',')[0] ? `url(${getOrigin() + split(device.pics, ',')[0]})` : `url(${NoPicUrl})`;
               return (
                 <View
                   className="page_index_self_photoWrap"
                   key={device.id}
                   onClick={() => {
-                    Taro.navigateTo({ url: `/pages/detail/index?type=${MoneyType.Device}&code=${device.id}` });
+                    Taro.navigateTo({ url: `/pages/detail/index?type=${TabType.Device}&id=${device.id}` });
                   }}
                   style={{
                     backgroundImage: url
@@ -234,7 +235,7 @@ class Index extends Component<IProps, PageState> {
             })}
           </View>
           <View className="page_index_linkWrap">
-            <LinkBotton url={`/pages/money/index?type=${MoneyType.Device}`} title="了解更多" />
+            <LinkBotton url={`/pages/money/index?type=${TabType.Device}`} title="了解更多" />
           </View>
         </View>
         <View className="page_index_part5">

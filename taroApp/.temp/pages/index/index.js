@@ -6,7 +6,7 @@ import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components';
 import { split } from 'lodash';
 import classnames from 'classnames';
 import TabBar from "../../components/tabBar/index";
-import { TabType, MoneyType } from "../../util/enum";
+import { TabType } from "../../util/enum";
 import TextHeader from "../../components/textHeader/index";
 import LinkBotton from "../../components/linkButton/index";
 import './index.less';
@@ -116,7 +116,7 @@ let Index = class Index extends Taro.Component {
             {products.map(product => {
             const url = split(product.pics, ',')[0] ? `url(${window.location.origin + split(product.pics, ',')[0]})` : `url(${NoPicUrl})`;
             return <View className="page_index_self_photoWrap" key={product.category_code} onClick={() => {
-              Taro.navigateTo({ url: `/pages/detail/index?type=${MoneyType.Product}&code=${product.id}` });
+              Taro.navigateTo({ url: `/pages/detail/index?type=${TabType.Product}&id=${product.id}` });
             }} style={{ backgroundImage: url }}>
                   <View className="page_index_cover">
                     <View className="page_index_cover_title">{product.name}</View>
@@ -128,7 +128,7 @@ let Index = class Index extends Taro.Component {
           })}
           </View>
           <View className="page_index_linkWrap">
-            <LinkBotton url={`/pages/money/index?type=${MoneyType.Product}`} title="了解更多" />
+            <LinkBotton url={`/pages/money/index?type=${TabType.Product}`} title="了解更多" />
           </View>
         </View>
         <View className="page_index_part4">
@@ -142,7 +142,7 @@ let Index = class Index extends Taro.Component {
             {devices.map(device => {
             const url = split(device.pics, ',')[0] ? `url(${window.location.origin + split(device.pics, ',')[0]})` : `url(${NoPicUrl})`;
             return <View className="page_index_self_photoWrap" key={device.id} onClick={() => {
-              Taro.navigateTo({ url: `/pages/detail/index?type=${MoneyType.Device}&code=${device.id}` });
+              Taro.navigateTo({ url: `/pages/detail/index?type=${TabType.Device}&id=${device.id}` });
             }} style={{
               backgroundImage: url
             }}>
@@ -156,7 +156,7 @@ let Index = class Index extends Taro.Component {
           })}
           </View>
           <View className="page_index_linkWrap">
-            <LinkBotton url={`/pages/money/index?type=${MoneyType.Device}`} title="了解更多" />
+            <LinkBotton url={`/pages/money/index?type=${TabType.Device}`} title="了解更多" />
           </View>
         </View>
         <View className="page_index_part5">

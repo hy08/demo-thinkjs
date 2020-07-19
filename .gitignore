@@ -22,8 +22,7 @@ coverage/
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules/
-/front/create/dist/
-admin/create/dist/
+dist/
 front/create/node_modules/
 admin/create/node_modules/
 .temp

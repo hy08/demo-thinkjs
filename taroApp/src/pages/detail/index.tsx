@@ -4,6 +4,7 @@ import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components';
 import { TabType } from '@/util/enum';
 import { split } from 'lodash';
 import './index.less';
+import { getOrigin } from '@/util/util';
 
 const NoPicUrl = require('@/assets/img/noPic.png');
 
@@ -105,7 +106,7 @@ class Index extends Component<IProps, PageState> {
           {imgs.map((item, index) => {
             return (
               <SwiperItem key={index}>
-                <Image className="page_detail_banner_img" src={`${window.location.origin + item}`} />
+                <Image className="page_detail_banner_img" src={`${getOrigin() + item}`} />
               </SwiperItem>
             );
           })}

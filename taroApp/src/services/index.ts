@@ -1,5 +1,8 @@
 import API from '@/services/api';
-const gatwayName = '/api';
+import { HOST } from '@/util/constant';
+const isH5 = process.env.CLIENT_ENV === 'h5';
+
+const gatwayName = isH5 ? '/api' : HOST + '/api';
 
 // 获取公司信息
 export function readCompanyInfo() {

@@ -6,6 +6,7 @@ import TabBar from '@/components/tabBar/index';
 import { TabType } from '@/util/enum';
 import { AtTabs, AtTabsPane } from 'taro-ui';
 import './index.less';
+import { getOrigin } from '@/util/util';
 
 const NoPicUrl = require('@/assets/img/noPic.png');
 
@@ -74,9 +75,11 @@ class Index extends Component<IProps, PageState> {
     console.log(this.$router.params);
     const { type, code } = this.$router.params;
     if (Number(type) === TabType.Product) {
+      console.log('产品');
       this.setState({ pageType: TabType.Product });
       this.config.navigationBarTitleText = '产品';
     } else {
+      console.log('设备');
       this.setState({ pageType: TabType.Device });
       this.config.navigationBarTitleText = '设备';
     }
@@ -170,13 +173,13 @@ class Index extends Component<IProps, PageState> {
       list = products.map((item) => ({
         id: item.id,
         name: item.name,
-        pic: split(item.pics, ',')[0] ? `${window.location.origin + split(item.pics, ',')[0]}` : `${NoPicUrl}`
+        pic: split(item.pics, ',')[0] ? `${getOrigin() + split(item.pics, ',')[0]}` : `${NoPicUrl}`
       }));
     } else {
       list = devices.map((item) => ({
         id: item.id,
         name: item.name,
-        pic: split(item.pics, ',')[0] ? `${window.location.origin + split(item.pics, ',')[0]}` : `${NoPicUrl}`
+        pic: split(item.pics, ',')[0] ? `${getOrigin() + split(item.pics, ',')[0]}` : `${NoPicUrl}`
       }));
     }
     return (
