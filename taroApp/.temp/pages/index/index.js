@@ -7,6 +7,7 @@ import { split } from 'lodash';
 import classnames from 'classnames';
 import TabBar from "../../components/tabBar/index";
 import { TabType } from "../../util/enum";
+import { getOrigin } from "../../util/util";
 import TextHeader from "../../components/textHeader/index";
 import LinkBotton from "../../components/linkButton/index";
 import './index.less';
@@ -114,7 +115,7 @@ let Index = class Index extends Taro.Component {
           </View>
           <View className="page_index_self">
             {products.map(product => {
-            const url = split(product.pics, ',')[0] ? `url(${window.location.origin + split(product.pics, ',')[0]})` : `url(${NoPicUrl})`;
+            const url = split(product.pics, ',')[0] ? `url(${getOrigin() + split(product.pics, ',')[0]})` : `url(${NoPicUrl})`;
             return <View className="page_index_self_photoWrap" key={product.category_code} onClick={() => {
               Taro.navigateTo({ url: `/pages/detail/index?type=${TabType.Product}&id=${product.id}` });
             }} style={{ backgroundImage: url }}>
@@ -140,7 +141,7 @@ let Index = class Index extends Taro.Component {
           </View>
           <View className="page_index_self">
             {devices.map(device => {
-            const url = split(device.pics, ',')[0] ? `url(${window.location.origin + split(device.pics, ',')[0]})` : `url(${NoPicUrl})`;
+            const url = split(device.pics, ',')[0] ? `url(${getOrigin() + split(device.pics, ',')[0]})` : `url(${NoPicUrl})`;
             return <View className="page_index_self_photoWrap" key={device.id} onClick={() => {
               Taro.navigateTo({ url: `/pages/detail/index?type=${TabType.Device}&id=${device.id}` });
             }} style={{

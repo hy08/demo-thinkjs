@@ -77,11 +77,11 @@ class Index extends Component<IProps, PageState> {
     if (Number(type) === TabType.Product) {
       console.log('产品');
       this.setState({ pageType: TabType.Product });
-      this.config.navigationBarTitleText = '产品';
+      Taro.setNavigationBarTitle({ title: '产品' });
     } else {
       console.log('设备');
       this.setState({ pageType: TabType.Device });
-      this.config.navigationBarTitleText = '设备';
+      Taro.setNavigationBarTitle({ title: '设备' });
     }
     if (code) {
       this.setState({ selectedCategoryCode: code });

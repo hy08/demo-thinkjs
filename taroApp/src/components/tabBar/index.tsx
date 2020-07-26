@@ -27,7 +27,7 @@ const handleNavigateTo = (index: number) => {
       break;
   }
   if (url) {
-    Taro.navigateTo({ url });
+    Taro.redirectTo({ url });
   }
 };
 const Tab: FC<Props> = ({ current }) => {

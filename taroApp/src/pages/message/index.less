@@ -5,9 +5,13 @@
     height: 100px;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
   .page_message_form {
     margin: 20px;
+    &::after {
+      border: none;
+    }
     .page_message_item {
       display: flex;
       flex-flow: row nowrap;
@@ -21,6 +25,13 @@
         flex-shrink: 0;
         font-size: 28px;
         color: @fontColor;
+      }
+      at-textarea,
+      at-input {
+        flex: auto;
+      }
+      at-textarea {
+        margin-right: 20px;
       }
       .page_message_item_control {
         flex: auto;

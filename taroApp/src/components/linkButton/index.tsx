@@ -17,7 +17,7 @@ const LinkBotton: FC<Props> = ({ title, url }) => {
       }}
     >
       <View className="com_linkButton_btnContent">
-        <AtIcon value="link" className="com_linkButton_btnContent_icon" />
+        <AtIcon value="link" color="#fff" className="com_linkButton_btnContent_icon" />
         <Text className="com_linkButton_btnContent_btnTitleText">{title}</Text>
       </View>
     </View>

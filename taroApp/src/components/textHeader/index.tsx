@@ -9,8 +9,8 @@ type Props = {
   subTitle: string;
   highLightIndexObj: { first: number; second?: number };
 };
-const TextHeader: FC<Props> = ({ title, subTitle, highLightIndexObj }) => {
-  const { first, second } = highLightIndexObj;
+const TextHeader: FC<Props> = ({ title, subTitle = '', highLightIndexObj = { first: 0, second: 0 } }) => {
+  let { first, second } = highLightIndexObj;
   return (
     <View className="com_textHeader_header">
       <View className="com_textHeader_title">{title}</View>
