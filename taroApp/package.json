@@ -50,7 +50,7 @@
     "classnames": "^2.2.6",
     "dva-core": "^2.0.2",
     "dva-loading": "^3.0.20",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "nerv-devtools": "^1.5.5",
     "nervjs": "^1.5.5",
     "redux": "^4.0.5",
